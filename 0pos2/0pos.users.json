@@ -1,0 +1,30 @@
+[{
+  "_id": {
+    "$oid": "6364f27d166102e69f66b617"
+  },
+  "firstName": "6POS",
+  "lastName": "POS",
+  "username": "admin",
+  "password": "$2b$10$pN9ZT.jdi5oO6950Utt/PuoFIOrMLrionb7ho.r2WktUfACBqRVKK",
+  "email": "pos@gmail.com",
+  "mobile": 2689541,
+  "addres": "House: 00, Road: 00, City: Demo, United State",
+  "role": "admin",
+  "img": "1667568274309pexels-tim-mossholder-3612885.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6368f594740dd75ddad888f8"
+  },
+  "firstName": "test",
+  "lastName": "test",
+  "username": "test",
+  "password": "$2b$10$4/fQZFXMdd71Pt7AFLaoNeJ9pxHi2O9ZPI59v4rZRu9UYMppa0gXm",
+  "email": "test@6pos.com",
+  "mobile": 695824185,
+  "addres": "surat",
+  "role": "manager",
+  "img": "1667823147756james-padolsey-tvPvROBv0F4-unsplash.jpg",
+  "__v": 0
+}]

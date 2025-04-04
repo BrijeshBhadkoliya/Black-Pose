@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%>
+
+    <!-- meta and links end -->
+  </head>
+  <body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+      <!-- Start Leftbar -->
+      <%- include('./onestep/Leftbar')-%>
+      <!-- End Leftbar -->
+
+      <!-- Start Rightbar -->
+      <div class="rightbar">
+        <!-- Start Topbar -->
+        <%- include('./onestep/Topbar')-%>
+        <!-- End Topbar -->
+
+        <!-- Start Breadcrumbbar -->
+        <div class="breadcrumbbar">
+          <div class="row align-items-center">
+            <div class="col-md-12 col-lg-8">
+              <h5 class="page-title">PRODUCT</h5>
+              <div class="breadcrumb-list">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                  <li class="breadcrumb-item"><a href="#">Product</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    Add Product
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Breadcrumbbar -->
+
+        <!-- Start Contentbar -->
+        <div class="contentbar">
+          <!-- Start row -->
+          <div class="row">
+            <!-- Start col -->
+            <div class="col-lg-12">
+              <div class="card m-b-0">
+                <div class="card-header">
+                  <h3 class="card-title mb-0">ADD PRODUCT</h3>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <form
+                        method="post"
+                        action="/product/addproduct"
+                        enctype="multipart/form-data"
+                        class="needs-validation"
+                        onsubmit="validate(event)"
+                      >
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="proName">Product Name</label>
+                              <input
+                                type="text"
+                                class="form-control border-secondary"
+                                id="proName"
+                                name="Name"
+                                required
+                              />
+                              <input
+                              type="hidden"
+                              class="form-control border-secondary"
+                              id="catName"
+                              name="userid"
+                              value="<%= userdata._id %>"
+                              required
+                            />
+                            </div>
+                            <div class="form-group">
+                              <label for="sprice">Selling price </label>
+                              <input
+                                type="number"
+                                class="form-control border-secondary"
+                                id="sprice"
+                                name="sellingPrice"
+                                required
+                              />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="brand">Brand</label>
+                              <select
+                                name="brand"
+                                id="brand"
+                                class="form-control border-secondary"
+                              >
+                                <option>Select Brand</option>
+                                <% brand.forEach(function(data){ %>
+                                <option><%=data.brandName%></option>
+                                <% }) %>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="quntity">Quantity </label>
+                              <input
+                                type="number"
+                                class="form-control border-secondary"
+                                id="quntity"
+                                name="quantity"
+                                min="0"
+                                required
+                              />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="procat">Category </label>
+                              <select
+                                name="category"
+                                id="procat"
+                                class="form-control border-secondary"
+                                onchange="autochange()"
+                              >
+                                <option>Select Category</option>
+                                <% category.forEach(function(data){ %>
+                                <option><%=data.catName%></option>
+                                <% }) %>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="prosubcat">Sub category </label>
+                              <select
+                                name="SubCategory"
+                                id="prosubcat"
+                                class="form-control border-secondary"
+                                onchange="autochange()"
+
+                              ></select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="utype">Unit type</label>
+                              <select
+                                name="unitType"
+                                id="utype"
+                                class="form-control border-secondary"
+                              >
+                                <option>Select Unit</option>
+                                <% unit.forEach(function(data){ %>
+                                <option><%=data.unit%></option>
+                                <% }) %>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="uvalue">Unit value </label>
+                              <input
+                                type="number"
+                                class="form-control border-secondary"
+                                id="uvalue"
+                                name="unitValue"
+                                min="0"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="row">
+                              <div class="col-9">
+                                <div class="form-group">
+                                  <label for="ccode"
+                                    >Product Code<span>
+                                      (8 charector required)</span
+                                    ></label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control border-secondary"
+                                    id="ccode"
+                                    name="proCode"
+                                    maxlength="8"
+                                    minlength="8"
+                                    oninput="validate()"
+                                    oninput="this.value = this.value.toUpperCase()"
+                                    required
+                                  />
+
+                                  <!-- error line  -->
+                                  <small
+                                    class="text-danger"
+                                    style="display: none"
+                                    id="codeerror"
+                                    >Minimun required 8 charector</small
+                                  >
+                                </div>
+                              </div>
+                              <div class="col-3 m-t-30">
+                                <div class="form-group">
+                                  <button class="btn btn-primary" onclick="codegenretor()" id="gen_code">
+                                    <i
+                                      class="fa fa-refresh"
+                                      aria-hidden="true"
+                                    ></i>
+                                    Generate code
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="pprice">Purchase price </label>
+                              <input
+                                type="number"
+                                class="form-control border-secondary"
+                                id="pprice"
+                                name="purchasePrice"
+                                min="0"
+                                required
+                              />
+
+                            
+                            </div>
+
+                            <div class="form-group">
+                              <label for="distype">Discount type</label>
+                              <select
+                                name="discountType"
+                                id="distype"
+                                class="form-control border-secondary"
+                              >
+                                <option value="percent">percent (%)</option>
+                                <option value="Amount" selected>Amount</option>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label id="distyp" for="disc"
+                                >Discount Amount
+                              </label>
+                              <input
+                                type="number"
+                                class="form-control border-secondary"
+                                id="disc"
+                                name="discount"
+                                min="0"
+                                required
+                              />
+                            </div>
+
+                            <div class="row">
+                              <div class="col-6">
+                                <div class="form-group">
+                                  <label for="tax">Tax in percent (%)</label>
+                                  <input
+                                    type="number"
+                                    class="form-control border-secondary"
+                                    id="tax"
+                                    name="tax"
+                                    required
+                                  />
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="supp" id="supcatlable">Select supplier</label>
+                                  <select
+                                    name="supplier"
+                                    id="supp"
+                                    class="form-control border-secondary"
+                                  >
+                                    <option>select supplier</option>
+                                    <% supp.forEach(function(data){ %>
+                                    <option><%=data.suppName%></option>
+                                    <% }) %>
+                                  </select>
+                                </div>
+                                <div class="form-group">
+                                  <label for="proimg">Product Image</label>
+                                  <input
+                                    type="file"
+                                    class="form-control border-secondary"
+                                    id="proimg"
+                                    name="proimg"
+                                    accept="image/*"
+                                    onchange="document.getElementById('catdemoimg').src = window.URL.createObjectURL(this.files[0])"
+                                    required
+                                  />
+                                </div>
+                                <div class="form-group m-t-45">
+                                  <button
+                                    class="btn btn-success btn-block"
+                                    type="submit"
+                                    value="submit"
+                                  >
+                                    <i class="dripicons-checkmark"></i> Save
+                                  </button>
+                                </div>
+                              </div>
+                              <div class="col-6">
+                                <div class="img align-items-center">
+                                  <div class="col-lg-12">
+                                    <center>
+                                      <img
+                                        id="catdemoimg"
+                                        alt="your image"
+                                        src="../images/one.png"
+                                      />
+                                      <h5>Image Preview</h5>
+                                    </center>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End col -->
+          </div>
+          <!-- End row -->
+        </div>
+        <!-- End Contentbar -->
+
+        <!-- Start Footerbar -->
+        <%- include('./onestep/footerbar')-%>
+        <!-- end Footerbar -->
+      </div>
+      <!-- Start Rightbar -->
+    </div>
+    <!-- end Containerbar -->
+    <script>
+ 
+
+
+      async function validate(event) {
+        const ccode = String(document.getElementById("ccode").value);
+        if (ccode.length < 8) {
+          const removeClass = document.getElementById("codeerror");
+          removeClass.style.display = "block";
+          event.preventDefault();
+        } else {
+          const removeClass = document.getElementById("codeerror");
+          removeClass.style.display = "none";
+        }
+      }
+      function codegenretor(){
+        const code = "ABCDEFGHIJKLMNOPQRSTUVWXVZ1234567890"
+        let cuponcode = ""
+        while(cuponcode.length<8) {
+            cuponcode += code[Math.floor(Math.random()*code.length)]
+            // console.log(Math.floor(Math.random()*code.length));
+        }
+         document.getElementById('ccode').value = cuponcode
+  
+     }
+    </script>
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  </body>
+</html>

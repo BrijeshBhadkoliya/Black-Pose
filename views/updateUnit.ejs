@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+ 
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">Unit</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/unit/unit">Unit</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page"> Update Unit</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-0">
+                                        <div class="card-header">                                
+                                           
+                                                <h5 class="card-title mb-0">UPDATE UNIT</h5>
+                                                
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <form method="post" action="/unit/unit-update"  class="needs-validation" >
+                                                        <input type="hidden" name="editid" value="<%=data._id%>">
+                                                        <div class="form-group">
+                                                            <label for="unit">Unit Name</label>
+                                                            <input type="text" class="form-control border-secondary" id="unit" name="unit" value="<%=data.unit%>">
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <button class="btn btn-success" type="submit" value="submit"><i class="dripicons-checkmark"></i> Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                               
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                        
+                        </div>
+                        <!-- End Contentbar -->
+
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+    </div>
+    <!-- end Containerbar -->
+
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  
+</body>
+</html>

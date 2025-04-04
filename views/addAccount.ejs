@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">ACCOUNT</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/account/list">Account</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Add Account</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-6">
+                                    <div class="card m-b-0">
+                                        <div class="card-header">                                
+                                        
+                                                <h5 class="card-title mb-0">UPDATE ACCOUNT</h5>
+                                               
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <form method="post" action="/account/accountadd/"  class="needs-validation" >
+                                                        <div class="row">
+
+                                                                <div class="form-group">
+                                                                    <label for="AccTitel">Account title</label>
+                                                                    <input type="text" class="form-control border-secondary" id="AccTitel" name="accTitel">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="accNumber">Account number</label>
+                                                                    <input type="text" class="form-control border-secondary" id="accNumber" name="accNumber" minlength="10" maxlength="10">
+                                                                </div> 
+                                                                <div class="form-group">
+                                                                    <label id="accBalance" for="disAmount">Account Balance</label>
+                                                                    <input type="text" class="form-control border-secondary" id="accBalance" name="accBalance">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label id="accDesscri" for="disAmount"> Description</label>
+                                                                    <input type="text" class="form-control border-secondary" id="accDesscri" name="accDesscri">
+                                                                </div>
+                                                                <div class="form-group m-t-45">
+                                                                    <button class="btn btn-success " type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
+                                                                </div>
+                                                                 
+                                                                  
+                                                        </div>
+                                                    </form>
+                                                </div>
+                        
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                            
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+    
+  
+</body>
+</html>

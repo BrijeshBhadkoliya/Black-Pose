@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">Dashboard</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">                
+                            <!-- Start row -->
+                            <div class="row m-b-10">
+                                <!-- Start col -->
+                                <div class="col-lg-12 col-xl-5">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">                                
+                                            <div class="row align-items-center">
+                                                <div class="col-9 mb-3">
+                                                    <h5 class="card-title mb-0"> <span class=""> Earning statistics for business analytics</span></h5>
+                                                </div>
+                                                <div class="col-11">
+                                                    <canvas id="myChart" width="1000" height="600"></canvas>
+
+                                                </div>
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="card-body py-0 pl-0 pr-2">
+                                            <div id="apex-basic-column-chart"></div>
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+
+                                <!-- Start col -->
+                                <div class="col-lg-6 col-xl-3">
+                                    <div class="card m-b-20">
+                                        <div class="card-header">                                
+                                            <div class="row align-items-center">
+                                                <div class="col-9">
+                                                    <h5 class="card-title mb-0">Revenue</h5>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="card-body appointment-widget">
+                                            <h3 id="revweek"></h3>
+                                            <p>Total This Week</p>
+                                            <ul class="list-unstyled py-3">
+                                                <li><i class="mdi mdi-circle text-primary mr-2"></i> Total Revenue</li>
+                                                <li><i class="mdi mdi-circle text-success mr-2"></i> Total Income</li>
+                                                <li><i class="mdi mdi-circle text-mard mr-2"></i> Total Expense</li>
+                                            </ul>
+                                            <div class="row align-items-end">
+                                                <div class="col-6">
+                                                   <a href="/account/download-transection"> <button type="button" class="btn btn-primary">Export Report <i class="feather icon-file ml-2"></i></button></a>
+                                                </div>
+                                                <!-- <div class="col-6">
+                                                    <p class="bg-icon"><i class="feather icon-calendar"></i></p>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+
+                                <!-- Start col -->
+                                <div class="col-lg-6 col-xl-4">
+                                    <div class="card m-b-20">
+                                        <div class="card-header">                                
+                                            <div class="row align-items-center">
+                                                <div class="col-9">                                                
+                                                    <h5 class="card-title mb-0">Total revenue statistics</h5>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            
+                                            <div class="row">
+                                                <div class="col-4 m-b-40">
+                                                     <h4><%=(income.credit - expense.debit).toFixed(2) %> $</h4>
+                                                    <p class="mb-1">Total Revenue</p>
+                                                    
+                                                </div>
+                                                <div class="col-4 m-b-40">
+                                                    <h4><%=(income.credit).toFixed(2)%> $</h4>
+                                                    <p class="mb-1">Total Income</p>
+                                                     
+                                                </div>
+                                                <div class="col-4 m-b-40">
+                                                     <!-- <h4><%=(expense.debit).toFixed(2)%> $</h4> -->
+                                                     <p class="mb-1">Total Expense</p>
+                                                 
+                                                </div>
+                                                
+                                                <div class="col-6 m-b-40">
+                                                  
+                                                    <!-- <h4><%=(payable.credit - payable.debit).toFixed(2) %> $</h4> -->
+                                                     <p class="mb-1">Account Payable</p>
+                                                  
+                                                     
+                                                  
+                                                </div>
+                                                <div class="col-6 m-b-40">
+                                                 
+                                                     <!-- <h4><%=(recivebale.credit - recivebale.debit).toFixed(2) %> $</h4>                                                   -->
+                                                    <p class="mb-1">Account Recivable</p>
+                                                  
+                                                </div>
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+                            </div>
+                            <!-- End row -->
+
+                            <!-- Start row -->
+                            <div class="row">                  
+                                <!-- Start col -->
+                                <div class="col-lg-12 col-xl-6">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">                                
+                                            
+                                                <h5 class="card-title mb-0">Stock limit products list </h5>
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table id="default-datatable" class="display table  table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr No</th>
+                                                            <th> Name</th>
+                                                            <th> Quantity at Store</th>
+                                                            <th> Orders</th>
+                                                               
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="justify-content-center">
+                                                        <% var i = 1 %>
+                                                        <% porLim.forEach((pro)=>{ %>
+                                                            <tr>
+                                                                <td><%=i%></td>
+                                                                <td><%=pro._id%></td>
+                                                                <td><%=pro.quntity%></td>
+                                                                <td><%=pro.order%></td>     
+                                                            </tr>
+                                                                <% i++ %>
+                                                        <% }) %>
+                                                        
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <!-- End col -->
+                                <!-- Start col -->
+                                <div class="col-lg-12 col-xl-6">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">                                
+                                            
+                                                <h1 class="card-title mb-0">Account list</h1>
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr.No</th>
+                                                            <th>ACCOUNT</th>
+                                                            <th>BALANCE</th>
+                                                            
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="justify-content-center">
+                                                        <% var i = 1 %>
+                                                        <% accountList.forEach((pro)=>{ %>
+                                                            <tr>
+                                                                <td><%=i%></td>
+                                                                <td><%=pro.accTitel%></td>
+                                                                <td><%=(pro.credit - pro.debit).toFixed(2)%> $</td>      
+                                                            </tr>
+                                                                <% i++ %>
+                                                        <% }) %>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+                            </div>
+                            <!-- End row -->
+                        </div>
+                        <!-- End Contentbar -->
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+    </div>
+    <div>
+    </div>
+    <!-- end Containerbar -->
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+    
+    
+      
+        const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December']
+    const incomedata = <%= JSON.stringify(incomedata) %>;
+    const expenses =  <%= JSON.stringify(expenses) %> ;
+// console.log(charts);
+
+
+        const chartData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Expenses',
+          data: expenses,
+          borderColor: 'rgb(255, 99, 132)', 
+          fill: false,
+          tension: 0.1,
+        },
+        {
+          label: 'Income',
+          data: incomedata,
+          borderColor: 'rgb(54, 162, 235)',
+          fill: false,
+          tension: 0.1,
+        },
+      ],
+    };
+
+    // Create a line chart using Chart.js
+    const myChart = new Chart(ctx, {
+      type: 'line',  // Line chart type
+      data: chartData,  // Use the constructed chartData
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            beginAtZero: true,
+          },
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+      </script>
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    
+    <!-- end JS -->
+  
+   
+</body>
+</html>

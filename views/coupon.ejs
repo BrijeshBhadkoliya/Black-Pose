@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">COUPON</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="">Coupon</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Coupon List</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12 couadd ">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">                                
+                                            
+                                                <h5 class="card-title mb-0">ADD COUPON</h5>
+                                                
+                                           
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <form method="post" action="/coupon/add" onsubmit="validate(event)" class="needs-validation" >
+                                                        <div class="row">
+                                                            <div class="col-6 ">
+                                                                <div class="form-group">
+                                                                    <label for="Titel">Title</label>
+                                                                        <input type="text" class="form-control border-secondary" id="Titel" name="Titel"  required>
+                                                                    <input
+                                                                    type="hidden"
+                                                                    class="form-control border-secondary"
+                                                                    id="catName"
+                                                                    name="userid"
+                                                                    value="<%= userdata._id %>"
+                                                                    required
+                                                                  />
+                                                                </div>
+                                                            
+                                                            
+                                                                <div class="form-group">
+                                                                    <label for="couponType">Coupon type </label>
+                                                                    <select name="couponType" id="couponType" class="form-control border-secondary">
+                                                                       <option value="Default">Default</option>
+                                                                       <option value="firstoder">First Order</option>
+                                
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="startDate">Start date </label>
+                                                                    <input type="date" class="form-control border-secondary dateArr" id="startDate" name="startDate" required>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="disType">Discount type</label>
+                                                                    <select name="disType" id="disType" class="form-control border-secondary">
+                                                                        <option value="percent" >percent (%)</option>
+                                                                        <option value="Amount" selected > Amount</option>
+                                                                    </select>
+                                                                </div>
+                                                               
+                                                                <div class="form-group">
+                                                                    <label for="minOrder">Minmum purchase Order</label>
+                                                                    <input type="number" class="form-control border-secondary" id="minOrder" name="minOrder" min="0" required>
+                                                                </div>
+                                                                <div class="form-group m-t-45">
+                                                                    <button class="btn btn-success " type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
+                                                                </div> 
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="row">
+                                                                    <div class="col-9">
+                                                                        <div class="form-group">
+                                                                            <label for="ccode">Coupon code<span> (6 charector required)</span></label>
+                                                                            <input type="text" class="form-control border-secondary" id="ccode" name="Code" oninput="validate()" maxlength="6"  minlength="6"  required>
+                                                                            
+                                                                            <small class=" text-danger" id="codeerror" style="display: none;"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3 m-t-30">
+                                                                        <div class="form-group">
+                                                                            <button class="btn btn-primary" onclick="codegenretor()"  value=""><i class="fa fa-refresh" aria-hidden="true" ></i> Generate code</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="limitSame">Limit for same user</label>
+                                                                    <input type="number" class="form-control border-secondary" id="limitSame" name="limitSame" min="1" required>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="endDate">Expire date</label>
+                                                                    <input type="date" class="form-control border-secondary" id="endDate" name="endDate" required>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label id="disAmount" for="disAmount">Discount Amount </label>
+                                                                    <input type="number" class="form-control border-secondary" id="disAmount" name="disAmount" min="0" required>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="maxDiscount"> Max Discount</label>
+                                                                    <input type="number" class="form-control border-secondary" id="maxDiscount" name="maxDiscount" min="0" required>
+                                                                </div>
+                                                            
+                                                                
+                                                                  
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                        
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                            <!-- Start row -->            
+                            <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">
+                                            <h5>Coupon List</h5>
+                                        </div>
+                                        <div class="card-body">  
+                                            <div class="table-responsive">
+                                                <table id="default-datatable" class="display table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr No</th>
+                                                            <th>TITLE</th>
+                                                            <th>CODE</th>
+                                                            <th>MIN PURCHASE</th>
+                                                            <th>MAX DISCOUNT</th>
+                                                            <th>DISCOUNT</th>
+                                                            <th>DISCOUNT TYPE</th>
+                                                            <th>START DATE</th>
+                                                            <th>EXPIRE DATE</th>
+                                                            <th class="couupdate ">status</th>
+                                                            <th>Action</th>     
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% var i = 1 %>
+                                                        <% data.forEach((cou)=>{ %>
+                                                            <tr>
+                                                                <td><%=i%></td>
+                                                                <td><%=cou.Titel%></td>
+                                                                <td><%=cou.Code%></td>
+                                                                <td><%=cou.minOrder%></td>
+                                                                <td><%=cou.maxDiscount%></td>
+                                                                <td><%=cou.disAmount%></td>
+                                                                <td><%=cou.disType%></td>
+                                                                <td><%=cou.startDate.toLocaleDateString()%></td>
+                                                                <td><%=cou.endDate.toLocaleDateString()%></td>
+                                                                
+                                                                <td class="couupdate "><div class="check-box"><input type="checkbox" id="coup_status" onclick="setstues('<%=cou._id%>')" class="js-switch-primary-small" <%= cou.status == 'active' ?  'checked' : '' %> /></div></td>
+                                                                <td >
+                                                                    <a href="/coupon/updatecoupon/<%=cou._id%>" class="btn btn-round btn-success couupdate"><i class="feather icon-edit"></i></a>
+                                                                    <a href="/coupon/delet/<%=cou._id%>" class="btn btn-round btn-danger coudelet "><i class="feather icon-trash-2"></i></a>
+                                                                </td>
+                                                        </tr>
+                                                                <% i++ %>
+                                                        <% }) %>
+                                                        
+
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+                            </div>
+                            <!-- End row --> 
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+    <script>
+      
+     function codegenretor(){
+        const code = "ABCDEFGHIJKLMNOPQRSTUVWXVZ1234567890"
+        let cuponcode = ""
+        while(cuponcode.length<6) {
+            cuponcode += code[Math.floor(Math.random()*code.length)]
+            // console.log(Math.floor(Math.random()*code.length));
+        }
+         document.getElementById('ccode').value = cuponcode
+  
+     }
+
+
+     async function validate(event) {
+        const ccode = String(document.getElementById("ccode").value);
+        if (ccode.length < 6) {
+          const removeClass = document.getElementById("codeerror");
+          removeClass.style.display = "block";
+          removeClass.innerText = `copan length ${ccode.length} and it is not valid`
+          event.preventDefault();
+        } else {
+          const removeClass = document.getElementById("codeerror");
+          removeClass.style.display = "none";
+        }
+      }
+
+        const  dateArr = document.getElementsByClassName('dateArr')
+          for(let i = 0; i<dateArr.length; i++ ){
+               dateArr[i].value = new Date().toISOString().split('T')[0];
+               
+          }
+          console.log(dateArr);
+          
+          
+          async function setstues(id){
+            const catId = id
+
+        //   const newStatus = this.checked ? "active" : "deactive";
+
+          const response = await fetch(`/coupon/updatestatus/${catId}`, {
+            method: "GET",
+          });
+
+          const result = await response.json();
+        
+        }
+     
+      </script>
+
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+
+  
+</body>
+</html>

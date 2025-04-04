@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- meta and links start -->
+     <%- include('./onestep/meta & links')-%> 
+    
+    
+     <!-- meta and links end -->
+
+</head>
+<body class="vertical-layout">
+  <!-- Start Containerbar -->
+  <div id="containerbar">
+    <!-- Start Leftbar -->
+    <%- include('./onestep/Leftbar')-%> 
+    <!-- End Leftbar -->
+
+    <!-- Start Rightbar -->
+    <div class="rightbar">
+                <!-- Start Topbar -->
+                <%- include('./onestep/Topbar')-%>
+                <!-- End Topbar -->
+
+
+                <!-- Start Breadcrumbbar -->                    
+                <div class="breadcrumbbar">
+                    <div class="row align-items-center">
+                        <div class="col-md-12 col-lg-8">
+                            <h4 class="page-title">SHOP SETUP</h4>
+                            <div class="breadcrumb-list">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+
+                                    <li class="breadcrumb-item active" aria-current="page">User Roles</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+                <!-- End Breadcrumbbar -->
+
+
+                <!-- Start Contentbar -->    
+                <div class="contentbar">  
+                     <!-- Start row -->
+                     <div class="row">
+                         
+
+                        <!-- Start col -->
+                        <div class="col-lg-12">
+                          <div class="card m-b-30">
+                            <div class="card-header">
+                              <h4 class="text dark">User Roles</h4>
+                            </div>
+                              <div class="card-body">
+                                  <div class="row justify-content-center">
+
+                                    <% data.forEach(function(user){ %>
+                                        <div class="col-lg-2 align-items-center">
+                                            <a href="/userrole/roleupdate/<%=user._id%>"><h5 class="text-center btn btn-rounded btn-primary-rgba text-capitalize"><%=user.titel%></h5></a>
+                                          </div> 
+                                    <% }) %>
+
+                                    
+
+                                      
+                                  </div>
+                              </div>
+                          </div>            
+                        </div>
+                        <!-- End col --> 
+
+
+
+                        <!-- Start col -->
+                        <div class="col-lg-12 setadd ">
+                            <div class="card m-b-30">
+                              <div class="card-header">
+                                <h4 class="text dark">Add User Role</h4>
+                              </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-12 ">
+                                            <form  method="post" action="/userrole/addRole">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="titel"><span class="text-danger">*</span> Title</label>
+                                                        <input type="text" id="titel" class="form-control form-control-sm border-secondary col-sm-8 " name="titel" required/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <h5>Permissions</h5>
+                                                        <div class="form-group row ">
+                                                            <div class="col-sm-2">Category</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="category" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="category" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="category" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="category" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Brand</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="brand" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="brand" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="brand" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="brand" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Product</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="product" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="product" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="product" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="product" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Limit Product List</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="limit_product_list" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="limit_product_list" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="limit_product_list" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="limit_product_list" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Coupon</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="coupon" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="coupon" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="coupon" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="coupon" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Account</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="account" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="account" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="account" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="account" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Income</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="income" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="income" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="income" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="income" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Expense</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="expense" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="expense" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="expense" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="expense" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Customer</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="coustomer" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="coustomer" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="coustomer" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="coustomer" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Supplier</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="supplier" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="supplier" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="supplier" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="supplier" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Setting</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="setting" value="views">
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="setting" value="update">
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="setting" value="delet">
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="setting" value="add">
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-group row justify-content-center">
+                                                <button class="btn btn-primary col-2" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save User</button>
+                                                </div>
+                                            </form>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>            
+                        </div>
+                        <!-- End col --> 
+
+
+                    </div>
+                    <!-- End row -->  
+                   
+                </div>
+                <!-- End Contentbar -->
+               
+
+
+                <!-- Start Footerbar -->
+                <%- include('./onestep/footerbar')-%>
+                <!-- end Footerbar -->
+    </div>
+    <!-- Start Rightbar -->  
+   
+</div>
+<!-- end Containerbar -->
+
+<!-- start Toastr -->
+<%- include('./onestep/toastr')-%>
+<!-- End Toastr -->
+
+<!-- start JS -->
+<%- include('./onestep/script')-%>
+<!-- end JS -->
+  
+   
+</body>
+</html>

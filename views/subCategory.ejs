@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    <!-- meta and links end -->
+       
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">SUB CATEGORY</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="">Home</a>Category</li>
+                                            <li class="breadcrumb-item active" aria-current="page">Sub Category List</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row m-b-30">
+                                <!-- Start col -->
+                                <div class="col-lg-12 catadd">
+                                    <div class="card m-b-0">
+                                        <div class="card-body">                                
+                                            
+                                                <h5 class="card-title mb-0">ADD SUB CATEGORY</h5>
+                                                
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <form method="post" action="/category/subcatlist-add"  class="needs-validation" >
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <label for="subcatName"> Sub Category Name</label>
+                                                                <input type="text" class="form-control border-secondary" id="subcatName" name="subcatName"  required>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label for="mainCat"> Select Category</label>
+                                                                <select name="mainCat" id="mainCat" class="form-control border-secondary" required>
+                                                                    <option value="">Select Category</option>
+                                                                    <% data.forEach(function(cat) { %>
+                                                                        <option value="<%=cat._id%>"><%=cat.catName%></option>
+                                                                    <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="col">
+                                                            <button class="btn btn-success" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
+                                                        </div>
+                                                        
+                                                    </form>
+                                                </div>
+                                               
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                            <!-- Start row -->            
+                            <div class="row ">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-body">
+                                            <h5>Category List</h5>
+                                        </div>
+                                        <div class="card-body">  
+                                            <div class="table-responsive">
+                                                <table id="default-datatable" class="display table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr No</th>
+                                                            <th>Category Name</th>
+                                                            <th>Sub Category Name</th>
+                                                            <th>Action</th>     
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% var i = 1 %>
+                                                        <% data.forEach((subcat)=>{ %>
+                                                           
+                                                                 
+                                                         <% subcat.subcatNames.forEach((subname)=>{ %>
+                                                            <tr>
+                                                                <td><%=i%></td>
+                                                                <td><%=subcat.catName%></td>
+                                                                <td><%=subname.subcatname%></td>
+                                                                <td>
+                                                                    <a href="/category/updateSubCategory/<%=subname._id%>+<%=subcat._id%>" class=" btn btn-round btn-success catupdate "><i class="feather icon-edit"></i></a>
+                                                                
+                                                                    <a href="/category/delsubcat/<%=subname._id%>+<%=subcat._id%>" class="btn btn-round btn-danger catdelet"><i class="feather icon-trash-2"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                            <% i++ %>
+                                                        <% }) %>
+                                                                
+                                                          
+                                                            
+                                                        <% }) %>
+
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+                            </div>
+                            <!-- End row --> 
+                        </div>
+                        <!-- End Contentbar -->
+
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+    </div>
+    <!-- end Containerbar -->
+
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  
+</body>
+</html>

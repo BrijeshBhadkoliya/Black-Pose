@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "6350e15d1b18d032e2858b7c"
+  },
+  "ShopName": "6 POS",
+  "Shopphone": 123456789,
+  "VAT": "DHUJ77788VV",
+  "Country": "Belize",
+  "Currency": "BZ$",
+  "Timezone": "UTC-05:00",
+  "Reorderlevel": 100,
+  "Shopemail": "pos_6@gmail.com",
+  "Shopaddress": "House: 00, Road: 00, City: Demo, United State",
+  "Footer": "© 2022 POS - All Rights Reserved.",
+  "Logo": "16678809662112022-09-20-632950031a91c.png",
+  "__v": 0
+}]

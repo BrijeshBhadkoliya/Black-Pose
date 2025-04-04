@@ -1,0 +1,605 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const router = express.Router();
+const jwt = require("jsonwebtoken");
+const path = require("path");
+const sharp = require("sharp");
+const fs = require("fs");
+const {
+  User,
+  Category,
+  Product,
+  Account,
+  Order,
+  UserRole,
+  Shop,
+} = require("../model/Schema");
+const bcrypt = require("bcrypt");
+const { isAuth, isAdmin, upload } = require("../Router/Auth");
+const { findSourceMap } = require("module");
+
+router.get("/", (req, res) => {
+  res.redirect("/login");
+});
+
+///login get router
+router.get("/login", (req, res) => {
+  res.render("login", {
+    success: req.flash("success"),
+    error: req.flash("error"),
+  });
+});
+
+//// login post router
+router.post("/login", async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+    const user = await User.findOne({ username: userName });
+
+    // check for user name
+    if (!user) {
+      return res.status(401).render("login", {
+        error: `invalid user name`,
+        success: "",
+      });
+    }
+
+    //check password
+    const ismatch = await bcrypt.compare(password, user.password);
+    if (!ismatch) {
+      return res.status(401).render("login", {
+        error: `invalid Password`,
+        success: "",
+      });
+    }
+
+    // genret token
+    const token = await jwt.sign(
+      {
+        id: user._id,
+        role: user.role,
+      },
+      process.env.KEY
+    );
+
+    req.session.admin = user;
+    // send token vai cookies
+    res.cookie("jwt", token, {
+      expires: new Date(Date.now() + 1000 * 60 * 60),
+      httpOnly: true,
+    });
+    // redirect to admin page
+    res.status(200).redirect("/admin");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//  register get router
+router.get("/register", isAdmin, async (req, res) => {
+  const userdata = req.session.admin;
+  if (userdata == undefined) {
+    res.redirect("/");
+  }
+
+  console.log(userdata);
+  const roles = await UserRole.find({});
+  // const roles = ['admin','cashier','manager']
+  const users = await User.find({});
+  res.render("register", {
+    success: req.flash("success"),
+    errors: req.flash("errors"),
+    userdata: userdata,
+    role: roles,
+    data: users,
+  });
+});
+
+///register Post router
+router.post("/register", upload.single("img"), async (req, res) => {
+  const roles = await UserRole.find({});
+  const users = await User.find({});
+
+  const {
+    firstName,
+    lastName,
+    username,
+    password,
+    email,
+    mobile,
+    addres,
+    role,
+    userdata,
+  } = req.body;
+
+  const userData = await User.findOne({ _id: userdata });
+
+  // console.log(userData);
+
+  const existUser = await User.findOne({ username: username });
+  if (existUser) {
+    return res.render("register", {
+      errors: req.flash("this user name alredy register please choose other"),
+      success: "",
+      userdata: userData,
+      role: roles,
+      data: users,
+    });
+  }
+
+  const existEmai = await User.findOne({ email: email });
+  if (existEmai) {
+    return res.render("register", {
+      errors: req.flash("this user Email alredy register please choose other"),
+      success: "",
+      userdata: userData,
+      role: roles,
+      data: users,
+    });
+  }
+
+  const existnumber = await User.findOne({ mobile: mobile });
+  if (existnumber) {
+    return res.render("register", {
+      errors: req.flash(
+        "this user Mobaile Number alredy register please choose other"
+      ),
+      success: "",
+      userdata: userData,
+      role: roles,
+      data: users,
+    });
+  }
+  console.log(req.file);
+
+  const hashpass = await bcrypt.hash(password, 10);
+
+  const data = await User.create({
+    firstName,
+    lastName,
+    username,
+    password: hashpass,
+    email,
+    mobile,
+    addres,
+    role,
+    img: req.file.filename,
+  });
+  // res.render('register',{
+  //   success : req.flash('success'),
+  //   errors: req.flash('errors'),
+  //   userdata:userdata,
+  //   data: users,
+  //   role:role
+  // })
+  res.redirect("back");
+});
+
+// admin get router
+router.get("/admin", isAuth, async (req, res) => {
+  const porLim = await Product.find({ quantity: { $lte: 50 } });
+  const userdata = await User.findOne({ _id: req.user.id });
+  const accountList = await Account.aggregate([
+    {
+      $project: {
+        accTitel: 1,
+        debit: {
+          $sum: "$transaction.debit",
+        },
+        credit: {
+          $sum: "$transaction.credit",
+        },
+      },
+    },
+  ]);
+
+  const income = await Account.aggregate([
+    [
+      {
+        $unwind: {
+          path: "$transaction",
+        },
+      },
+      {
+        $match: {
+          "transaction.type": {
+            $eq: "Income",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$transaction.type",
+          credit: {
+            $sum: {
+              $add: ["$transaction.credit"],
+            },
+          },
+        },
+      },
+    ],
+  ]);
+
+  const expense = await Account.aggregate([
+    {
+      $unwind: {
+        path: "$transaction",
+      },
+    },
+    {
+      $match: {
+        "transaction.type": {
+          $eq: "Expense",
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$transaction.type",
+        debit: {
+          $sum: {
+            $add: "$transaction.debit",
+          },
+        },
+      },
+    },
+  ]);
+  const payable = await Account.aggregate([
+    {
+      $match: {
+        accTitel: {
+          $eq: "Payable",
+        },
+      },
+    },
+    {
+      $project: {
+        credit: {
+          $sum: "$transaction.credit",
+        },
+        debit: {
+          $sum: "$transaction.debit",
+        },
+      },
+    },
+  ]);
+
+  const recivebale = await Account.aggregate([
+    {
+      $match: {
+        accTitel: {
+          $eq: "Receivable",
+        },
+      },
+    },
+    {
+      $project: {
+        credit: {
+          $sum: "$transaction.credit",
+        },
+        debit: {
+          $sum: "$transaction.debit",
+        },
+      },
+    },
+  ]);
+  const productLimit = await Product.aggregate([
+    {
+      $match: {
+        quantity: {
+          $lte: 50,
+        },
+      },
+    },
+    {
+      $lookup: {
+        let: {
+          searchId: "$Name",
+        },
+        from: "orders",
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $in: ["$$searchId", "$item.productName"],
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              item: 1,
+              selling: {
+                $sum: "$item.productCount",
+              },
+            },
+          },
+        ],
+        as: "order",
+      },
+    },
+    {
+      $unwind: {
+        path: "$order",
+      },
+    },
+    {
+      $unwind: {
+        path: "$order.item",
+      },
+    },
+    {
+      $group: {
+        _id: "$Name",
+        quntity: {
+          $first: "$quantity",
+        },
+        order: {
+          $sum: "$order.selling",
+        },
+      },
+    },
+  ]);
+
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+  ];
+  const moment = require('moment');
+
+  const currentYear = moment().year();
+  const chartdata = await Account.aggregate([
+    {
+      $unwind: {
+        path: "$transaction",
+      },
+    },
+    {
+      $match: {
+        $and: [
+          {
+            "transaction.type": {
+              $ne: "Transfer",
+            },
+          },
+          {
+            "transaction.type": {
+              $ne: "Payable",
+            },
+          },
+          {
+            "transaction.type": {
+              $ne: "Recivebal",
+            },
+          },
+          {
+            $expr: {
+              $eq: [{ $year: "$transaction.date" }, currentYear],
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        transactionDate: "$transaction.date",
+        _id: "$transaction.type",
+        debit: {
+          $sum: "$transaction.debit",
+        },
+        credit: {
+          $sum: "$transaction.credit",
+        },
+        Week: {
+          $week: "$transaction.date",
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$Week",
+        income: {
+          $sum: "$credit",
+        },
+        expens: {
+          $sum: "$debit",
+        },
+        transactionDate: { $first: "$transactionDate" },
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+  ]);
+    console.log(chartdata);
+    
+  const expenses = chartdata.map(data => data.expens)
+  const incomedata = chartdata.map(data => data.income) 
+  const transactionDate = chartdata.map(data => data.transactionDate) 
+
+  res.render("admin", {
+    success: req.flash("success"),
+    errors: req.flash("errors"),
+    userdata: userdata,
+    porLim: productLimit,
+    accountList: accountList,
+    income: income[0],
+    expense: expense[0],
+    payable: payable[0],
+    recivebale: recivebale[0],
+    chartdata: chartdata,
+    incomedata: incomedata,
+    expenses:expenses,
+    transactionDate: transactionDate,
+
+  });
+});
+
+//logout get router
+router.get("/logout", isAuth, async (req, res) => {
+  res.clearCookie("jwt");
+
+  res.redirect("/login");
+});
+
+//profile setting get router
+router.get("/profile", isAuth, async (req, res) => {
+  const data = await User.findOne({ _id: req.user.id });
+
+  res.render("profile", {
+    success: req.flash("success"),
+    errors: req.flash("errors"),
+    userdata: data,
+    data: data,
+  });
+});
+
+//home page and shop seting POST router
+router.post("/update/:id", upload.single("Profile"), async (req, res) => {
+  try {
+    const data = await User.findById(req.params.id);
+    const { firstName, lastName, mobile, email } = req.body;
+
+    if (req.file) {
+      //*****resized image */
+      const { filename: image } = req.file;
+      await sharp(req.file.path)
+        .resize(200, 200)
+        .jpeg({ quality: 90 })
+        .toFile(path.resolve(req.file.destination, "resized", image));
+
+      fs.unlinkSync(req.file.path);
+
+      data.img = req.file.filename;
+      data.firstName = firstName;
+      data.lastName = lastName;
+      data.mobile = mobile;
+      data.email = email;
+    } else {
+      data.firstName = firstName;
+      data.lastName = lastName;
+      data.mobile = mobile;
+      data.email = email;
+    }
+
+    await data.save();
+
+    req.flash("success", `your setting save success fully`);
+    res.redirect("back");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//update password
+router.post("/updatep/:id", upload.single("Profile"), async (req, res) => {
+  try {
+    const { password, cpassword } = req.body;
+    const data = await User.findById(req.params.id);
+    if (password !== cpassword) {
+      req.flash("errors", `both password must be same`);
+      return res.redirect("back");
+    }
+    const hashpass = await bcrypt.hash(password, 10);
+    data.password = hashpass;
+    await data.save();
+
+    req.flash("success", `your setting save success fully`);
+    res.redirect("back");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// chart data get router
+router.get("/chart", async (req, res) => {
+  const chartdata = await Account.aggregate([
+    {
+      $unwind: {
+        path: "$transaction",
+      },
+    },
+    {
+      $match: {
+        $and: [
+          {
+            "transaction.type": {
+              $ne: "Transfer",
+            },
+          },
+          {
+            "transaction.type": {
+              $ne: "Payable",
+            },
+          },
+          {
+            "transaction.type": {
+              $ne: "Recivebal",
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        _id: "$transaction.type",
+        debit: {
+          $sum: "$transaction.debit",
+        },
+        credit: {
+          $sum: "$transaction.credit",
+        },
+        Week: {
+          $week: "$transaction.date",
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$Week",
+        income: {
+          $sum: "$credit",
+        },
+        expens: {
+          $sum: "$debit",
+        },
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+  ]);
+
+  res.status(200).json(chartdata);
+});
+//get roll detail router and footer
+router.get("/role", isAuth, async (req, res) => {
+  try {
+    const userdata = await User.findOne({ _id: req.user.id });
+    const rol = await UserRole.findOne({ titel: userdata.role });
+    const footer = await Shop.findOne({});
+
+    res.status(201).json({
+      status: "success",
+      data: rol,
+      footer: footer,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/validate", (req, res) => {
+  res.render("validate");
+});
+
+module.exports = router;

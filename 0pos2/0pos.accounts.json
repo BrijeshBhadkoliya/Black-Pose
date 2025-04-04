@@ -1,0 +1,1449 @@
+[
+  {
+    "_id": {
+      "$oid": "6347a3d74640062aa0c60581"
+    },
+    "accTitel": "6pos",
+    "accDesscri": "privet account",
+    "accNumber": "6602030405",
+    "transaction": [
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 5000,
+        "description": "new account Opening",
+        "debit": 0,
+        "credit": 5000,
+        "balance": 5000,
+        "_id": {
+          "$oid": "6347a3d74640062aa0c60582"
+        },
+        "date": {
+          "$date": "2022-10-13T05:36:23.026Z"
+        }
+      },
+      {
+        "walletName": "",
+        "type": "Transfer",
+        "amount": 1000,
+        "description": "for counter",
+        "debit": 1000,
+        "credit": 0,
+        "balance": 4000,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347b7424d3c2d190a985d19"
+        }
+      },
+      {
+        "walletName": "6347a2884640062aa0c60537",
+        "type": "Expense",
+        "amount": 200,
+        "description": "Pay to supplier",
+        "debit": 200,
+        "credit": 0,
+        "balance": 3800,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347ea0e787e00bffe57e0b8"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Expense",
+        "amount": 2000,
+        "description": "Pay to supplier",
+        "debit": 2000,
+        "credit": 0,
+        "balance": 1800,
+        "date": {
+          "$date": "2022-10-17T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634e26e0bf14cfece4abbc06"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 1000,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 1000,
+        "balance": 2800,
+        "date": {
+          "$date": "2022-10-17T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634e352a535d5692871d470e"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Income",
+        "amount": 926,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 926,
+        "balance": 3726,
+        "date": {
+          "$date": "2022-10-19T05:56:10.248Z"
+        },
+        "_id": {
+          "$oid": "634f917a10d9ce9776aca64d"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Income",
+        "amount": 1551,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 1551,
+        "balance": 5277,
+        "date": {
+          "$date": "2022-10-19T06:04:19.031Z"
+        },
+        "_id": {
+          "$oid": "634f93635105e666c4ce6b94"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Income",
+        "amount": 5644,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 5644,
+        "balance": 10921,
+        "date": {
+          "$date": "2022-10-19T06:12:06.839Z"
+        },
+        "_id": {
+          "$oid": "634f9536ae3b71ae6d65985a"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Expense",
+        "amount": 1900,
+        "description": "Pay to supplier",
+        "debit": 1900,
+        "credit": 0,
+        "balance": 9021,
+        "date": {
+          "$date": "2022-10-19T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634f99970fba840ce95fedd6"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 652,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 652,
+        "balance": 9673,
+        "date": {
+          "$date": "2022-10-19T07:18:35.884Z"
+        },
+        "_id": {
+          "$oid": "634fa4cb932b27502fdd7986"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 637,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 637,
+        "balance": 10310,
+        "date": {
+          "$date": "2022-10-19T07:20:15.193Z"
+        },
+        "_id": {
+          "$oid": "634fa52fdeb236718227339e"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 692,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 692,
+        "balance": 11002,
+        "date": {
+          "$date": "2022-10-19T07:22:53.555Z"
+        },
+        "_id": {
+          "$oid": "634fa5cd7b1ef7ac794b1f34"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 112,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 112,
+        "balance": 11114,
+        "date": {
+          "$date": "2022-10-19T07:23:46.998Z"
+        },
+        "_id": {
+          "$oid": "634fa60287c1525652b00313"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 112,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 112,
+        "balance": 11226,
+        "date": {
+          "$date": "2022-10-19T07:24:21.231Z"
+        },
+        "_id": {
+          "$oid": "634fa6254f429487d154e12d"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 652,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 652,
+        "balance": 11878,
+        "date": {
+          "$date": "2022-10-19T07:26:03.454Z"
+        },
+        "_id": {
+          "$oid": "634fa68b697a727a876b9baa"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Income",
+        "amount": 1461,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 1461,
+        "balance": 13339,
+        "date": {
+          "$date": "2022-10-19T07:28:24.827Z"
+        },
+        "_id": {
+          "$oid": "634fa71820c8bfecdca2714b"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Income",
+        "amount": 926,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 926,
+        "balance": 14265,
+        "date": {
+          "$date": "2022-10-19T07:31:01.451Z"
+        },
+        "_id": {
+          "$oid": "634fa7b520c8bfecdca2721c"
+        }
+      },
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 150000,
+        "description": "Outside selling",
+        "debit": 0,
+        "credit": 150000,
+        "balance": 164265,
+        "date": {
+          "$date": "2022-10-18T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634fe92c0597a339c43a8656"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Income",
+        "amount": 112,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 112,
+        "balance": 164377,
+        "date": {
+          "$date": "2022-10-19T12:50:44.145Z"
+        },
+        "_id": {
+          "$oid": "634ff2a40597a339c43a8713"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Income",
+        "amount": 652,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 652,
+        "balance": 165029,
+        "date": {
+          "$date": "2022-10-21T04:47:44.843Z"
+        },
+        "_id": {
+          "$oid": "63522470e681c3935a75b3db"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Income",
+        "amount": 2611.2,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 2611.2,
+        "balance": 167640,
+        "date": {
+          "$date": "2022-10-21T04:48:18.907Z"
+        },
+        "_id": {
+          "$oid": "63522492e681c3935a75b428"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Expense",
+        "amount": 138700,
+        "description": "Pay to supplier",
+        "debit": 138700,
+        "credit": 0,
+        "balance": 28940,
+        "date": {
+          "$date": "2022-10-21T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6352287a83b3bea4a4bed038"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Income",
+        "amount": 10000,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 10000,
+        "balance": 38940,
+        "date": {
+          "$date": "2022-10-12T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63526bda7eba0c201a006896"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Expense",
+        "amount": 19500,
+        "description": "Pay to supplier",
+        "debit": 19500,
+        "credit": 0,
+        "balance": 19440,
+        "date": {
+          "$date": "2022-09-30T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63527b6d6277987942f7f4f3"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Income",
+        "amount": 500,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 500,
+        "balance": 19940,
+        "date": {
+          "$date": "2022-11-04T09:03:46.824Z"
+        },
+        "_id": {
+          "$oid": "6364d5726afe53d6f278653e"
+        }
+      },
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 350000,
+        "description": "Outside selling",
+        "debit": 0,
+        "credit": 350000,
+        "balance": 369940,
+        "date": {
+          "$date": "2022-11-05T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6368c5917cb154b874066ac4"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 112,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 112,
+        "balance": 370052,
+        "date": {
+          "$date": "2022-11-08T04:20:45.302Z"
+        },
+        "_id": {
+          "$oid": "6369d91dc49c8275def07f51"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 10,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 10,
+        "balance": 370062,
+        "date": {
+          "$date": "2022-11-08T04:21:08.984Z"
+        },
+        "_id": {
+          "$oid": "6369d934395123dda43bee7b"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 280,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 280,
+        "balance": 370342,
+        "date": {
+          "$date": "2022-11-08T04:22:39.662Z"
+        },
+        "_id": {
+          "$oid": "6369d98fc21ba684ceb4c10d"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 652,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 652,
+        "balance": 370994,
+        "date": {
+          "$date": "2022-11-08T04:24:33.099Z"
+        },
+        "_id": {
+          "$oid": "6369da0191c6350ca78dcd04"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 1232,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 1232,
+        "balance": 372226,
+        "date": {
+          "$date": "2022-11-08T04:25:05.993Z"
+        },
+        "_id": {
+          "$oid": "6369da219643b5d819b3fb10"
+        }
+      }
+    ],
+    "createdAt": {
+      "$date": "2022-10-13T05:36:23.029Z"
+    },
+    "updatedAt": {
+      "$date": "2022-11-08T04:25:05.997Z"
+    },
+    "__v": 30
+  },
+  {
+    "_id": {
+      "$oid": "6347a40f4640062aa0c60586"
+    },
+    "accTitel": "Payable",
+    "accDesscri": "Default",
+    "accNumber": "1234556691",
+    "transaction": [
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 0,
+        "description": "new account Opening",
+        "debit": 0,
+        "credit": 0,
+        "balance": 0,
+        "_id": {
+          "$oid": "6347a40f4640062aa0c60587"
+        },
+        "date": {
+          "$date": "2022-10-13T05:37:19.178Z"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 6500,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 6500,
+        "balance": 13500,
+        "date": {
+          "$date": "2022-10-13T06:11:03.868Z"
+        },
+        "_id": {
+          "$oid": "6347abf771fcffe64ee64229"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 2900,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 2900,
+        "balance": 9400,
+        "date": {
+          "$date": "2022-10-13T06:39:27.531Z"
+        },
+        "_id": {
+          "$oid": "6347b29f1270d1f07b60c1d2"
+        }
+      },
+      {
+        "type": "Payable",
+        "amount": 3000,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 3000,
+        "balance": 12400,
+        "date": {
+          "$date": "2022-10-13T06:40:43.714Z"
+        },
+        "_id": {
+          "$oid": "6347b2eb1270d1f07b60c207"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 3900,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 3900,
+        "balance": 18300,
+        "date": {
+          "$date": "2022-10-13T06:55:15.084Z"
+        },
+        "_id": {
+          "$oid": "6347b6534d3c2d190a985ca9"
+        }
+      },
+      {
+        "walletName": "6347a2884640062aa0c60537",
+        "type": "Payable",
+        "amount": 700,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 700,
+        "balance": 19000,
+        "date": {
+          "$date": "2022-10-13T06:56:42.155Z"
+        },
+        "_id": {
+          "$oid": "6347b6aa4d3c2d190a985cf8"
+        }
+      },
+      {
+        "walletName": "6347a31a4640062aa0c60564",
+        "type": "Payable",
+        "amount": 1200,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 1200,
+        "balance": 20200,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347b8014d3c2d190a985d3a"
+        }
+      },
+      {
+        "walletName": "6347a2884640062aa0c60537",
+        "type": "Payable",
+        "amount": 200,
+        "description": "New Product Added",
+        "debit": 200,
+        "credit": 0,
+        "balance": 18400,
+        "date": {
+          "$date": "2022-10-13T10:35:58.539Z"
+        },
+        "_id": {
+          "$oid": "6347ea0e787e00bffe57e0c3"
+        }
+      },
+      {
+        "walletName": "6347a2884640062aa0c60537",
+        "type": "Payable",
+        "amount": 300,
+        "description": "payment of Product Added",
+        "debit": 300,
+        "credit": 0,
+        "balance": 18300,
+        "date": {
+          "$date": "2022-10-13T10:37:03.401Z"
+        },
+        "_id": {
+          "$oid": "6347ea4ffab98bff9df2c545"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Payable",
+        "amount": 5000,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 5000,
+        "balance": 22700,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347ebc4fab98bff9df2c57f"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 2000,
+        "description": "payment of Product Added",
+        "debit": 2000,
+        "credit": 0,
+        "balance": 24700,
+        "date": {
+          "$date": "2022-10-18T04:09:04.861Z"
+        },
+        "_id": {
+          "$oid": "634e26e0bf14cfece4abbc14"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Payable",
+        "amount": 1000,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 1000,
+        "balance": 21700,
+        "date": {
+          "$date": "2022-10-17T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634e352a535d5692871d471e"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 65000,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 65000,
+        "balance": 86700,
+        "date": {
+          "$date": "2022-10-19T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634e41a12422bcab41d19a72"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": -6500,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": -6500,
+        "balance": 80200,
+        "date": {
+          "$date": "2022-10-19T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634e41b92422bcab41d19a8e"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 65000,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 65000,
+        "balance": 145200,
+        "date": {
+          "$date": "2022-10-20T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634f766106d5a4a3e8b6cc59"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Payable",
+        "amount": 0,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 0,
+        "balance": 145200,
+        "date": {
+          "$date": "2022-10-19T06:00:18.849Z"
+        },
+        "_id": {
+          "$oid": "634f927209f1686591d7b4a5"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 1900,
+        "description": "payment of Product Added",
+        "debit": 1900,
+        "credit": 0,
+        "balance": 147100,
+        "date": {
+          "$date": "2022-10-19T06:30:47.277Z"
+        },
+        "_id": {
+          "$oid": "634f99970fba840ce95fedea"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 1950,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 1950,
+        "balance": 145250,
+        "date": {
+          "$date": "2022-10-19T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634f99b70fba840ce95fee12"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Payable",
+        "amount": 652,
+        "description": "POS Order",
+        "debit": 652,
+        "credit": 0,
+        "balance": 144598,
+        "date": {
+          "$date": "2022-10-19T07:30:32.238Z"
+        },
+        "_id": {
+          "$oid": "634fa79820c8bfecdca271b6"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Payable",
+        "amount": 1578,
+        "description": "POS Order",
+        "debit": 1578,
+        "credit": 0,
+        "balance": 143020,
+        "date": {
+          "$date": "2022-10-19T12:06:55.048Z"
+        },
+        "_id": {
+          "$oid": "634fe85f0597a339c43a8527"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 5800,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 5800,
+        "balance": 148820,
+        "date": {
+          "$date": "2022-10-18T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634fe8750597a339c43a855d"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 3900,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 3900,
+        "balance": 152720,
+        "date": {
+          "$date": "2022-10-18T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634fe87d0597a339c43a857f"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 5850,
+        "description": "payment of Product Added",
+        "debit": 5850,
+        "credit": 0,
+        "balance": 158570,
+        "date": {
+          "$date": "2022-10-19T12:07:47.433Z"
+        },
+        "_id": {
+          "$oid": "634fe8930597a339c43a85cc"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 138700,
+        "description": "payment of Product Added",
+        "debit": 138700,
+        "credit": 0,
+        "balance": 285570,
+        "date": {
+          "$date": "2022-10-21T05:04:58.733Z"
+        },
+        "_id": {
+          "$oid": "6352287a83b3bea4a4bed053"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Payable",
+        "amount": 3393,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 3393,
+        "balance": 11563,
+        "date": {
+          "$date": "2022-10-12T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63526bda7eba0c201a0068bb"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Payable",
+        "amount": 1000,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 1000,
+        "balance": 12563,
+        "date": {
+          "$date": "2022-10-02T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63526c597eba0c201a00690d"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 19500,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 19500,
+        "balance": 32063,
+        "date": {
+          "$date": "2022-09-27T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63527b556277987942f7f4c6"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 19500,
+        "description": "payment of Product Added",
+        "debit": 19500,
+        "credit": 0,
+        "balance": 51563,
+        "date": {
+          "$date": "2022-10-21T10:58:53.088Z"
+        },
+        "_id": {
+          "$oid": "63527b6d6277987942f7f512"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 29000,
+        "description": "New Product Purchase",
+        "debit": 0,
+        "credit": 29000,
+        "balance": 41563,
+        "date": {
+          "$date": "2022-11-03T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63649229e99f480f6bf53601"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Payable",
+        "amount": 2241,
+        "description": "POS Order",
+        "debit": 2241,
+        "credit": 0,
+        "balance": 39322,
+        "date": {
+          "$date": "2022-11-04T04:18:06.138Z"
+        },
+        "_id": {
+          "$oid": "6364927ee99f480f6bf536c0"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Payable",
+        "amount": 29000,
+        "description": "payment of Product Added",
+        "debit": 29000,
+        "credit": 0,
+        "balance": 68322,
+        "date": {
+          "$date": "2022-11-04T04:18:52.110Z"
+        },
+        "_id": {
+          "$oid": "636492ace99f480f6bf53747"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 1900,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 1900,
+        "balance": 12222,
+        "date": {
+          "$date": "2022-11-04T09:09:10.217Z"
+        },
+        "_id": {
+          "$oid": "6364d6b66afe53d6f2786691"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 4000,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 4000,
+        "balance": 16222,
+        "date": {
+          "$date": "2022-11-10T06:17:16.031Z"
+        },
+        "_id": {
+          "$oid": "636c976c5978a933c7aaf041"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Payable",
+        "amount": 2000,
+        "description": "New Product Added",
+        "debit": 0,
+        "credit": 2000,
+        "balance": 18222,
+        "date": {
+          "$date": "2022-11-10T06:19:24.419Z"
+        },
+        "_id": {
+          "$oid": "636c97ec5978a933c7aaf0ba"
+        }
+      }
+    ],
+    "createdAt": {
+      "$date": "2022-10-13T05:37:19.179Z"
+    },
+    "updatedAt": {
+      "$date": "2022-11-10T06:19:24.422Z"
+    },
+    "__v": 37
+  },
+  {
+    "_id": {
+      "$oid": "6347a42c4640062aa0c6058b"
+    },
+    "accTitel": "Receivable",
+    "accDesscri": "Default",
+    "accNumber": "1234567889",
+    "transaction": [
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 0,
+        "description": "new account Opening",
+        "debit": 0,
+        "credit": 0,
+        "balance": 0,
+        "_id": {
+          "$oid": "6347a42c4640062aa0c6058c"
+        },
+        "date": {
+          "$date": "2022-10-13T05:37:48.805Z"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Recivebal",
+        "amount": 5253,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 5253,
+        "balance": 5253,
+        "date": {
+          "$date": "2022-10-19T06:00:18.864Z"
+        },
+        "_id": {
+          "$oid": "634f927209f1686591d7b4aa"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Recivebal",
+        "amount": 652,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 652,
+        "balance": 5905,
+        "date": {
+          "$date": "2022-10-19T06:27:13.055Z"
+        },
+        "_id": {
+          "$oid": "634f98c10fba840ce95fed47"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Recivebal",
+        "amount": 702,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 702,
+        "balance": 6607,
+        "date": {
+          "$date": "2022-10-19T06:29:07.125Z"
+        },
+        "_id": {
+          "$oid": "634f99330fba840ce95fed95"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Recivebal",
+        "amount": 6607,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 6607,
+        "balance": 13214,
+        "date": {
+          "$date": "2022-10-12T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63526bda7eba0c201a00689f"
+        }
+      }
+    ],
+    "createdAt": {
+      "$date": "2022-10-13T05:37:48.806Z"
+    },
+    "updatedAt": {
+      "$date": "2022-10-21T09:52:26.753Z"
+    },
+    "__v": 4
+  },
+  {
+    "_id": {
+      "$oid": "6347a44c4640062aa0c60590"
+    },
+    "accTitel": "cash",
+    "accDesscri": "Default",
+    "accNumber": "0000000000",
+    "transaction": [
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 20000,
+        "description": "new account Opening",
+        "debit": 0,
+        "credit": 20000,
+        "balance": 20000,
+        "_id": {
+          "$oid": "6347a44c4640062aa0c60591"
+        },
+        "date": {
+          "$date": "2022-10-13T05:38:20.981Z"
+        }
+      },
+      {
+        "walletName": "",
+        "type": "Expense",
+        "amount": 1000,
+        "description": "purchase shop item  ",
+        "debit": 1000,
+        "credit": 0,
+        "balance": 19000,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347b7024d3c2d190a985d01"
+        }
+      },
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 300,
+        "description": "sell west",
+        "debit": 0,
+        "credit": 300,
+        "balance": 19300,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347b71e4d3c2d190a985d0b"
+        }
+      },
+      {
+        "walletName": "",
+        "type": "Transfer",
+        "amount": 1000,
+        "description": "for counter",
+        "debit": 0,
+        "credit": 1000,
+        "balance": 20300,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347b7424d3c2d190a985d20"
+        }
+      },
+      {
+        "walletName": "6347a2884640062aa0c60537",
+        "type": "Expense",
+        "amount": 300,
+        "description": "Pay to supplier",
+        "debit": 300,
+        "credit": 0,
+        "balance": 20000,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347ea4ffab98bff9df2c539"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Income",
+        "amount": 5000,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 5000,
+        "balance": 25000,
+        "date": {
+          "$date": "2022-10-13T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "6347ebc4fab98bff9df2c571"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 652,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 652,
+        "balance": 25652,
+        "date": {
+          "$date": "2022-10-19T05:47:41.905Z"
+        },
+        "_id": {
+          "$oid": "634f8f7d31206d7d0205fbab"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 55,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 55,
+        "balance": 25707,
+        "date": {
+          "$date": "2022-10-19T05:50:32.529Z"
+        },
+        "_id": {
+          "$oid": "634f90285008e3ab47311556"
+        }
+      },
+      {
+        "walletName": "6347a35b4640062aa0c60571",
+        "type": "Income",
+        "amount": 55,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 55,
+        "balance": 25762,
+        "date": {
+          "$date": "2022-10-19T05:53:12.059Z"
+        },
+        "_id": {
+          "$oid": "634f90c89323a155ebda39f4"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 10,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 10,
+        "balance": 25772,
+        "date": {
+          "$date": "2022-10-19T05:54:23.499Z"
+        },
+        "_id": {
+          "$oid": "634f910f10d9ce9776aca623"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 1578,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 1578,
+        "balance": 27350,
+        "date": {
+          "$date": "2022-10-19T07:28:56.658Z"
+        },
+        "_id": {
+          "$oid": "634fa73820c8bfecdca27182"
+        }
+      },
+      {
+        "walletName": "6347a3ab4640062aa0c60579",
+        "type": "Income",
+        "amount": 122,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 122,
+        "balance": 27472,
+        "date": {
+          "$date": "2022-10-19T07:30:49.385Z"
+        },
+        "_id": {
+          "$oid": "634fa7a920c8bfecdca271eb"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 1561,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 1561,
+        "balance": 29033,
+        "date": {
+          "$date": "2022-10-19T12:05:16.694Z"
+        },
+        "_id": {
+          "$oid": "634fe7fc0597a339c43a84d3"
+        }
+      },
+      {
+        "walletName": "6347a2314640062aa0c60500",
+        "type": "Expense",
+        "amount": 5850,
+        "description": "Pay to supplier",
+        "debit": 5850,
+        "credit": 0,
+        "balance": 23183,
+        "date": {
+          "$date": "2022-10-19T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "634fe8930597a339c43a85b2"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 2103,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 2103,
+        "balance": 25286,
+        "date": {
+          "$date": "2022-10-19T12:49:54.345Z"
+        },
+        "_id": {
+          "$oid": "634ff2720597a339c43a86d7"
+        }
+      },
+      {
+        "walletName": "6347a3774640062aa0c60575",
+        "type": "Income",
+        "amount": 1000,
+        "description": "add balance",
+        "debit": 0,
+        "credit": 1000,
+        "balance": 26286,
+        "date": {
+          "$date": "2022-10-02T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "63526c597eba0c201a0068ef"
+        }
+      },
+      {
+        "walletName": "",
+        "type": "Income",
+        "amount": 25000,
+        "description": "Outside selling",
+        "debit": 0,
+        "credit": 25000,
+        "balance": 51286,
+        "date": {
+          "$date": "2022-09-28T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "635375d7d8ddefabc429116f"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 707,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 707,
+        "balance": 51993,
+        "date": {
+          "$date": "2022-11-04T04:17:31.363Z"
+        },
+        "_id": {
+          "$oid": "6364925be99f480f6bf53653"
+        }
+      },
+      {
+        "walletName": "6347a2704640062aa0c6051e",
+        "type": "Expense",
+        "amount": 29000,
+        "description": "Pay to supplier",
+        "debit": 29000,
+        "credit": 0,
+        "balance": 22993,
+        "date": {
+          "$date": "2022-11-03T00:00:00.000Z"
+        },
+        "_id": {
+          "$oid": "636492ace99f480f6bf53725"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 80,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 80,
+        "balance": 23073,
+        "date": {
+          "$date": "2022-11-04T09:02:37.820Z"
+        },
+        "_id": {
+          "$oid": "6364d52d6afe53d6f27864ee"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 11593.4,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 11593.4,
+        "balance": 34666,
+        "date": {
+          "$date": "2022-11-04T09:05:06.152Z"
+        },
+        "_id": {
+          "$oid": "6364d5c26afe53d6f27865c3"
+        }
+      },
+      {
+        "walletName": "634a3a6334b9facc223ee18b",
+        "type": "Income",
+        "amount": 1731,
+        "description": "POS Order",
+        "debit": 0,
+        "credit": 1731,
+        "balance": 36397,
+        "date": {
+          "$date": "2022-11-08T04:17:23.428Z"
+        },
+        "_id": {
+          "$oid": "6369d85307fe7ba779625144"
+        }
+      }
+    ],
+    "createdAt": {
+      "$date": "2022-10-13T05:38:20.982Z"
+    },
+    "updatedAt": {
+      "$date": "2022-11-08T04:17:23.431Z"
+    },
+    "__v": 21
+  }
+]

@@ -1,0 +1,46 @@
+
+@import url("https://fonts.googleapis.com/css?family=Muli:400,600,700&display=swap");
+
+body {
+    font-family: "Muli", sans-serif;
+    margin: 0;
+    background: #c7b4eb;
+    /* background: url("/images/4.jpg"); */
+    /* background-repeat:no-repeat;
+    background-size: cover ; */
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgb(34, 66, 39));
+    
+  
+    font-size: 15px;
+    font-weight: 800;
+    color: #8A98AC;
+    line-height: 1.5;
+    box-sizing: border-box;
+    opacity: 0.9;
+ 
+
+}
+
+.login-box {
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    
+       
+}
+
+.img {
+    border-radius: 1rem 0 0 1rem; 
+    
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+h5 {
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 35px;
+    color: grey
+}

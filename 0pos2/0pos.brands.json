@@ -1,0 +1,64 @@
+[{
+  "_id": {
+    "$oid": "6347a06c4640062aa0c604b2"
+  },
+  "brandName": "Dad Grass",
+  "brandImg": "1665638508680pexels-elsa-olofsson-8709225.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a0764640062aa0c604b6"
+  },
+  "brandName": "adidas",
+  "brandImg": "1665638518533pexels-henry-&-co-3222146.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a0bd4640062aa0c604ba"
+  },
+  "brandName": "6amFood",
+  "brandImg": "1665638589582pexels-pedro-ribeiro-11400977.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a10b4640062aa0c604be"
+  },
+  "brandName": "hype my game",
+  "brandImg": "1665638667389pexels-vitaliy-izonin-10046269.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a1254640062aa0c604c2"
+  },
+  "brandName": "black & white",
+  "brandImg": "1665638693095pexels-maisy-vi-11213692.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a1434640062aa0c604c6"
+  },
+  "brandName": "balenciaba",
+  "brandImg": "1665638723305pexels-erik-mclean-6342786.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a15d4640062aa0c604ca"
+  },
+  "brandName": "louis vuitton",
+  "brandImg": "1665638749060pexels-anne-r-4475780.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "63736adb9c562b09f31c64c5"
+  },
+  "brandName": "my brand",
+  "brandImg": "1668508379251pexels-vvs-â¢-8839887.jpg",
+  "__v": 0
+}]

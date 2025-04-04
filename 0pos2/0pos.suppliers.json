@@ -1,0 +1,276 @@
+[{
+  "_id": {
+    "$oid": "6347a2314640062aa0c60500"
+  },
+  "suppName": "Extreme Stationary",
+  "suppMobile": 22551144,
+  "suppEmail": "Extreme@gmail.com",
+  "suppAddres": "adajan patita, surat, Gujarat",
+  "suppState": "Gujarat",
+  "suppPINcode": "365006",
+  "suppImage": "1665638961202pexels-tim-mossholder-3612885.jpg",
+  "orderList": [
+    {
+      "productName": "Marvel bag",
+      "productQuntity": 10,
+      "productPrice": 390,
+      "totalAmount": 3900,
+      "date": {
+        "$date": "2022-10-13T06:55:15.073Z"
+      },
+      "_id": {
+        "$oid": "6347b6534d3c2d190a985ca0"
+      }
+    },
+    {
+      "productName": "Marvel bag",
+      "productQuntity": 5,
+      "productPrice": 390,
+      "totalAmount": 1950,
+      "date": {
+        "$date": "2022-10-19T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "634f99b70fba840ce95fedfd"
+      }
+    },
+    {
+      "productName": "Marvel bag",
+      "productQuntity": 10,
+      "productPrice": 390,
+      "totalAmount": 3900,
+      "date": {
+        "$date": "2022-10-18T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "634fe87d0597a339c43a8566"
+      }
+    },
+    {
+      "productName": "Marvel bag",
+      "productQuntity": 50,
+      "productPrice": 390,
+      "totalAmount": 19500,
+      "date": {
+        "$date": "2022-09-27T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "63527b556277987942f7f4a8"
+      }
+    },
+    {
+      "productName": "Palazzo",
+      "productQuntity": 10,
+      "productPrice": 190,
+      "totalAmount": 1900,
+      "date": {
+        "$date": "2022-11-04T09:09:10.208Z"
+      },
+      "_id": {
+        "$oid": "6364d6b66afe53d6f278666e"
+      }
+    },
+    {
+      "productName": "Marvel bag",
+      "productQuntity": 10,
+      "productPrice": 400,
+      "totalAmount": 4000,
+      "date": {
+        "$date": "2022-11-10T06:17:16.017Z"
+      },
+      "_id": {
+        "$oid": "636c976c5978a933c7aaf01d"
+      }
+    },
+    {
+      "productName": "bag",
+      "productQuntity": 20,
+      "productPrice": 100,
+      "totalAmount": 2000,
+      "date": {
+        "$date": "2022-11-10T06:19:24.407Z"
+      },
+      "_id": {
+        "$oid": "636c97ec5978a933c7aaf095"
+      }
+    }
+  ],
+  "productList": [],
+  "__v": 24
+},
+{
+  "_id": {
+    "$oid": "6347a2704640062aa0c6051e"
+  },
+  "suppName": "Jally Fashion",
+  "suppMobile": {
+    "$numberLong": "2255663344"
+  },
+  "suppEmail": "jally_fashion@gmail.com",
+  "suppAddres": "varachha, surat, gujarat",
+  "suppState": "Gujarat",
+  "suppPINcode": "3620015",
+  "suppImage": "1665639024851pexels-dzenina-lukac-1376049.jpg",
+  "orderList": [
+    {
+      "productName": "Kurti",
+      "productQuntity": 10,
+      "productPrice": 650,
+      "totalAmount": 6500,
+      "date": {
+        "$date": "2022-10-13T06:11:03.858Z"
+      },
+      "_id": {
+        "$oid": "6347abf771fcffe64ee64222"
+      }
+    },
+    {
+      "productName": "Sky Blue Shirt",
+      "productQuntity": 10,
+      "productPrice": 290,
+      "totalAmount": 2900,
+      "date": {
+        "$date": "2022-10-13T06:39:27.524Z"
+      },
+      "_id": {
+        "$oid": "6347b29f1270d1f07b60c1cc"
+      }
+    },
+    {
+      "productName": "Kurti",
+      "productQuntity": 100,
+      "productPrice": 650,
+      "totalAmount": 65000,
+      "date": {
+        "$date": "2022-10-19T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "634e41a12422bcab41d19a62"
+      }
+    },
+    {
+      "productName": "Kurti",
+      "productQuntity": -10,
+      "productPrice": 650,
+      "totalAmount": -6500,
+      "date": {
+        "$date": "2022-10-19T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "634e41b92422bcab41d19a7d"
+      }
+    },
+    {
+      "productName": "Kurti",
+      "productQuntity": 100,
+      "productPrice": 650,
+      "totalAmount": 65000,
+      "date": {
+        "$date": "2022-10-20T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "634f766106d5a4a3e8b6cc47"
+      }
+    },
+    {
+      "productName": "Sky Blue Shirt",
+      "productQuntity": 20,
+      "productPrice": 290,
+      "totalAmount": 5800,
+      "date": {
+        "$date": "2022-10-18T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "634fe8750597a339c43a8545"
+      }
+    },
+    {
+      "productName": "Sky Blue Shirt",
+      "productQuntity": 100,
+      "productPrice": 290,
+      "totalAmount": 29000,
+      "date": {
+        "$date": "2022-11-03T00:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "63649229e99f480f6bf535e1"
+      }
+    }
+  ],
+  "productList": [],
+  "__v": 11
+},
+{
+  "_id": {
+    "$oid": "6347a2884640062aa0c60537"
+  },
+  "suppName": "Gokul Bekery",
+  "suppMobile": {
+    "$numberLong": "2255441133"
+  },
+  "suppEmail": "gokul_bakery@gmail.com",
+  "suppAddres": "sitanagar varachh, surat",
+  "suppState": "Gujarat",
+  "suppPINcode": "365008",
+  "suppImage": "1665639048468bakery-logo-design-template-6ebe47e2f31eef07c35b7afe33e42e69_screen.jpg",
+  "orderList": [
+    {
+      "productName": "cream roll",
+      "productQuntity": 100,
+      "productPrice": 7,
+      "totalAmount": 700,
+      "date": "1665644202146",
+      "_id": {
+        "$oid": "6347b6aa4d3c2d190a985cee"
+      }
+    }
+  ],
+  "productList": [],
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "6347a31a4640062aa0c60564"
+  },
+  "suppName": "exostica fruit",
+  "suppMobile": 12004589,
+  "suppEmail": "exostica@gmail.com",
+  "suppAddres": "khodiyar nagar varachh, surat",
+  "suppState": "Gujarat",
+  "suppPINcode": "365009",
+  "suppImage": "1665639194840pexels-maisy-vi-11213692.jpg",
+  "orderList": [
+    {
+      "productName": "Kinle mineral water",
+      "productQuntity": 50,
+      "productPrice": 60,
+      "totalAmount": 3000,
+      "date": "1665643243707",
+      "_id": {
+        "$oid": "6347b2eb1270d1f07b60c200"
+      }
+    },
+    {
+      "productName": "Juice",
+      "productQuntity": 50,
+      "productPrice": 40,
+      "totalAmount": 2000,
+      "date": "1665644045441",
+      "_id": {
+        "$oid": "6347b60d4d3c2d190a985c42"
+      }
+    },
+    {
+      "productName": "Kinle mineral water",
+      "productQuntity": 20,
+      "productPrice": 60,
+      "totalAmount": 1200,
+      "date": "Thu Oct 13 2022 05:30:00 GMT+0530 (India Standard Time)",
+      "_id": {
+        "$oid": "6347b8014d3c2d190a985d2f"
+      }
+    }
+  ],
+  "productList": [],
+  "__v": 7
+}]

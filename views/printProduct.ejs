@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    <link href="/assets/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/css/font-awesome-all.min.css">
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">PRODUCT</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="">Product</a></li>
+                                            <li class="breadcrumb-item "><a href="/product/list">Product List</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Product Barcode</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">   
+                            <!-- Start row -->     
+                         <div class="card m-b-30">
+                                         <div class="card-body">              
+                            <div class="row productdata mb-0">
+                                <!-- Start product detail -->
+                                <section>
+                                    <h5>Product Code</h5>
+                                    <span id="code"><%=pro.proCode%></span>
+                                    <input type="hidden" id="price" name="price" value="<%=pro.sellingPrice%>">
+                                    <input type="hidden" id="printredy" name="printredy" value="">
+                                </section>
+                                <section>
+                                    <h5>product Name</h5>
+                                    <span id="name"><%=pro.Name%></span>
+                                </section>
+                               
+                                <section>
+                                    <h5> Quntity</h5>
+                                    <input type="number" id="prinquntity" name="prinquntity" value="3" class="form-control border-secondary" required>
+                                </section>
+                                <!-- End Start product detail -->
+                           
+                            </div>
+                        </div>
+                        </div>
+                            <!-- End row --> 
+                            <div class="card m-b-30">
+                                         <div class="card-body">   
+                            <!-- Start row -->        
+                            <div class="row productdata">
+                                <section class="w-100">
+                                    <h5>Paper Size</h5>
+                                    <div class="form-group">
+                                        <select name="papersize" id="papersize" class="form-control border-secondary">
+                                            <option value="">select size</option>
+                                            <option value="sheet40" selected>40 per sheet (a4) (1.927*0.937)</option>
+                                            <option value="sheet32">32 per sheet (a4) (1.927*1.166)</option>
+                                            <option value="sheet24">24 per sheet (a4) (2.572*1.166)</option>
+                                            <option value="sheet12">12 per sheet (a4) (3.895*1.593)</option>
+                                        </select>
+                                        
+                                    </div>  
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                            <!-- End row -->
+                             <div class="card m-b-30">
+                                         <div class="card-body">   
+                           <h6><span class="font-weight-bold">**** </span>please check preview before print<span class="font-weight-bold"> ****</span></h6>
+                            <!-- Start row --> 
+                            
+                               
+                                        <button class="btn btn-primary mr-2" id="Privew" >Preview</button>
+                                        <button class="btn btn-primary mr-2" id="Reset">Reset</button>
+                                        <button class="btn btn-primary" data-id="" id="Print">Print</button>
+                                   
+                               
+                        </div>
+                    </div>
+                            <!-- End row -->
+                            <!-- printing area -->
+                            <div id="printLable" >
+                                <div class="printArea " id="printdiv"></div> 
+                            </div>
+                            <!--printing area  -->
+
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    
+    <%- include('./onestep/script')-%>
+   
+    <!-- end JS -->
+   
+    
+    
+    
+  
+</body>
+
+</html>

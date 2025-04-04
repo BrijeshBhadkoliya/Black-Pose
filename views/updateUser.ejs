@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- meta and links start -->
+     <%- include('./onestep/meta & links')-%> 
+    
+    
+     <!-- meta and links end -->
+
+</head>
+<body class="vertical-layout">
+  <!-- Start Containerbar -->
+  <div id="containerbar">
+    <!-- Start Leftbar -->
+    <%- include('./onestep/Leftbar')-%> 
+    <!-- End Leftbar -->
+
+    <!-- Start Rightbar -->
+    <div class="rightbar">
+                <!-- Start Topbar -->
+                <%- include('./onestep/Topbar')-%>
+                <!-- End Topbar -->
+
+
+                <!-- Start Breadcrumbbar -->                    
+                <div class="breadcrumbbar">
+                    <div class="row align-items-center">
+                        <div class="col-md-12 col-lg-8">
+                            <h4 class="page-title">SHOP SETUP</h4>
+                            <div class="breadcrumb-list">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+
+                                    <li class="breadcrumb-item active" aria-current="page">Update User</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+                <!-- End Breadcrumbbar -->
+
+
+                <!-- Start Contentbar -->    
+                <div class="contentbar">  
+                     <!-- Start row -->
+                     <div class="row">
+                        <!-- Start col -->
+                        <div class="col-lg-12">
+                            <div class="card m-b-0">
+                              <div class="card-header">
+                                <h4 class="text dark">Update User</h4>
+                              </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-12 ">
+                                          <form  method="post" action="/userrole/userupdate" enctype="multipart/form-data">
+                                            <div class="row">
+                                              <div class="col-6">
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="firstName">first Name</label>
+                                                  <input type="text" id="firstName" class="form-control border-secondary col-sm-8 " name="firstName" value="<%=data.firstName%>"/>
+                                                </div>
+                              
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="lastName">last Name</label>
+                                                  <input type="text" id="lastName" class="form-control border-secondary col-sm-8" name="lastName" value="<%=data.lastName%>"/>
+                                                </div>
+              
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="email">Email</label>
+                                                  <input type="email" id="email" class="form-control border-secondary col-sm-8" name="email" value="<%=data.email%>"/>
+                                                </div>
+              
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="Mobile">Mobile</label>
+                                                  <input type="number" id="Mobile" class="form-control border-secondary col-sm-8" minlength="10" maxlength="10"  name="mobile" value="<%=data.mobile%>"/>
+                                                </div>
+
+                                              </div>
+
+                                              <div class="col-6">
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="addres">Addres</label>
+                                                  <input type="text" id="addres" class="form-control border-secondary col-sm-8" name="addres" value="<%=data.addres%>"/>
+                                                </div>
+              
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="username">username</label>
+                                                  <input type="text" id="username" class="form-control border-secondary col-sm-8" name="username" value="<%=data.username%>"/>
+
+                                                </div>
+                                                      
+                                                <input type="hidden" id="userid" class="form-control border-secondary col-sm-8" name="userid" value="<%=data._id%>"/>
+                                                <input type="hidden" id="userdata" class="form-control border-secondary col-sm-8" name="userdata" value="<%=userdata._id%>"/>
+
+
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="password">Imge</label>
+                                                  <input type="file" id="file" class="form-control border-secondary col-sm-8" name="img" required/>
+                                                </div>
+
+                
+              
+                                                <div class="form-group row">
+                                                  <label class="col-sm-2 col-form-label" for="role">Role</label>
+                                                  <select  id="role" class="form-control border-secondary col-sm-8" name="role" >
+                                                    <% role.forEach(function(user){ %>
+                                                      <option value="<%=user.titel%>" <%=data.role == user.titel ? 'selected': '' %>><%=user.titel%></option>
+                                                  <% }) %>
+                                                    
+                                                  </select>
+                                                </div>
+
+                                              </div>
+                                            </div>
+                                          
+                                            <div class="form-group row justify-content-end">
+                                              <button class="btn btn-primary col-2 setupdate " type="submit" value="submit"><i class="dripicons-checkmark"></i> Save User</button>
+                                          </div>
+                                          </form>
+                                          <img src="../uploads/<%=data.img%>" width="450px" height="450px" alt="update imges">
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>            
+                        </div>
+                        <!-- End col --> 
+
+                        
+
+
+                    </div>
+                    <!-- End row -->  
+                   
+                </div>
+                <!-- End Contentbar -->
+               
+
+
+                <!-- Start Footerbar -->
+                <%- include('./onestep/footerbar')-%>
+                <!-- end Footerbar -->
+    </div>
+    <!-- Start Rightbar -->  
+   
+</div>
+<!-- end Containerbar -->
+
+<!-- start Toastr -->
+<%- include('./onestep/toastr')-%>
+<!-- End Toastr -->
+
+<!-- start JS -->
+<%- include('./onestep/script')-%>
+<!-- end JS -->
+  
+   
+</body>
+</html>

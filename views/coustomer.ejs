@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    <link href="/assets/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/css/font-awesome-all.min.css">
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">Customer</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="">Customer</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Customer List</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">   
+                            <!-- Start row -->            
+                            <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">
+                                            <div class="row justify-content-between">
+                                                <div class="col-2">
+                                                    <h5>Customer List</h5>
+                                                </div>
+                                                <div class="col-2 comadd text-right" >
+                                                    <a href="/coustomer/add"><button class="btn btn-primary">Add Customer</button></a>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        
+                                        <div class="card-body">  
+                                            <div class="table-responsive">
+                                                <table id="default-datatable" class="display table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr No</th>
+                                                            <th> Name</th>
+                                                            <th> Image</th>
+                                                            <th> PHONE</th>
+                                                            <th> ORDERS</th>
+                                                            <th> BALANCE</th>
+                                                            <th>Action</th>     
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="align-items-center">
+                                                        <% data.forEach((cos,i)=>{ %>
+                                                            <tr>
+                                                                <td><%=i=i+1%></td>
+                                                                <td><%=cos.cousName%></td>
+                                                                <td><img src="../uploads/resized/<%=cos.cousImage%>" class="rounded-circle"  width="50px" height="50px" alt=""></td>
+                                                                <td><%=cos.cousMobile%></td>
+                                                                <td><%=cos.order.length%></td>
+                                                                <td class="d-flex"> 
+                                                                  
+                                                                    <form action="/coustomer/balance" class="d-flex" method="post">                            
+                                                                        <input type="hidden" name="addbal" value="<%=cos._id%>">
+                                                                        <input type="date" hidden  name="date" class="dateArr">
+                                                                        <input type="number" class="form-control cart-qty" style="width: 120px;" name="balance" value="<%=cos.Balance%>">
+                                                                        <button class="btn btn-round btn-primary-rgba" type="submit">
+                                                                            <i class="feather icon-plus-circle"></i>
+                                                                        </button>
+                                                                </form>
+                                                                </td>
+                                                                <td>
+                                                                    
+                                                                    <a href="/coustomer/views/<%=cos._id%>" class="btn btn-round btn-primary comviews"><i class="dripicons-user-id"></i></a>
+                                                                    <a href="/coustomer/update/<%=cos._id%>" class="btn btn-round btn-success comupdate"><i class="feather icon-edit"></i></a>
+                                                                    <a href="/coustomer/delet/<%=cos._id%>" class="btn btn-round btn-danger comdelet"><i class="feather icon-trash-2"></i></a>
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                        <% }) %>
+                                                        
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+                                
+                             <!-- Start col -->
+                   
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog " role="document">
+                                <div class="modal-content" id="modelsho">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                          
+                    <!-- End col -->
+                            <!-- End row --> 
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+     <script>
+  const  dateArr = document.getElementsByClassName('dateArr')
+    for(let i = 0; i<dateArr.length; i++ ){
+         dateArr[i].value = new Date().toISOString().split('T')[0];
+         
+    }
+    console.log(dateArr);
+    
+</script>
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+    
+    
+  
+</body>
+
+</html>

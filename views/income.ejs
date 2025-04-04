@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"> -->
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">INCOME</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="">Account</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Income</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">   
+                            <!-- Start row -->            
+                            <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <!-- Start card for expense form -->
+                                    <div class="card m-b-30">
+                                        <div class="card-header m-b-0 ">
+                                            <div class="row ">
+                                                <div class="col-12">
+                                                    <h5>Add New Income</h5>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        
+                                        <div class="card-body">  
+                                            <form action="/account/addincome" method="post" class="needs-validation">
+                                                <div class="row d-flex">
+                                                    
+                                                        <div class="form-group  col-sm-6 col-md-3 col-lg-3">
+                                                            <label for="AccTitel">Account</label>
+                                                            <select name="AccTitel" id="AccTitel" class="form-control border-secondary" required>
+                                                                <option value="">Select Account</option>
+                                                                <% accunt.forEach(function(data){ %>
+                                                                    <option value="<%=data._id%>"><%=data.accTitel %></option>
+                                                                <%}) %>
+                                                            </select>
+                                                            
+                                                        </div>
+                                                        <div class="form-group col-sm-6 col-md-3 col-lg-3">
+                                                            <label for="incdesc">Description</label>
+                                                            <input type="text" class="form-control border-secondary" id="incdesc" name="incdesc"  required>
+                                                        </div>
+                                                        <div class="form-group col-sm-6 col-md-3 col-lg-3">
+                                                            <label for="incamount">Amount</label>
+                                                            <input type="text" class="form-control border-secondary" id="incamount" name="incamount"  required>
+                                                        </div>
+                                                        <div class="form-group col-sm-6 col-md-3 col-lg-3">
+                                                            <label for="incdate">End Date</label>
+                                                            <input type="date" class="form-control border-secondary" id="incdate" name="incdate" required >
+                                                        </div>
+                                                        <div class="form-group col-sm-6 col-md-3 col-lg-3">
+                                                            <button class="btn btn-success" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
+                                                        </div> 
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- end card for expense form -->
+                                </div>
+                                <!-- End col -->
+                            </div>
+                            <!-- End row --> 
+
+
+                            <!-- Start row -->            
+                            <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header m-b-0 ">
+                                            <div class="row ">
+                                                <div class="col-12">
+                                                    <h5>INCOME LIST</h5>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        
+                                        <div class="card-body">  
+                                            <form action="/account/incomefilter" method="post" class="needs-validation">
+                                                <div class="row d-flex justify-content-end">
+                                                        <div class="form-group col-sm-6 col-md-3 col-lg-3">
+                                                            <label for="StartDate">Start Date</label>
+                                                            <input type="date" class="form-control border-secondary" id="startDate" name="startDate"  required >
+                                                        </div>
+                                                        <div class="form-group col-sm-6 col-md-3 col-lg-3">
+                                                            <label for="enddate">End Date</label>
+                                                            <input type="date" class="form-control border-secondary" id="enddate1" name="endDate" required >
+                                                        </div>
+                                                        <div class="form-group col-sm-6 col-md-6 col-lg-3 m-t-30">
+                                                            <div class="row d-flex justify-content-start"></div>
+                                                                <button class="btn btn-rounded btn-primary-rgba col-4" type="submit" value="submit"> Filter</button>
+                                                                <a href="/account/income" class="btn btn-rounded btn-danger-rgba col-4">Clear Filter</a>
+                                                        </div>
+                                                        </div>   
+                                                </div>
+                                            </form>
+
+                                        <div class="card-body">     
+                                            <div class="table-responsive">
+                                                <table id="default-datatable" class="display table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th> Date</th>
+                                                            <th> ACCOUNT</th>
+                                                            <th> TYPE</th>
+                                                            <th> AMOUNT</th>
+                                                            <th> DESCRIPTION</th>
+                                                            <th> DEBIT</th>
+                                                            <th> CREDIT</th>
+                                                            <th> BALANCE</th>
+                                                          
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="justify-content-center">
+                                                        <% data.forEach((tra)=>{ %>
+                                                            <tr>
+                                                                <td><%=tra.transaction.date.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%></td>
+                                                                <td><%=tra.accTitel%></td>
+                                                                <td><%=tra.transaction.type%></td>
+                                                                <td><%=tra.transaction.amount%></td>
+                                                                <td><%=tra.transaction.description%></td>
+                                                                <td><%=tra.transaction.debit%></td>
+                                                                <td><%=tra.transaction.credit%></td>
+                                                                <td><%=tra.transaction.balance%></td> 
+                                                        </tr>
+                                                               
+                                                        <% }) %>
+                                                        
+                                                        
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+                            </div>
+                            <!-- End row --> 
+
+
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+   
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+    
+   
+  
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">CATEGORY</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/category/list">Category</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page"> Update Category</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-0">
+                                        <div class="card-body">                                
+                                            
+                                                <h5 class="card-title mb-0">UPDATE CATEGORY</h5>
+                                                
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <form method="post" action="/category/updateCat/<%=data._id%>" enctype="multipart/form-data" class="needs-validation" >
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="catName">Category Name</label>
+                                                            <input type="text" class="form-control border-secondary" id="catName" name="catName"  value="<%=data.catName%>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="catImg">Category Image</label>
+                                                            <input type="file" class="form-control border-secondary" id="catImg" name="catImg" accept='image/*' onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" >
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <button class="btn btn-success" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="col- col-lg-6  ">
+                                                    <div class="img align-items-center ">
+                                                       
+                                                        <div class="col-lg-12  ">
+                                                           <center>
+                                                            <img id="blah" alt="your image" width="200" height="250" src="/uploads/resized/<%=data.catImg%>"/>
+                                                            <h5>Image Preview </h5>
+                                                           </center>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                        
+                        </div>
+                        <!-- End Contentbar -->
+
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+    </div>
+    <!-- end Containerbar -->
+
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  
+</body>
+</html>

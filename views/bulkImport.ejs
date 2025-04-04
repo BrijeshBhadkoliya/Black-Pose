@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">PRODUCT</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="">Product</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page"> Bulkimport </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">   
+                            <!-- Start row -->            
+                            <div class="row ">
+                                 <!-- Start col -->
+                                 <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">                                
+                                            
+                                                <h5>BULKIMPORT</h5>
+                                                
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                           <h6>Instructions :</h5>
+                                           <ol>
+                                                <li class="mb-2">
+                                                    Download the format file and fill it with proper data.
+                                                </li>
+                                                <li class="mb-2">You can download the example file to understand how the data must be filled.</li>
+                                                <li class="mb-2">Once you have downloaded and filled the format file upload it in the form below and submit.</li>
+                                                <li class="mb-2">After uploading products you need to edit them and set product s images and choices.</li>
+                                                <li class="mb-2"> You can get category and sub-category id from their list please input the right ids.</li>
+                                           </ol>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                                 <!-- Start col -->
+                                 <div class="col-lg-12">
+                                    <div class="card m-x-30">
+                                        <div class="card-body">                                
+                                            <div class="row justify-content-between">
+                                                <h4 class="m-l-10">Import products file</h4>
+                                                <a href="/product/download_formet"><button class="btn btn-primary m-r-35">Download Format</button></a>
+                                             
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <form action="/product/uploadcsv" method="post" enctype="multipart/form-data" class="needs-validation">
+                                                        <div class="form-group">
+                                                            <label for="impCSV">Product file</label>
+                                                            <input type="file" class="form-control border-secondary" id="impCSV" name="impCSV" required>
+                                                        </div>
+                                                        <div class="form-group m-t-45">
+                                                            <button class="btn btn-success  " type="submit" value="submit">Upload</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End col -->
+                        
+                            <!-- End row --> 
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+    
+</body>
+
+</html>

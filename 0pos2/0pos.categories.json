@@ -1,0 +1,163 @@
+[{
+  "_id": {
+    "$oid": "63479dd74640062aa0c6033e"
+  },
+  "catName": "Fruits & Vegetables",
+  "catImg": "16656378471891663586520799pexels-justin-doherty-4929720.jpg",
+  "status": "active",
+  "subcatNames": [
+    {
+      "subcatname": "Dry Fruits & Vegetables",
+      "_id": {
+        "$oid": "63479fed4640062aa0c603fe"
+      }
+    },
+    {
+      "subcatname": "Fresh Vegetables",
+      "_id": {
+        "$oid": "63479ff74640062aa0c60411"
+      }
+    },
+    {
+      "subcatname": "Fresh Fruits",
+      "_id": {
+        "$oid": "6347a0144640062aa0c60426"
+      }
+    }
+  ],
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "63479e374640062aa0c60344"
+  },
+  "catName": "Fashion & Lifestyles",
+  "catImg": "1665637943543pexels-yuri-manei-2690323.jpg",
+  "status": "active",
+  "subcatNames": [
+    {
+      "subcatname": "Bags & Travels",
+      "_id": {
+        "$oid": "63479ea84640062aa0c60352"
+      }
+    },
+    {
+      "subcatname": "Men",
+      "_id": {
+        "$oid": "63479eb94640062aa0c60359"
+      }
+    },
+    {
+      "subcatname": "Kids",
+      "_id": {
+        "$oid": "63479ec44640062aa0c60362"
+      }
+    },
+    {
+      "subcatname": "Women",
+      "_id": {
+        "$oid": "63479ed14640062aa0c6036d"
+      }
+    }
+  ],
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "63479e424640062aa0c60348"
+  },
+  "catName": "Beverages",
+  "catImg": "1665637953994pexels-fauxels-3184192.jpg",
+  "status": "active",
+  "subcatNames": [
+    {
+      "subcatname": "Water",
+      "_id": {
+        "$oid": "63479f0f4640062aa0c60376"
+      }
+    },
+    {
+      "subcatname": "Energy Drinks",
+      "_id": {
+        "$oid": "63479f194640062aa0c60381"
+      }
+    },
+    {
+      "subcatname": "Soft Drinks",
+      "_id": {
+        "$oid": "63479f234640062aa0c6038e"
+      }
+    },
+    {
+      "subcatname": "Juice",
+      "_id": {
+        "$oid": "63479f364640062aa0c6039d"
+      }
+    },
+    {
+      "subcatname": "Tea",
+      "_id": {
+        "$oid": "63479f474640062aa0c603bd"
+      }
+    }
+  ],
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "63479e4c4640062aa0c6034c"
+  },
+  "catName": "Breads, Biscuits & Cakes",
+  "catImg": "1665637964457pexels-nicole-michalou-6062020.jpg",
+  "status": "active",
+  "subcatNames": [
+    {
+      "subcatname": "Breads",
+      "_id": {
+        "$oid": "63479f534640062aa0c603cb"
+      }
+    },
+    {
+      "subcatname": "Cakes",
+      "_id": {
+        "$oid": "63479f654640062aa0c603db"
+      }
+    },
+    {
+      "subcatname": "Biscuits",
+      "_id": {
+        "$oid": "63479fcc4640062aa0c603ed"
+      }
+    }
+  ],
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "6347a02d4640062aa0c60449"
+  },
+  "catName": "Food",
+  "catImg": "1665638445144pexels-cottonbro-5607954.jpg",
+  "status": "active",
+  "subcatNames": [
+    {
+      "subcatname": "\t Asian",
+      "_id": {
+        "$oid": "6347a0404640062aa0c6046d"
+      }
+    },
+    {
+      "subcatname": "\t Indian",
+      "_id": {
+        "$oid": "6347a04f4640062aa0c60483"
+      }
+    },
+    {
+      "subcatname": "sauth Indian",
+      "_id": {
+        "$oid": "6347a0634640062aa0c6049b"
+      }
+    }
+  ],
+  "__v": 3
+}]

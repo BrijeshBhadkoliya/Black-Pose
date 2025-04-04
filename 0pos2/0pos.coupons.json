@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "6347a1c84640062aa0c604e3"
+  },
+  "Titel": "Festival",
+  "Code": "BImEED",
+  "limitSame": 10,
+  "startDate": {
+    "$date": "2022-10-16T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2022-10-22T00:00:00.000Z"
+  },
+  "disType": "percent",
+  "disAmount": 5,
+  "minOrder": 5000,
+  "maxDiscount": 250,
+  "couponType": "Default",
+  "status": "active",
+  "__v": 9,
+  "user": [
+    "6347a35b4640062aa0c60571"
+  ]
+},
+{
+  "_id": {
+    "$oid": "634e3084535d5692871d46e2"
+  },
+  "Titel": "Welcome Coupon",
+  "Code": "P5xJPz",
+  "limitSame": 1,
+  "startDate": {
+    "$date": "2022-10-12T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-06-04T00:00:00.000Z"
+  },
+  "disType": "Amount",
+  "disAmount": 100,
+  "minOrder": 1000,
+  "maxDiscount": 100,
+  "couponType": "firstoder",
+  "status": "active",
+  "user": [
+    "6347a3ab4640062aa0c60579",
+    "634a3a6334b9facc223ee18b"
+  ],
+  "__v": 2
+}]

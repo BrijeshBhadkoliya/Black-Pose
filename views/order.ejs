@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">ORDER</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/user/pos">POS</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Order List</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">   
+                            <!-- Start row -->            
+                            <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header m-b-0 ">
+                                            <div class="row ">
+                                                <div class="col-12">
+                                                    <h5>ORDER LIST</h5>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        
+                                        <div class="card-body gx-30">  
+                                            <div class="table-responsive">
+                                                <table id="default-datatable" class="display table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th> SR</th>
+                                                            <th> ORDER</th>
+                                                            <th> DATE</th>
+                                                            <th> PAYMENT METHOD</th>
+                                                            <th> ORDER AMOUNT</th>
+                                                            <th> TOTAL TAX</th>
+                                                            <th> DISCOUNT</th>
+                                                            <th> COUPON DISCOUNT</th>
+                                                            <th> PAID AMOUNT</th>
+                                                            <th> ACTIONS</th>
+                                                          
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="justify-content-center">
+                                                        <% var i = 1 %>
+                                                        <% data.forEach((order)=>{ %>
+                                                            <tr>
+                                                                <td><%=i%></td>
+                                                                <td><%=order.orderId%></td>
+                                                                <td><%=order.createdAt.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%></td>
+                                                                <td><%=order.paymentMethod.type%></td>
+                                                                <td><%=order.SubTotal%></td>
+                                                                <td><%=order.Tax%></td>
+                                                                <td><%=order.Productdiscount%></td>
+                                                                <td><%=order.Coupondiscount%></td>
+                                                                <td><%=order.Amount%></td>
+                                                                <td>
+                                                                    
+                                                                    <button class="btn  btn-primary-rgba" id="pos_order_invoice" value="<%=order._id%>"><i class="dripicons-download mr-2"></i>Invoice</button></td> 
+                                                            </tr>
+                                                            
+                                                            <% i++ %>
+                                                        <% }) %>
+                                                        
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End col -->
+                            
+                            <!-- End row --> 
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+                         <!-- invoice model start -->
+
+                         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog " role="document">
+                                <div class="modal-content" id="invoicemodal">
+                                   
+                                      
+                                </div>
+                            </div>
+                        </div>
+                        <!-- invoice model End -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+   
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+    
+   
+  
+</body>
+
+</html>

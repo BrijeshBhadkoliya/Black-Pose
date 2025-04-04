@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./onestep/meta & links')-%>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <section class="vh-100">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-12">
+            <div class="card">
+              <div class="row g-0">
+                <div class="col-md-6 col-lg-7 d-md-block m-b-25">
+                  <img
+                    src="/images/9.JPG"
+                    alt="login form"
+                    class="img-fluid img"
+                  />
+                </div>
+                <div class="col-md-6 col-lg-5 d-flex align-items-center">
+                  <div class="card-body p-5 p-lg-x-5 text-black">
+                    <div id="getmsg"></div>
+
+                    <div class="d-flex align-items-center mb-3 pb-1">
+                      <img
+                        src="images/blackPOSlogo.png"
+                        alt="logo"
+                        width="150px"
+                      />
+                    </div>
+
+                    <h5 class="fw-normal mb-3 pb-3">Validate Your Account</h5>
+
+                    <div class="mb-3">
+                      <label class="mb-1"
+                        ><strong>Enter Envato Purchase Code</strong></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="inputCode"
+                        placeholder="Enter Envato Purchase Code"
+                        required
+                      />
+                      <input type="hidden" name="type" value="login" />
+                    </div>
+                    <div class="text-center">
+                      <button
+                        id="sub_activate"
+                        class="btn btn-primary btn-block"
+                      >
+                        Activate Domain
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- End Toastr -->
+
+    <!-- start JS -->
+
+    <%- include('./onestep/script')-%>
+
+    <!--  Bootstrap Bundle with Popper -->
+  </body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">COUPON</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/coupon/list">Coupon</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">UpdateCoupon</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-0">
+                                        <div class="card-header">                                
+                                            
+                                                <h5 class="card-title mb-0">UPDATE COUPON</h5>
+                                                
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <form method="post" action="/coupon/update/<%=data._id%>"  >
+                                                        <div class="row">
+                                                            <div class="col-6 ">
+                                                                <div class="form-group">
+                                                                    <label for="Titel">Titel</label>
+                                                                    <input type="text" class="form-control border-secondary" id="Titel" name="Titel"  value="<%=data.Titel%>">
+                                                                </div>
+                                                            
+                                                            
+                                                                <div class="form-group">
+                                                                    <label for="couponType">Coupon type </label>
+                                                                    <select name="couponType" id="couponType" class="form-control border-secondary">
+                                                                       <option value="Default" <% data.couponType == 'Default' ? 'selected' : '' %>>Default</option>
+                                                                       <option value="firstoder" <% data.couponType == 'firstoder' ? 'selected' : '' %> >First Order</option>
+                                
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="startDate">Start date </label>
+                                                                    <input type="date" class="form-control border-secondary" id="startDate" name="startDate" value="<%=data.startDate.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%>">
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="disType">Discount type</label>
+                                                                    <select name="disType" id="disType" class="form-control border-secondary">
+                                                                        <option value="percent" <% data.disType == 'percent' ? 'selected' : '' %> >percent (%)</option>
+                                                                        <option value="Amount" <% data.disType == 'Amount' ? 'selected' : '' %> > Amount</option>
+                                                                    </select>
+                                                                </div>
+                                                               
+                                                                <div class="form-group">
+                                                                    <label for="minOrder">Minmum purchase Order</label>
+                                                                    <input type="number" class="form-control border-secondary" id="minOrder" name="minOrder" min="0"  value="<%=data.minOrder%>">
+                                                                </div>
+                                                                <div class="form-group m-t-45">
+                                                                    <button class="btn btn-success " type="submit" value="submit"><i class="dripicons-checkmark"></i> Update </button>
+                                                                </div> 
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="row">
+                                                                    <div class="col-9">
+                                                                        <div class="form-group">
+                                                                            <label for="ccode">Coupon code<span> (6 charector required)</span></label>
+                                                                            <input type="text" class="form-control border-secondary" id="ccode" name="Code" maxlength="6" minlength="6"  value="<%=data.Code%>">
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3 m-t-30">
+                                                                        <div class="form-group">
+                                                                            <button class="btn btn-primary" id="gen_code"><i class="fa fa-refresh" aria-hidden="true" ></i> Generate code</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="limitSame">Limit for same user</label>
+                                                                    <input type="number" class="form-control border-secondary" id="limitSame" name="limitSame" min="1" value="<%=data.limitSame%>">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="endDate">Expire date</label>
+                                                                    <input type="date" class="form-control border-secondary" id="endDate" name="endDate" value="<%=data.endDate.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%>">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label id="disAmount" for="disAmount">Discount Amount </label>
+                                                                    <input type="number" class="form-control border-secondary" id="disAmount" name="disAmount" min="0" value="<%=data.disAmount%>">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="maxDiscount"> Max Discount</label>
+                                                                    <input type="number" class="form-control border-secondary" id="maxDiscount" name="maxDiscount" min="0" value="<%=data.maxDiscount%>">
+                                                                </div>
+                                                            
+                                                                
+                                                                  
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                        
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                            
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  
+</body>
+</html>

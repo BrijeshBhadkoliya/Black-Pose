@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">Customer</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/coustomer/list">Customer</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Update Customer</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">                                
+                                            
+                                                <h5 class="card-title mb-0">UPDATE Customer</h5>
+                                                
+                                            
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row ">
+                                                <div class="col-lg-6">
+                                                    <form method="post" action="/coustomer/coustomer-update/<%=data._id%>" enctype="multipart/form-data" class="needs-validation" >
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="cousName">Customer Name</label>
+                                                            <input type="text" class="form-control border-secondary" id="cousName" name="cousName"  value="<%=data.cousName%>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="cousMobile">Customer Mobile Number</label>
+                                                            <input type="number" class="form-control border-secondary" id="cousMobile" name="cousMobile"  value="<%=data.cousMobile%>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="cousEmail">Customer Email</label>
+                                                            <input type="email" class="form-control border-secondary" id="cousEmail" name="cousEmail"  value="<%=data.cousEmail%>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="cousAddres">Customer Address</label>
+                                                            <input type="text" class="form-control border-secondary" id="cousAddres" name="cousAddres"  value="<%=data.cousAddres%>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="cousState">State</label>
+                                                            <input type="text" class="form-control border-secondary" id="cousState" name="cousState"  value="<%=data.cousState%>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="cousPINcode">PIN code</label>
+                                                            <input type="text" class="form-control border-secondary" id="cousPINcode" name="cousPINcode"  value="<%=data.cousPINcode%>">
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="couImg">Customer Image</label>
+                                                            <input type="file" class="form-control border-secondary" id="couImg" name="couImg" accept='image/*' onchange="document.getElementById('catdemoimg').src = window.URL.createObjectURL(this.files[0])" >
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <button class="btn btn-success" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="col- col-lg-6  ">
+                                                    <div class="img m-t-50 ">
+                                                       
+                                                        <div class="col-lg-12 justify-content-center ">
+                                                           <center>
+                                                                <img id="catdemoimg" alt="your image"  src="/uploads/resized/<%=data.cousImage%>"/>
+                                                                <h5>Image Preview </h5>
+                                                           </center>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                           
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  
+</body>
+</html>

@@ -1,0 +1,147 @@
+[{
+  "_id": {
+    "$oid": "6347abf771fcffe64ee6421b"
+  },
+  "Name": "Kurti",
+  "proCode": "MCFHQBF6",
+  "brand": "balenciaba",
+  "quantity": 168,
+  "unitType": "Nos",
+  "unitValue": 950,
+  "category": "Fashion & Lifestyles",
+  "SubCategory": "Women",
+  "sellingPrice": 950,
+  "purchasePrice": 650,
+  "discountType": "Amount",
+  "discount": 100,
+  "tax": 8,
+  "supplier": "Jally Fashion",
+  "productImage": "1665641463802pexels-karen-laÃ¥rk-boshoff-8125856.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347b29f1270d1f07b60c1c1"
+  },
+  "Name": "Sky Blue Shirt",
+  "proCode": "5ZVKENW1",
+  "brand": "black & white",
+  "quantity": 107,
+  "unitType": "Nos",
+  "unitValue": 640,
+  "category": "Fashion & Lifestyles",
+  "SubCategory": "Men",
+  "sellingPrice": 640,
+  "purchasePrice": 290,
+  "discountType": "percent",
+  "discount": 10,
+  "tax": 12,
+  "supplier": "Jally Fashion",
+  "productImage": "1665643167475pexels-erik-mclean-6342786.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347b2eb1270d1f07b60c1f9"
+  },
+  "Name": "Kinle mineral water",
+  "proCode": "VKBLWTR3",
+  "brand": "louis vuitton",
+  "quantity": 57,
+  "unitType": "Ltr",
+  "unitValue": 10,
+  "category": "Beverages",
+  "SubCategory": "Water",
+  "sellingPrice": 100,
+  "purchasePrice": 60,
+  "discountType": "Amount",
+  "discount": 0,
+  "tax": 12,
+  "supplier": "exostica fruit",
+  "productImage": "1665643243672pexels-leonardo-gonzalez-1467475.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347b60d4d3c2d190a985c37"
+  },
+  "Name": "Juice",
+  "proCode": "O9K1SY2O",
+  "brand": "6amFood",
+  "quantity": 41,
+  "unitType": "mtr",
+  "unitValue": 50,
+  "category": "Fruits & Vegetables",
+  "SubCategory": "Fresh Fruits",
+  "sellingPrice": 50,
+  "purchasePrice": 40,
+  "discountType": "Amount",
+  "discount": 0,
+  "tax": 10,
+  "supplier": "exostica fruit",
+  "productImage": "16656440454111663560521395pexels-pranjall-kumar-8600079.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347b6534d3c2d190a985c95"
+  },
+  "Name": "Marvel bag",
+  "proCode": "VUSACXLZ",
+  "brand": "adidas",
+  "quantity": 61,
+  "unitType": "Nos",
+  "unitValue": 500,
+  "category": "Fashion & Lifestyles",
+  "SubCategory": "Bags & Travels",
+  "sellingPrice": 500,
+  "purchasePrice": 390,
+  "discountType": "percent",
+  "discount": 5,
+  "tax": 10,
+  "supplier": "Extreme Stationary",
+  "productImage": "1665644115017pexels-karen-laÃ¥rk-boshoff-8281768.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347b6aa4d3c2d190a985ce7"
+  },
+  "Name": "cream roll",
+  "proCode": "8QG24SIC",
+  "brand": "6amFood",
+  "quantity": 34,
+  "unitType": "Nos",
+  "unitValue": 10,
+  "category": "Breads, Biscuits & Cakes",
+  "SubCategory": "Biscuits",
+  "sellingPrice": 10,
+  "purchasePrice": 7,
+  "discountType": "Amount",
+  "discount": 0,
+  "tax": 0,
+  "supplier": "Gokul Bekery",
+  "productImage": "1665644202108pexels-fauxels-3184192.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6364d6b66afe53d6f278665d"
+  },
+  "Name": "Palazzo",
+  "proCode": "WT8XN8GP",
+  "brand": "adidas",
+  "quantity": 8,
+  "unitType": "Nos",
+  "unitValue": 250,
+  "category": "Fashion & Lifestyles",
+  "SubCategory": "Women",
+  "sellingPrice": 250,
+  "purchasePrice": 190,
+  "discountType": "Amount",
+  "discount": 0,
+  "tax": 12,
+  "supplier": "Extreme Stationary",
+  "productImage": "1667552950172pexels-karen-laÃ¥rk-boshoff-8125856.jpg",
+  "__v": 0
+}]

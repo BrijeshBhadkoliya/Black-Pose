@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h4 class="page-title">Profile</h4>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+        
+                                            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+                        <!-- user image section -->
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                        
+                            <!-- End Row -->
+                            <!-- user basic information -->
+                            <!-- start Row -->
+                            <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">
+                                            <h4 class="text-primary-gradient dark">Basic information</h4>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <div class="text-center mb-5">
+                                             <img id="catdemoimg" class="rounded-circle " alt="your image" width="150" height="150" src="/uploads/resized/<%=data.img%>"/></div>
+                                            <div class="row">
+                                                <div class="col-lg-12 ">
+                                                   
+                                                    <form method="post" action="/update/<%=data._id%>" enctype="multipart/form-data" class="needs-validation" >
+                                                       
+                                                        <div class="form-group row">
+                                                            <label for="firstName" class="col-sm-2 col-form-label">Full Name </label>
+                                                            <input type="text" class="form-control border-secondary col-sm-4 mr-2" id="firstName" name="firstName" value="<%=data.firstName%>" required>
+
+                                                            <input type="text" class="form-control border-secondary col-sm-4" id="lastName" name="lastName" value="<%=data.lastName%>" required>
+                                                        </div>  
+                                                        <div class="form-group row">
+                                                            <label for="mobile" class="col-sm-2 col-form-label">Phone (Optional)</label>
+                                                            <input type="number" class="form-control border-secondary col-sm-8" id="mobile" name="mobile" value="<%=data.mobile%>" required>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                                                            <input type="email" class="form-control border-secondary col-sm-8" id="email" name="email" value="<%=data.email%>" required>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label" for="Profile">Profile Picture</label>
+                                                            <input type="file" class="form-control border-secondary col-sm-2" id="Profile" name="Profile" accept='image/*' onchange="document.getElementById('catdemoimg').src = window.URL.createObjectURL(this.files[0])" >
+                                                           
+                                                        </div>
+                                                        <div class="form-group row justify-content-center">
+                                                            <button class="btn btn-rounded btn-primary" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save Change</button>
+                                                        </div>
+                                                    </form>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                            <!-- Password Change -->
+                            <!-- start Row -->
+                            <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30">
+                                        <div class="card-header">
+                                            <h4 class="text-primary-gradient dark">Change Password</h4>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 ">
+                                                    <form method="post" action="/updatep/<%=data._id%>" enctype="multipart/form-data" class="needs-validation" >
+                                                       
+                                                         
+                                                        <div class="form-group row">
+                                                            <label for="password" class="col-sm-2 col-form-label">New password</label>
+                                                            <input type="password" class="form-control border-secondary col-sm-6" id="password" name="password" required>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="cpassword" class="col-sm-2 col-form-label">Confirm password</label>
+                                                            <input type="password" class="form-control border-secondary col-sm-6" id="cpassword" name="cpassword"  required>
+                                                        </div>
+                                                        <div class="form-group row justify-content-center">
+                                                            <button class="btn btn-rounded btn-primary" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save Change</button>
+                                                        </div>
+                                                    </form>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                           
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  
+</body>
+</html>

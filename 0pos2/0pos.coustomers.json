@@ -1,0 +1,62 @@
+[{
+  "_id": {
+    "$oid": "6347a35b4640062aa0c60571"
+  },
+  "cousName": "nikhil",
+  "cousMobile": 251436,
+  "cousEmail": "nikhil@gmail.com",
+  "cousAddres": "varachha, Surat",
+  "cousState": "gujarat",
+  "cousPINcode": "360005",
+  "cousImage": "1665639259864pexels-tim-mossholder-3612885.jpg",
+  "Balance": 3422,
+  "order": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a3774640062aa0c60575"
+  },
+  "cousName": "Alexander",
+  "cousMobile": 55248961,
+  "cousEmail": "alex@hotmail.com",
+  "cousAddres": "Arizona,USA",
+  "cousState": "Arizona",
+  "cousPINcode": " 2900",
+  "cousImage": "1665639287817pexels-snapwire-185364.jpg",
+  "Balance": 1348,
+  "order": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6347a3ab4640062aa0c60579"
+  },
+  "cousName": "mariya wox",
+  "cousMobile": {
+    "$numberLong": "5824169578"
+  },
+  "cousEmail": "mariya@gmail.com",
+  "cousAddres": "Arizona,USA",
+  "cousState": "Arizona",
+  "cousPINcode": " 2900",
+  "cousImage": "1665639339228pexels-karen-laÃ¥rk-boshoff-8125856.jpg",
+  "Balance": 1152,
+  "order": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "634a3a6334b9facc223ee18b"
+  },
+  "cousName": "walking customer",
+  "cousMobile": null,
+  "cousEmail": "",
+  "cousAddres": "",
+  "cousState": "",
+  "cousPINcode": "",
+  "cousImage": "1665808995678pexels-tim-mossholder-3612885.jpg",
+  "Balance": 0,
+  "order": [],
+  "__v": 0
+}]

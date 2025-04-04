@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- meta and links start -->
+     <%- include('./onestep/meta & links')-%> 
+    
+    
+     <!-- meta and links end -->
+
+</head>
+<body class="vertical-layout">
+  <!-- Start Containerbar -->
+  <div id="containerbar">
+    <!-- Start Leftbar -->
+    <%- include('./onestep/Leftbar')-%> 
+    <!-- End Leftbar -->
+
+    <!-- Start Rightbar -->
+    <div class="rightbar">
+                <!-- Start Topbar -->
+                <%- include('./onestep/Topbar')-%>
+                <!-- End Topbar -->
+
+
+                <!-- Start Breadcrumbbar -->                    
+                <div class="breadcrumbbar">
+                    <div class="row align-items-center">
+                        <div class="col-md-12 col-lg-8">
+                            <h4 class="page-title">SHOP SETUP</h4>
+                            <div class="breadcrumb-list">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+
+                                    <li class="breadcrumb-item active" aria-current="page">Update Roles</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+                <!-- End Breadcrumbbar -->
+
+
+                <!-- Start Contentbar -->    
+                <div class="contentbar">  
+                     <!-- Start row -->
+                     <div class="row">
+
+                        <!-- Start col -->
+                        <div class="col-lg-12">
+                            <div class="card m-b-30">
+                              <div class="card-header row d-flex">
+                                <h4 class="text dark col-4">Update User Role</h4>
+                                <a href="/userrole/delet/<%=role._id%>" class=" btn btn-outline-danger font-weight-bold h2 col-2 setdelet ">Remove <%=role.titel%></a>
+                              </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-12 ">
+                                            <form  method="post" action="/userrole/updaterole/<%=role._id%>">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="titel"><span class="text-danger">*</span> TITLE</label>
+                                                        <input type="text" id="titel" class="form-control form-control-sm border-secondary col-sm-8 " name="titel" value="<%=role.titel%>"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <h5>Permissions</h5>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Category</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="category" value="views" <%= role.category.includes("views")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="category" value="update" <%= role.category.includes("update")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="category" value="delet" <%= role.category.includes("delet")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="category" value="add" <%= role.category.includes("add")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Brand</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="brand" value="views" <%= role.brand.includes("views")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="brand" value="update" <%= role.brand.includes("update")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="brand" value="delet" <%= role.brand.includes("delet")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="brand" value="add" <%= role.brand.includes("add")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Product</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="product" value="views" <%= role.product.includes("views")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="product" value="update" <%= role.product.includes("update")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="product" value="delet" <%= role.product.includes("delet")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="product" value="add" <%= role.product.includes("add")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Limit Product List</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="limit_product_list" value="views" <%= role.limit_product_list.includes("views")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="limit_product_list" value="update" <%= role.limit_product_list.includes("update")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="limit_product_list" value="delet" <%= role.limit_product_list.includes("delet")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="limit_product_list" value="add" <%= role.limit_product_list.includes("add")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Coupon</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="coupon" value="views" <%= role.coupon.includes("views")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="coupon" value="update" <%= role.coupon.includes("update")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="coupon" value="delet" <%= role.coupon.includes("delet")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="coupon" value="add" <%= role.coupon.includes("add")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Account</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="account" value="views" <%= role.account.includes("views")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="account" value="update" <%= role.account.includes("update")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="account" value="delet" <%= role.account.includes("delet")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="account" value="add" <%= role.account.includes("add")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Income</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="income" value="views" <%= role.income.includes("views")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="income" value="update" <%= role.income.includes("update")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="income" value="delet" <%= role.income.includes("delet")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="income" value="add" <%= role.income.includes("add")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Expense</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="expense" value="views" <%= role.expense.includes("views")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="expense" value="update" <%= role.expense.includes("update")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="expense" value="delet" <%= role.expense.includes("delet")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="expense" value="add" <%= role.expense.includes("add")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Customer</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="coustomer" value="views" <%= role.coustomer.includes("views")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="coustomer" value="update" <%= role.coustomer.includes("update")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="coustomer" value="delet" <%= role.coustomer.includes("delet")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="coustomer" value="add" <%= role.coustomer.includes("add")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Supplier</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="supplier" value="views" <%= role.supplier.includes("views")? 'checked' :'' %>>
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="supplier" value="update" <%= role.supplier.includes("update")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="supplier" value="delet" <%= role.supplier.includes("delet")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="supplier" value="add" <%= role.supplier.includes("add")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-2">Setting</div>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="views" name="setting" value="views" <%= role.setting.includes("views")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="views">views</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="update" name="setting" value="update" <%= role.setting.includes("update")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="update">update</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="delet" name="setting" value="delet" <%= role.setting.includes("delet")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="delet">delet</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="add" name="setting" value="add" <%= role.setting.includes("add")? 'checked' :'' %> >
+                                                                    <label class="form-check-label" for="add">add</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-group row justify-content-center">
+                                                <button class="btn btn-primary col-2 setupdate " type="submit" value="submit"><i class="dripicons-checkmark"></i> Save User</button>
+                                                </div>
+                                            </form>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>            
+                        </div>
+                        <!-- End col --> 
+
+
+                    </div>
+                    <!-- End row -->  
+                   
+                </div>
+                <!-- End Contentbar -->
+               
+
+
+                <!-- Start Footerbar -->
+                <%- include('./onestep/footerbar')-%>
+                <!-- end Footerbar -->
+    </div>
+    <!-- Start Rightbar -->  
+   
+</div>
+<!-- end Containerbar -->
+
+<!-- start Toastr -->
+<%- include('./onestep/toastr')-%>
+<!-- End Toastr -->
+
+<!-- start JS -->
+<%- include('./onestep/script')-%>
+<!-- end JS -->
+  
+   
+</body>
+</html>

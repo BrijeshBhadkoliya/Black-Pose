@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%>
+
+    <!-- meta and links end -->
+  </head>
+  <body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+      <!-- Start Leftbar -->
+      <%- include('./onestep/Leftbar')-%>
+      <!-- End Leftbar -->
+
+      <!-- Start Rightbar -->
+      <div class="rightbar">
+        <!-- Start Topbar -->
+        <%- include('./onestep/Topbar')-%>
+        <!-- End Topbar -->
+
+        <!-- Start Breadcrumbbar -->
+        <div class="breadcrumbbar">
+          <div class="row align-items-center">
+            <div class="col-md-12 col-lg-8">
+              <h4 class="page-title">CATEGORY</h4>
+              <div class="breadcrumb-list">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                  <li class="breadcrumb-item"><a href="">Category</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    Category List
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Breadcrumbbar -->
+
+        <!-- Start Contentbar -->
+        <div class="contentbar">
+          <!-- Start row -->
+          <div class="row">
+            <!-- Start col -->
+            <div class="col-lg-12 catadd">
+              <div class="card m-b-30">
+                <div class="card-body">
+                  <h5 class="card-title mb-0">ADD CATEGORY</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <form
+                        method="post"
+                        action="/category/catlist-add"
+                        enctype="multipart/form-data"
+                        class="needs-validation"
+                      >
+                        <div class="form-group">
+                          <label for="catName">Category Name</label>
+                          <input
+                            type="text"
+                            class="form-control border-secondary"
+                            id="catName"
+                            name="catName"
+                            required
+                          />
+                          <input
+                          type="hidden"
+                          class="form-control border-secondary"
+                          id="catName"
+                          name="userid"
+                          value="<%= userdata._id %>"
+                          required
+                        />
+                        </div>
+                        <div class="form-group">
+                          <label for="catImg">Category Image</label>
+                          <input
+                            type="file"
+                            class="form-control border-secondary"
+                            id="catImg"
+                            name="catImg"
+                            accept="image/*"
+                            onchange="document.getElementById('catdemoimg').src = window.URL.createObjectURL(this.files[0])"
+                            required
+                          />
+                        </div>
+                        <br />
+                        <div class="form-group">
+                          <button
+                            class="btn btn-success"
+                            type="submit"
+                            value="submit"
+                          >
+                            <i class="dripicons-checkmark"></i> Save
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col- col-lg-6">
+                      <div class="img align-items-center">
+                        <div class="col-lg-12">
+                          <center>
+                            <img
+                              id="catdemoimg"
+                              alt="your image"
+                              src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
+                              width="300px"
+                            />
+                            <h5>Image Preview</h5>
+                          </center>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End col -->
+          </div>
+          <!-- End row -->
+          <!-- Start row -->
+          <div class="row">
+            <!-- Start col -->
+            <div class="col-lg-12">
+              <div class="card m-b-30">
+                <div class="card-body">
+                  <h5>Category List</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      id="default-datatable"
+                      class="display table table-bordered"
+                    >
+                      <thead>
+                        <tr>
+                          <th>Sr No</th>
+                          <th>Category Name</th>
+                          <th>Category Image</th>
+                          <th>status</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% var i = 1 %> <% data.forEach((cat)=>{ %>
+                        <tr>
+                          <td><%=i%></td>
+                          <td><%=cat.catName%></td>
+                          <td>
+                            <img
+                              src="../uploads/resized/<%=cat.catImg%>"
+                              class="rounded"
+                              width="50px"
+                              height="50px"
+                              alt=""
+                            />
+                          </td>
+                          <td class="catupdate">
+                            <div class="check-box">
+                              <input type="checkbox"
+                              class="js-switch-primary-small" id="cat_status" onclick="setstues('<%=cat._id%>')" <%= cat.status == 'active'
+                              ? 'checked' : '' %> />
+                            </div>
+                          </td>
+                          <td>
+                            <a
+                              href="/category/updateCategory/<%=cat._id%>"
+                              class="btn btn-round btn-success catupdate"
+                              ><i class="feather icon-edit"></i
+                            ></a>
+                            <a
+                              href="/category/delcat/<%=cat._id%>"
+                              class="btn btn-round btn-danger catdelet"
+                              ><i class="feather icon-trash-2"></i
+                            ></a>
+                          </td>
+                        </tr>
+                        <% i++ %> <% }) %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End col -->
+          </div>
+          <!-- End row -->
+        </div>
+        <!-- End Contentbar -->
+
+        <!-- Start Footerbar -->
+        <%- include('./onestep/footerbar')-%>
+        <!-- end Footerbar -->
+      </div>
+      <!-- Start Rightbar -->
+    </div>
+    <!-- end Containerbar -->
+    <script>
+       async function setstues(id){
+            const catId = id
+            console.log(catId);
+
+        //   const newStatus = this.checked ? "active" : "deactive";
+
+          const response = await fetch(`/category/updateCatstatus/${catId}`, {
+            method: "GET",
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            console.log(result.success);
+          } else {
+            alert("Error updating status");
+          }
+        }
+     
+        
+    </script>
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  </body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta and links start -->
+    <%- include('./onestep/meta & links')-%> 
+    
+    
+    <!-- meta and links end -->
+     
+</head>
+<body class="vertical-layout">
+    <!-- Start Containerbar -->
+    <div id="containerbar">
+            <!-- Start Leftbar -->
+            <%- include('./onestep/Leftbar')-%> 
+            <!-- End Leftbar -->
+
+            <!-- Start Rightbar -->
+            <div class="rightbar">
+                        <!-- Start Topbar -->
+                        <%- include('./onestep/Topbar')-%>
+                        <!-- End Topbar -->
+
+
+                        <!-- Start Breadcrumbbar -->                    
+                        <div class="breadcrumbbar">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 col-lg-8">
+                                    <h5 class="page-title">SUPPLIER</h5>
+                                    <div class="breadcrumb-list">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/supplier/list">Supplier</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Update Supplier</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>
+                        <!-- End Breadcrumbbar -->
+
+
+                        <!-- Start Contentbar -->    
+                        <div class="contentbar">  
+                             <!-- Start row -->
+                             <div class="row">
+                                <!-- Start col -->
+                                <div class="col-lg-12">
+                                    <div class="card m-b-0">
+                                        <div class="card-header">                                
+                                            
+                                                <h3 class="card-title mb-0">UPDATE SUPPLIER</h3>
+                                                
+                                           
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <form method="post" action="/supplier/updatesupplier/<%=data._id%>" enctype="multipart/form-data" class="needs-validation" >
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="supName">Supplier Name</label>
+                                                            <input type="text" class="form-control border-secondary" id="supName" name="supName"  value="<%=data.suppName%>">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="supEmail">Supplier Email</label>
+                                                            <input type="email" class="form-control border-secondary" id="supEmail" name="supEmail"  value="<%=data.suppEmail%>">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="supMob">Supplier Mobile Number</label>
+                                                            <input type="number" class="form-control border-secondary" id="supMob" name="supMob"  value="<%=data.suppMobile%>">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="supadrs">Supplier Address</label>
+                                                            <input type="text" class="form-control border-secondary" id="supadrs" name="supadrs"  value="<%=data.suppAddres%>">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="supstat">Supplier State</label>
+                                                            <input type="text" class="form-control border-secondary" id="supstat" name="supstat"  value="<%=data.suppState%>">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="suppico">Supplier PIN Code</label>
+                                                            <input type="text" class="form-control border-secondary" id="suppico" name="suppico"  value="<%=data.suppPINcode%>">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="supImg">Supplier Image</label>
+                                                            <input type="file" class="form-control border-secondary" id="supImg" name="supImg" accept='image/*' onchange="document.getElementById('catdemoimg').src = window.URL.createObjectURL(this.files[0])" >
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <button class="btn btn-success" type="submit" value="submit"><i class="dripicons-checkmark"></i> UPDATE</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="col- col-lg-6  ">
+                                                    <div class="img align-items-center ">
+                                                       
+                                                        <div class="col-lg-12  ">
+                                                           <center>
+                                                            <img id="catdemoimg" alt="your image" width="280" height="300" src="/uploads/resized/<%=data.suppImage%>"/>
+                                                            <br>
+                                                            <h5 class="m-t-20">Image Preview </h5>
+                                                           </center>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>            
+                                </div>
+                                <!-- End col --> 
+                            </div>
+                            <!-- End row -->  
+                            
+                        </div>
+                        <!-- End Contentbar -->
+                       
+
+
+                        <!-- Start Footerbar -->
+                        <%- include('./onestep/footerbar')-%>
+                        <!-- end Footerbar -->
+            </div>
+            <!-- Start Rightbar -->  
+           
+    </div>
+    <!-- end Containerbar -->
+   
+    <!-- start Toastr -->
+    <%- include('./onestep/toastr')-%>
+    <!-- End Toastr -->
+    
+    <!-- start JS -->
+    <%- include('./onestep/script')-%>
+    <!-- end JS -->
+  
+</body>
+</html>

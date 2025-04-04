@@ -1,0 +1,181 @@
+[{
+  "_id": {
+    "$oid": "63650caa66f5ffdae19cd996"
+  },
+  "titel": "admin",
+  "category": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "brand": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "limit_product_list": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "coupon": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "account": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "income": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "expense": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "coustomer": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "supplier": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "setting": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "__v": 0,
+  "product": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ]
+},
+{
+  "_id": {
+    "$oid": "63650de6db8ab92a015d152a"
+  },
+  "titel": "cashier",
+  "category": [
+    "views"
+  ],
+  "brand": [
+    "views"
+  ],
+  "limit_product_list": [
+    "update"
+  ],
+  "coupon": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "account": [
+    "views",
+    "update"
+  ],
+  "income": [
+    "views",
+    "add"
+  ],
+  "expense": [
+    "views",
+    "add"
+  ],
+  "coustomer": [
+    "views",
+    "update",
+    "add"
+  ],
+  "supplier": [
+    "views",
+    "update"
+  ],
+  "setting": [],
+  "__v": 0,
+  "product": [
+    "views"
+  ]
+},
+{
+  "_id": {
+    "$oid": "63650e6adb8ab92a015d152e"
+  },
+  "titel": "manager",
+  "category": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "brand": [
+    "views",
+    "update",
+    "delet",
+    "add"
+  ],
+  "limit_product_list": [
+    "views",
+    "update",
+    "add"
+  ],
+  "coupon": [
+    "views",
+    "update"
+  ],
+  "account": [
+    "views",
+    "update",
+    "add"
+  ],
+  "income": [
+    "views",
+    "update",
+    "add"
+  ],
+  "expense": [
+    "views",
+    "update",
+    "add"
+  ],
+  "coustomer": [
+    "views",
+    "update",
+    "add"
+  ],
+  "supplier": [
+    "views",
+    "update",
+    "add"
+  ],
+  "setting": [
+    "views"
+  ],
+  "__v": 0,
+  "product": [
+    "views",
+    "update",
+    "add"
+  ]
+}]
