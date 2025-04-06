@@ -12,7 +12,7 @@ const isAuth = (req,res,next)=>{
        return res.redirect('/login');
     }
    
-    var user = jwt.verify(token , process.env.KEY);
+    var user = jwt.verify(token ,"brijesh");
    
     if(!user){
        return res.redirect('/login');
@@ -21,7 +21,6 @@ const isAuth = (req,res,next)=>{
     req.user = user
     next();
 };
-
 
 const isAdmin = (req, res, next)=>{
     isAuth(req, res,async function(user){

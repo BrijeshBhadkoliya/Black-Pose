@@ -59,10 +59,9 @@ router.post("/login", async (req, res) => {
         id: user._id,
         role: user.role,
       },
-      process.env.KEY
+      "brijesh"
     );
 
-    req.session.admin = user;
     // send token vai cookies
     res.cookie("jwt", token, {
       expires: new Date(Date.now() + 1000 * 60 * 60),
@@ -77,7 +76,7 @@ router.post("/login", async (req, res) => {
 
 //  register get router
 router.get("/register", isAdmin, async (req, res) => {
-  const userdata = req.session.admin;
+  const userdata = req.user._id;
   if (userdata == undefined) {
     res.redirect("/");
   }
@@ -99,6 +98,7 @@ router.get("/register", isAdmin, async (req, res) => {
 router.post("/register", upload.single("img"), async (req, res) => {
   const roles = await UserRole.find({});
   const users = await User.find({});
+  // const userdata = req.user._id; 
 
   const {
     firstName,
@@ -113,7 +113,7 @@ router.post("/register", upload.single("img"), async (req, res) => {
   } = req.body;
 
   const userData = await User.findOne({ _id: userdata });
-
+ 
   // console.log(userData);
 
   const existUser = await User.findOne({ username: username });
@@ -341,88 +341,45 @@ router.get("/admin", isAuth, async (req, res) => {
     },
   ]);
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
-  const moment = require('moment');
 
+  const moment = require('moment');
   const currentYear = moment().year();
+  
   const chartdata = await Account.aggregate([
-    {
-      $unwind: {
-        path: "$transaction",
-      },
-    },
+    { $unwind: "$transaction" },
     {
       $match: {
-        $and: [
-          {
-            "transaction.type": {
-              $ne: "Transfer",
-            },
-          },
-          {
-            "transaction.type": {
-              $ne: "Payable",
-            },
-          },
-          {
-            "transaction.type": {
-              $ne: "Recivebal",
-            },
-          },
-          {
-            $expr: {
-              $eq: [{ $year: "$transaction.date" }, currentYear],
-            },
-          },
-        ],
-      },
-    },
-    {
-      $project: {
-        transactionDate: "$transaction.date",
-        _id: "$transaction.type",
-        debit: {
-          $sum: "$transaction.debit",
-        },
-        credit: {
-          $sum: "$transaction.credit",
-        },
-        Week: {
-          $week: "$transaction.date",
-        },
-      },
+        "transaction.type": { $nin: ["Transfer", "Payable", "Recivebal"] },
+        $expr: { $eq: [{ $year: "$transaction.date" }, currentYear] }
+      }
     },
     {
       $group: {
-        _id: "$Week",
-        income: {
-          $sum: "$credit",
-        },
-        expens: {
-          $sum: "$debit",
-        },
-        transactionDate: { $first: "$transactionDate" },
-      },
+        _id: { month: { $month: "$transaction.date" } },
+        income: { $sum: { $cond: [{ $eq: ["$transaction.type", "Income"] }, "$transaction.credit", 0] } },
+        expense: { $sum: { $cond: [{ $eq: ["$transaction.type", "Expense"] }, "$transaction.debit", 0] } },
+      }
     },
     {
-      $sort: {
-        _id: 1,
-      },
+      $project: {
+        month: "$_id.month",
+        income: 1,
+        expense: 1,
+        _id: 0
+      }
     },
+    { $sort: { month: 1 } }
   ]);
-    console.log(chartdata);
-    
-  const expenses = chartdata.map(data => data.expens)
-  const incomedata = chartdata.map(data => data.income) 
-  const transactionDate = chartdata.map(data => data.transactionDate) 
+
+ const fullIncome = Array(12).fill(0);
+const fullExpense = Array(12).fill(0);
+
+chartdata.forEach((item) => {
+  const idx = item.month - 1; // 0-based index
+  fullIncome[idx] = item.income;
+  fullExpense[idx] = item.expense;
+});
+
 
   res.render("admin", {
     success: req.flash("success"),
@@ -435,9 +392,9 @@ router.get("/admin", isAuth, async (req, res) => {
     payable: payable[0],
     recivebale: recivebale[0],
     chartdata: chartdata,
-    incomedata: incomedata,
-    expenses:expenses,
-    transactionDate: transactionDate,
+    incomedata: fullIncome,
+    expenses:fullExpense,
+    // transactionDate: transactionDate,
 
   });
 });

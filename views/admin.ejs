@@ -123,14 +123,14 @@
                                                      
                                                 </div>
                                                 <div class="col-4 m-b-40">
-                                                     <!-- <h4><%=(expense.debit).toFixed(2)%> $</h4> -->
+                                                     <h4><%=(expense.debit).toFixed(2)%> $</h4>
                                                      <p class="mb-1">Total Expense</p>
                                                  
                                                 </div>
                                                 
                                                 <div class="col-6 m-b-40">
                                                   
-                                                    <!-- <h4><%=(payable.credit - payable.debit).toFixed(2) %> $</h4> -->
+                                                    <h4><%=(payable.credit - payable.debit).toFixed(2) %> $</h4>
                                                      <p class="mb-1">Account Payable</p>
                                                   
                                                      
@@ -138,7 +138,7 @@
                                                 </div>
                                                 <div class="col-6 m-b-40">
                                                  
-                                                     <!-- <h4><%=(recivebale.credit - recivebale.debit).toFixed(2) %> $</h4>                                                   -->
+                                                     <h4><%=(recivebale.credit - recivebale.debit).toFixed(2) %> $</h4>                                                  
                                                     <p class="mb-1">Account Recivable</p>
                                                   
                                                 </div>
@@ -245,51 +245,51 @@
     <!-- end Containerbar -->
     <script>
         const ctx = document.getElementById('myChart').getContext('2d');
-    
-    
       
-        const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December']
-    const incomedata = <%= JSON.stringify(incomedata) %>;
-    const expenses =  <%= JSON.stringify(expenses) %> ;
-// console.log(charts);
-
-
+        const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'];
+        const incomedata = <%= JSON.stringify(incomedata) %>;
+        const expenses = <%= JSON.stringify(expenses) %>;
+      
         const chartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Expenses',
-          data: expenses,
-          borderColor: 'rgb(255, 99, 132)', 
-          fill: false,
-          tension: 0.1,
-        },
-        {
-          label: 'Income',
-          data: incomedata,
-          borderColor: 'rgb(54, 162, 235)',
-          fill: false,
-          tension: 0.1,
-        },
-      ],
-    };
-
-    // Create a line chart using Chart.js
-    const myChart = new Chart(ctx, {
-      type: 'line',  // Line chart type
-      data: chartData,  // Use the constructed chartData
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            beginAtZero: true,
-          },
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
+          labels: labels,
+          datasets: [
+            {
+              label: 'Income',
+              data: incomedata,
+              borderColor: 'rgb(75, 192, 192)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              tension: 0.3,
+              fill: true,
+            },
+            {
+              label: 'Expenses',
+              data: expenses,
+              borderColor: 'rgb(255, 99, 132)',
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              tension: 0.3,
+              fill: true,
+            }
+          ]
+        };
+      
+        new Chart(ctx, {
+          type: 'line',
+          data: chartData,
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Monthly Income vs Expenses'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
       </script>
     <!-- start Toastr -->
     <%- include('./onestep/toastr')-%>
