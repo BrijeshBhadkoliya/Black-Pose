@@ -96,7 +96,7 @@
 
                                                 <div class="form-group row">
                                                   <label class="col-sm-2 col-form-label" for="password">Imge</label>
-                                                  <input type="file" id="file" class="form-control border-secondary col-sm-8" name="img" required/>
+                                                  <input type="file"  class="form-control border-secondary col-sm-8"  onchange="document.getElementById('catdemoimg').src = window.URL.createObjectURL(this.files[0])" name="img"/>
                                                 </div>
 
                 
@@ -115,10 +115,15 @@
                                             </div>
                                           
                                             <div class="form-group row justify-content-end">
-                                              <button class="btn btn-primary col-2 setupdate " type="submit" value="submit"><i class="dripicons-checkmark"></i> Save User</button>
+                                              <button class="btn btn-primary col-2 setupdate " type="submit" value="submit"><i class="dripicons-checkmark"></i>Save User</button>
                                           </div>
                                           </form>
-                                          <img src="../uploads/<%=data.img%>" width="450px" height="450px" alt="update imges">
+                                          <% if(data.img) { %>
+                                            <img src="/uploads/<%= data.img %>" id="catdemoimg" width="250px" height="250px" alt="update imges">
+                                            <% }else { %>
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwclUsgwYCVKHAEMT8jd8FrlETTObKcGwdN86QiPr_ftbnpEIVNE7iNZLwr4WrFh2BFLo&usqp=CAU" width="450px" height="450px" id="catdemoimg" alt="update imges">
+  
+                                              <% } %>
                                         </div> 
                                     </div>
                                 </div>

@@ -5,16 +5,19 @@ const path = require('path');
 const sharp = require('sharp');
 const fs = require('fs');
 const {isAuth,isAdmin, upload} = require('../Router/Auth');
-const {User, Category, Coustomer, UserRole,Account, Order} = require('../model/Schema');
+const {User, Category, Coustomer, UserRole,Account, Order,Shop} = require('../model/Schema');
 
 // add coustomer get router
 router.get('/add', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         res.render('addCoustomer',{
             success : req.flash('success'),
             errors: req.flash('errors'),
-            userdata:userdata
+            userdata:userdata,
+            footer
         })
     } catch (error) {
         console.log(error);
@@ -65,7 +68,9 @@ router.get('/update/:id', isAuth , async (req, res)=>{
              const userdata = await User.findOne({ _id: req.user.id });
              const findrole = userdata.role;
              const userrole = await UserRole.find({ titel: findrole });
-             console.log(userrole);
+        const footer = await Shop.findOne()
+
+             
          
              if(userrole[0].coustomer.includes("update")) {
                 const userdata = await User.findOne({_id:req.user.id})
@@ -74,7 +79,8 @@ router.get('/update/:id', isAuth , async (req, res)=>{
                     success : req.flash('success'),
                     errors: req.flash('errors'),
                     userdata:userdata,
-                    data: cost
+                    data: cost,
+                    footer
                 })
                return res.redirect("back");
      
@@ -155,12 +161,15 @@ router.post('/coustomer-update/:id', isAuth, upload.single("couImg"), async (req
 router.get('/list', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const costList = await Coustomer.find({});
         res.render('coustomer',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            data:costList
+            data:costList,
+            footer
         })
     } catch (error) {
         console.log(error);
@@ -184,9 +193,10 @@ router.get('/delet/:id', isAuth, async (req,res)=>{
         
        
         const userdata = await User.findOne({ _id: req.user.id });
+        
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].coustomer.includes("delet")) {
           
@@ -209,15 +219,19 @@ router.get('/delet/:id', isAuth, async (req,res)=>{
 router.get('/views/:id', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const cost = await Coustomer.findById({_id:req.params.id});
         const order = await Order.find({coustomerId:req.params.id})
-      
+    
+       
         res.render('costomerListView',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
+            footer,
             data:cost,
-            order:order
+            order:order 
         })
 
 
@@ -232,6 +246,9 @@ router.get('/viewtransection/:id', isAuth , async (req, res)=>{
     try {
         var id=req.params.id
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+        const order = await Order.find({coustomerId:req.params.id})
+
         const cost = await Coustomer.findById({_id:req.params.id});
         const transList =  await Account.aggregate([
             {$unwind: "$transaction"},
@@ -255,7 +272,8 @@ router.get('/viewtransection/:id', isAuth , async (req, res)=>{
             errors: req.flash('errors'),
             userdata:userdata,
             data:cost,
-            list: transList
+            list: transList,
+            footer,order
         })
 
 

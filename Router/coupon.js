@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const {isAuth,isAdmin, upload, uploadcsv} = require('../Router/Auth');
-const {Coupon, User,UserRole} = require('../model/Schema');
+const {Coupon, User,UserRole,Shop} = require('../model/Schema');
 
 
 
@@ -11,11 +11,14 @@ router.get('/list', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
        var couponList = await Coupon.find({})
+       const footer = await Shop.findOne()
+
         res.render('coupon',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            data:couponList
+            data:couponList,
+            footer
         })
     } catch (error) {
         console.log(error);
@@ -30,7 +33,7 @@ router.post('/add', isAuth, async (req, res)=>{
         const userdata = await User.findOne({ _id: req.body.userid });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].coupon.includes("add")) {
             const coup = await Coupon.create(req.body)
@@ -62,7 +65,8 @@ router.get('/updatecoupon/:id', isAuth, async (req, res)=>{
         const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        const footer = await Shop.findOne()
+        
     
         if(userrole[0].coupon.includes("update")) {
 
@@ -72,7 +76,8 @@ router.get('/updatecoupon/:id', isAuth, async (req, res)=>{
                 success : req.flash('success'),
                 errors: req.flash('errors'),
                 userdata:userdata,
-                data:coup
+                data:coup,
+                footer
             })
         } else {
           req.flash("errors", "You do not have permission to update cupon.");
@@ -114,7 +119,7 @@ router.get('/delet/:id', isAuth, async (req,res)=>{
          const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].coupon.includes("delet")) {
 

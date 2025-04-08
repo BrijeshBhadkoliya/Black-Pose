@@ -10,7 +10,8 @@ const {
   Supplier,
   Product,
   Account,
-  UserRole
+  UserRole,
+  Shop
 } = require("../model/Schema");
 const path = require("path");
 const sharp = require("sharp");
@@ -24,9 +25,11 @@ router.get("/add", isAuth, async (req, res) => {
   try {
 
     const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if (userrole[0].product.includes("add")) {
      
@@ -43,6 +46,7 @@ router.get("/add", isAuth, async (req, res) => {
       unit: unit,
       category: category,
       supp: supp,
+      footer
     });
     } else {
       req.flash("errors", "You do not have permission to add product.");
@@ -177,9 +181,11 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
 router.get("/update/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+    
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if(userrole[0].product.includes("update")) {
 
@@ -200,6 +206,7 @@ router.get("/update/:id", isAuth, async (req, res) => {
       unit: unit,
       category: category,
       supp: supp,
+      footer
     });
 
     } else {
@@ -300,6 +307,8 @@ router.post(
 router.get("/list", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+    
     const productSpliyer = await Product.aggregate([
         {
           '$lookup': {
@@ -388,6 +397,7 @@ router.get("/list", isAuth, async (req, res) => {
       errors: req.flash("errors"),
       userdata: userdata,
       data: productSpliyer,
+      footer
     });
   } catch (error) {
     console.log(error);
@@ -400,20 +410,26 @@ router.get("/delet/:id", isAuth, async (req, res) => {
 
 
     const userdata = await User.findOne({ _id: req.user.id });
+    
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if(userrole[0].product.includes("delet")) {
+      const del = await Product.findByIdAndDelete(req.params.id);
+     
+      const supplier = await Supplier.findOne({suppName:del.supplier});
+      
+        supplier.productList.forEach((data, index)=>{
+            if (data.productName == del.Name) {
+                supplier.productList.splice(index,1)
+            }
+       })
+    
+       await supplier.save()
 
-        router.get("/bulkimport", isAuth, async (req, res) => {
-            const userdata = await User.findOne({ _id: req.user.id });
-            res.render("bulkImport", {
-              success: req.flash("success"),
-              errors: req.flash("errors"),
-              userdata: userdata,
-            });
-          });
+        req.flash('success', `${del.Name} Delet success fuly`)
+        res.redirect('/product/list')
 
     } else {
       req.flash("errors", "You do not have permission to delet product.");
@@ -433,10 +449,13 @@ router.get("/delet/:id", isAuth, async (req, res) => {
 //bulkimport get
 router.get("/bulkimport", isAuth, async (req, res) => {
   const userdata = await User.findOne({ _id: req.user.id });
+  const footer = await User.findOne({});
+
   res.render("bulkImport", {
     success: req.flash("success"),
     errors: req.flash("errors"),
     userdata: userdata,
+    footer
   });
 });
 
@@ -559,9 +578,11 @@ router.get("/export-Bulk", async (req, res) => {
 router.get("/limited", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if(userrole[0].limit_product_list.includes("views")) {
         const userdata = await User.findOne({ _id: req.user.id });
@@ -571,6 +592,7 @@ router.get("/limited", isAuth, async (req, res) => {
           errors: req.flash("errors"),
           userdata: userdata,
           data: proList,
+          footer
         });
 
     } else {
@@ -588,11 +610,13 @@ router.post("/subcat", async (req, res) => {
 });
 
 // product Quntity increase by + butten
-router.post("/quantity", async (req, res) => {
+router.post("/quantity",isAuth ,async (req, res) => {
     const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if(userrole[0].limit_product_list.includes("views")) {
         var qunt = req.body.quantity;
@@ -601,7 +625,7 @@ router.post("/quantity", async (req, res) => {
 
   //****** save new product Quntity */
   const product = await Product.findById(req.body.editqun);
-  console.log(product);
+  console.log(product); 
 
   product.quantity = parseInt(product.quantity) + parseInt(qunt);
   await product.save();
@@ -662,6 +686,8 @@ router.post("/quantity", async (req, res) => {
 router.get("/printdata/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+
     const product = await Product.findById(req.params.id);
 
     res.render("printProduct", {
@@ -669,6 +695,7 @@ router.get("/printdata/:id", isAuth, async (req, res) => {
       errors: req.flash("errors"),
       userdata: userdata,
       pro: product,
+      footer
     });
   } catch (error) {
     console.log(error);

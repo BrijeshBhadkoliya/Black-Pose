@@ -5,12 +5,14 @@ const path = require("path");
 const sharp = require("sharp");
 const fs = require("fs");
 const { isAuth, isAdmin, upload } = require("../Router/Auth");
-const { User, Category, UserRole } = require("../model/Schema");
+const { User, Category, UserRole,Shop } = require("../model/Schema");
 
 // category get router
 router.get("/list", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
+    const footer = await Shop.findOne()
+
     const catList = await Category.find({});
 
     res.render("category", {
@@ -18,6 +20,7 @@ router.get("/list", isAuth, async (req, res) => {
       errors: req.flash("errors"),
       userdata: userdata,
       data: catList,
+      footer:footer
     });
   } catch (error) {
     console.log(error);
@@ -29,7 +32,7 @@ router.post("/catlist-add", upload.single("catImg"), async (req, res) => {
     const userdata = await User.findOne({ _id: req.body.userid });
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if(userrole[0].category.includes("update")) {
         const catName = req.body.catName;
@@ -88,7 +91,9 @@ router.get("/updateCategory/:id", isAuth, async (req, res) => {
     const userdata = await User.findOne({ _id: req.user.id });
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    const footer = await Shop.findOne()
+
+    
 
     if(userrole[0].category.includes("update")) {
       const cat = await Category.findOne({ _id: req.params.id });
@@ -97,6 +102,7 @@ router.get("/updateCategory/:id", isAuth, async (req, res) => {
         errors: req.flash("errors"),
         userdata: userdata,
         data: cat,
+        footer:footer
       });
     } else {
       req.flash("errors", "You do not have permission to update categories.");
@@ -154,7 +160,7 @@ router.get("/delcat/:id", isAuth, async (req, res) => {
     const userdata = await User.findOne({ _id: req.user.id });
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if (userrole[0].category.includes("delet")) {
       const del = await Category.findByIdAndDelete(req.params.id);
@@ -176,12 +182,14 @@ router.get("/subCategory", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
     const catList = await Category.find({});
+    const footer = await Shop.findOne()
 
     res.render("subCategory", {
       success: req.flash("success"),
       errors: req.flash("errors"),
       userdata: userdata,
       data: catList,
+      footer
     });
   } catch (error) {
     console.log(error);
@@ -223,6 +231,8 @@ router.post("/subcatlist-add", upload.single("catImg"), async (req, res) => {
 router.get("/updateSubCategory/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
+    const footer = await Shop.findOne()
+
     var data = {
       subcatnam: "",
       id: req.params.id,
@@ -238,6 +248,7 @@ router.get("/updateSubCategory/:id", isAuth, async (req, res) => {
       errors: req.flash("errors"),
       userdata: userdata,
       data: data,
+      footer
     });
   } catch (error) {
     console.log(error);

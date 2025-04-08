@@ -2,19 +2,21 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const {isAuth,isAdmin, upload, uploadcsv} = require('../Router/Auth');
-const {User, Category, Brand, Unit, Supplier, Product, Account, UserRole} = require('../model/Schema');
+const {User, Category, Brand, Unit, Supplier, Product, Account, UserRole,Shop} = require('../model/Schema');
 
 // add user and user List
 router.get('/list', isAuth, async (req, res)=>{
     try {
 
         const userdata = await User.findOne({ _id: req.user.id });
+            const footer = await Shop.findOne({});
+        
         if(!userdata){
             res.redirect('/')
         }
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].setting.includes("views")) {
 
@@ -26,7 +28,8 @@ router.get('/list', isAuth, async (req, res)=>{
                 errors: req.flash('errors'),
                 userdata:userdata,
                 data: users,
-                role:role
+                role:role,
+                footer
               })
 
         } else {
@@ -45,9 +48,11 @@ router.get('/list', isAuth, async (req, res)=>{
 router.get('/userRoles', isAuth, async (req, res)=>{
     try {
         const userdata = await User.findOne({ _id: req.user.id });
+            const footer = await Shop.findOne({});
+        
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].setting.includes("views")) {
 
@@ -58,7 +63,8 @@ router.get('/userRoles', isAuth, async (req, res)=>{
                 success : req.flash('success'),
                 errors: req.flash('errors'),
                 userdata:userdata,
-                data:data 
+                data:data,
+                footer
             })
 
         } else {
@@ -105,6 +111,8 @@ router.post('/addRole', async(req, res) =>{
 router.get('/update/:id', isAuth, async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id});
+            const footer = await Shop.findOne({});
+        
         const users = await User.findById(req.params.id);
         const role = await UserRole.find({});
 
@@ -113,7 +121,8 @@ router.get('/update/:id', isAuth, async (req, res)=>{
             errors: req.flash('errors'),
             userdata:userdata,
             data: users,
-            role:role 
+            role:role,
+            footer
            
         })
         
@@ -132,28 +141,45 @@ router.get('/deletlist/:id', isAuth, async (req, res)=>{
     }
 })
 // update user
-router.post('/userupdate', upload.single('img'),async (req, res)=>{
+router.post('/userupdate',isAuth, upload.single('img'),async (req, res)=>{
     try {
-        const {firstName,lastName,email,mobile,addres,username,userid,userdata,role} = req.body
-         const filemane = req.file.filename
+        const {firstName,lastName,email,mobile,addres,username,userid,role} = req.body
         const roles = await UserRole.find({});
         const users = await User.find({});
-        const userData = await User.findOne({ _id:userdata });
+        const userData = await User.findOne({ _id:req.user.id });
          console.log(req.body,req.file);
       
-        const data = await User.findByIdAndUpdate(userid,{
-        ...req.body,
-        img:filemane
-        } )
-        req.flash("success", `${data.username} update success fully`);
+       
+        if(req.file){
+         const filemane = req.file.filename
+
+            const data = await User.findByIdAndUpdate(userid,{
+                ...req.body,
+                img:filemane
+                } )
+                req.flash("success", `${data.username} update success fully`);
         
-        return res.render("register", {
-            errors: '',
-            success: req.flash(`${req.body.username}'s Data is sucessfully updated`),
-            userdata: userData,
-            role: roles,
-            data: users,
-          });
+                return res.render("register", {
+                    errors: '',
+                    success: req.flash(`${req.body.username}'s Data is sucessfully updated`),
+                    userdata: userData,
+                    role: roles,
+                    data: users,
+                  });
+        }else{
+            const data = await User.findByIdAndUpdate(userid,{
+                ...req.body
+                })
+                req.flash("success", `${data.username} update success fully`);
+        
+                return res.render("register", {
+                    errors: '',
+                    success: req.flash(`${req.body.username}'s Data is sucessfully updated`),
+                    userdata: userData,
+                    role: roles,
+                    data: users,
+                  });
+        }
     } catch (error) {
         console.log(error);
     }
@@ -164,6 +190,8 @@ router.get('/roleupdate/:id', isAuth, async (req, res)=>{
     try {
 
         const userdata = await User.findOne({_id:req.user.id});
+    const footer = await Shop.findOne({});
+
         const role = await UserRole.findById(req.params.id);
     
 
@@ -171,7 +199,8 @@ router.get('/roleupdate/:id', isAuth, async (req, res)=>{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            role:role
+            role:role,
+            footer
            
         })
         

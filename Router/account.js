@@ -2,18 +2,21 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const {isAuth,isAdmin, upload, uploadcsv} = require('../Router/Auth');
-const {User, Category, Brand, Unit,UserRole, Supplier, Product, Account, Order} = require('../model/Schema');
+const {User, Category, Brand, Unit,UserRole, Supplier, Product, Account, Order, Shop} = require('../model/Schema');
 var Excel = require('exceljs');
 const fs = require('fs');
 const path = require('path');
-
+var csv = require("fast-csv");
+const { parse } = require("fast-csv");
 // add account get router
 router.get('/add', isAuth ,   async (req, res)=>{
     try {
         const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        const footer = await Shop.findOne()
+
+        
     
         if(userrole[0].account.includes("add")) {
 
@@ -21,7 +24,8 @@ router.get('/add', isAuth ,   async (req, res)=>{
             res.render('addAccount',{
                success : req.flash('success'),
                errors: req.flash('errors'),
-               userdata:userdata
+               userdata:userdata,
+               footer
             })
         } else {
           req.flash("errors", "You do not have permission to Add Account.");
@@ -70,7 +74,9 @@ router.get('/update/:id', isAuth, async (req, res)=>{
     const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        const footer = await Shop.findOne()
+
+        
     
         if(userrole[0].account.includes("update")) {
             const userdata = await User.findOne({_id:req.user.id})
@@ -80,7 +86,8 @@ router.get('/update/:id', isAuth, async (req, res)=>{
                     success : req.flash('success'),
                     errors: req.flash('errors'),
                     userdata:userdata,
-                    data:data
+                    data:data,
+                    footer
                 })
         } else {
           req.flash("errors", "You do not have permission to update Account.");
@@ -96,7 +103,7 @@ router.get('/delet/:id', isAuth, async (req, res)=>{
     const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].account.includes("delet")) {
             const data = await Account.findByIdAndDelete(req.params.id);
@@ -141,7 +148,10 @@ router.post('/accountupdate/:id', isAuth, async (req, res)=>{
 
 //account List Get router
 router.get('/list', isAuth , async (req, res)=>{
-    try {const userdata = await User.findOne({_id:req.user.id})
+    try {
+        const footer = await Shop.findOne()
+        
+        const userdata = await User.findOne({_id:req.user.id})
        const data = await Account.aggregate([
        
         {$project: {
@@ -160,7 +170,8 @@ router.get('/list', isAuth , async (req, res)=>{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            data:data
+            data:data,
+            footer
         })
 
 
@@ -175,6 +186,8 @@ router.get('/list', isAuth , async (req, res)=>{
 router.get('/transection', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const acc = await Account.find({},{accTitel:1});
         const data = await Account.aggregate([
                 {$unwind: "$transaction"},
@@ -194,7 +207,8 @@ router.get('/transection', isAuth , async (req, res)=>{
             userdata:userdata,
             data:data,
             accunt:acc,
-            serch:''
+            serch:'',
+            footer
         })
 
 
@@ -208,6 +222,8 @@ router.get('/transection', isAuth , async (req, res)=>{
 router.post('/transection-filter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id}) 
+        const footer = await Shop.findOne()
+
         const startDate = req.body.StartDate;
         const endDate = req.body.enddate;
         const acctitel = req.body.AccTitel;
@@ -298,7 +314,8 @@ router.post('/transection-filter', isAuth , async (req, res)=>{
         userdata:userdata,
         data:data,
         accunt:acc,
-        serch:serc
+        serch:serc,
+        footer
     })
 
 
@@ -386,6 +403,8 @@ router.get('/download-transection', isAuth ,async (req, res)=>{
 router.get('/expense', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const acc = await Account.aggregate([{$match : {$and: [ 
             {"accTitel": {$ne: 'Receivable'}},
             {"accTitel": {$ne: 'Payable'} }
@@ -404,14 +423,16 @@ router.get('/expense', isAuth , async (req, res)=>{
             }
         ]);
 
-   
+              console.log(data);
+              
         res.render('expense',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
             accunt:acc,
             data:data,
-            serch:''
+            serch:'',
+            footer
         })
 
 
@@ -424,6 +445,8 @@ router.get('/expense', isAuth , async (req, res)=>{
 router.post('/expensefilter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const{startDate, endDate} = req.body;
         const acc = await Account.aggregate([{$match : {$and: [ 
             {"accTitel": {$ne: 'Receivable'}},
@@ -457,7 +480,8 @@ router.post('/expensefilter', isAuth , async (req, res)=>{
             userdata:userdata,
             accunt:acc,
             data:data,
-            serch:''
+            serch:'',
+            footer
         })
 
 
@@ -525,7 +549,10 @@ router.post('/addexpense', isAuth, async (req, res)=>{
 
 //Income Get router
 router.get('/income', isAuth , async (req, res)=>{
-    try {const userdata = await User.findOne({_id:req.user.id})
+    try {
+        const footer = await Shop.findOne()
+        
+        const userdata = await User.findOne({_id:req.user.id})
         const acc = await Account.aggregate([{$match : {$and: [ 
             {"accTitel": {$ne: 'Receivable'}},
             {"accTitel": {$ne: 'Payable'} }
@@ -551,7 +578,8 @@ router.get('/income', isAuth , async (req, res)=>{
             userdata:userdata,
             accunt:acc,
             data:data,
-            serch:''
+            serch:'',
+            footer
         })
 
 
@@ -564,6 +592,8 @@ router.get('/income', isAuth , async (req, res)=>{
 router.post('/incomefilter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const{startDate, endDate} = req.body;
         const acc = await Account.aggregate([{$match : {$and: [ 
             {"accTitel": {$ne: 'Receivable'}},
@@ -597,7 +627,8 @@ router.post('/incomefilter', isAuth , async (req, res)=>{
             userdata:userdata,
             accunt:acc,
             data:data,
-            serch:''
+            serch:'',
+            footer
         })
 
 
@@ -653,6 +684,8 @@ router.post('/addincome', isAuth, async (req, res)=>{
 router.get('/transfer', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const acc = await Account.aggregate([{$match : {$and: [ 
                                                                     {"accTitel": {$ne: 'Receivable'}},
                                                                     {"accTitel": {$ne: 'Payable'} }
@@ -680,7 +713,8 @@ router.get('/transfer', isAuth , async (req, res)=>{
             userdata:userdata,
             accunt:acc,
             data:data,
-            serch:''
+            serch:'',
+            footer
         })
 
 
@@ -693,6 +727,8 @@ router.get('/transfer', isAuth , async (req, res)=>{
 router.post('/transferfilter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne()
+
         const{startDate, endDate} = req.body;
         const acc = await Account.aggregate([{$match : {$and: [ 
             {"accTitel": {$ne: 'Receivable'}},
@@ -726,7 +762,8 @@ router.post('/transferfilter', isAuth , async (req, res)=>{
             userdata:userdata,
             accunt:acc,
             data:data,
-            serch:''
+            serch:'',
+            footer
         })
 
 

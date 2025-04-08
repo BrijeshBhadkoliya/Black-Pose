@@ -5,7 +5,7 @@ const path = require('path')
 const sharp = require('sharp');
 const fs = require('fs');
 const {isAuth,isAdmin, upload} = require('../Router/Auth');
-const {User, Category, Brand, UserRole} = require('../model/Schema');
+const {User, Category, Brand, UserRole,Shop} = require('../model/Schema');
 
 
 
@@ -14,6 +14,7 @@ router.get('/add', isAuth, async (req,res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
         const rol = await UserRole.findOne({titel:userdata.role})
+        const footer = await Shop.findOne()
        
         const brandList = await Brand.find({});
    
@@ -22,7 +23,8 @@ router.get('/add', isAuth, async (req,res)=>{
         errors: req.flash('errors'),
         userdata:userdata,
         role:rol,
-        data:brandList
+        data:brandList,
+        footer:footer
     })
         
     } catch (error) {
@@ -35,7 +37,7 @@ router.post('/brand-add', upload.single("braImg"), async (req, res)=>{
         const userdata = await User.findOne({ _id: req.body.userid });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].brand.includes("add")) {
             const brandName= req.body.braName;
@@ -80,7 +82,9 @@ router.get('/updatebrand/:id', isAuth, async (req, res)=>{
         const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        const footer = await Shop.findOne()
+
+        
     
         if(userrole[0].brand.includes("update")) {
 
@@ -89,7 +93,9 @@ router.get('/updatebrand/:id', isAuth, async (req, res)=>{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            data:brand})
+            data:brand,
+            footer:footer
+        })
         } else {
           req.flash("errors", "You do not have permission to update brand.");
           return res.redirect("/brand/add");
@@ -145,7 +151,8 @@ router.get('/delbrand/:id', isAuth, async (req,res)=>{
         const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+
+        
     
         if(userrole[0].brand.includes("delet")) {
 

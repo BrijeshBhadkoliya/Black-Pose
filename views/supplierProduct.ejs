@@ -116,7 +116,7 @@
                                                                     <td><%=pro.purchasePrice%> <%=accessdata.data.Currency%></td>
                                                                     <td><%=pro.sellingPrice%> <%=accessdata.data.Currency%></td>
                                                                     <td><%=pro.quantity%> <button class="btn btn-round  btn-primary-rgba proupdate " id="addqun" value="<%=pro._id%>" ><i class="feather icon-plus-circle"></i></button></td>
-                                                                    <td>0</td>
+                                                                    <td><%=pro.order%></td>
                                                                     
                                                                     <td>
                                                                         <a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success proupdate "><i class="feather icon-edit"></i></a>
@@ -147,7 +147,7 @@
                                                                 </div>
     
                                                                     </td>   
-                                                                    <td>0</td>
+                                                                    <td><%=pro.order%></td>
                                                                     
                                                                     <td>
                                                                         <a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success proupdate "><i class="feather icon-edit"></i></a>

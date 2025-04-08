@@ -186,9 +186,11 @@ router.post('/add/:id', isAuth, async (req, res)=>{
 router.get('/home', isAuth , async (req, res)=>{
 
     const userdata = await User.findOne({ _id: req.user.id });
+    const footer = await Shop.findOne({});
+
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    console.log(userrole);
+    
 
     if(userrole[0].setting.includes("views")) {
 
@@ -198,7 +200,8 @@ router.get('/home', isAuth , async (req, res)=>{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            data:data
+            data:data,
+            footer
         })
  
     } else {

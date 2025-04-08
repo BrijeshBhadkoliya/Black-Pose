@@ -5,7 +5,7 @@ const path = require('path');
 const sharp = require('sharp');
 const fs = require('fs');
 const {isAuth,isAdmin, upload} = require('../Router/Auth');
-const {User,UserRole ,Category, Supplier, Product, Account} = require('../model/Schema')
+const {User,UserRole ,Category, Supplier, Product, Account, Shop} = require('../model/Schema')
 const access = require('../Router/symbol');
 
 
@@ -16,9 +16,12 @@ router.get('/add', isAuth ,   async (req, res)=>{
 
 
         const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+     
+
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].supplier.includes("add")) {
             const userdata = await User.findOne({_id:req.user.id})
@@ -27,7 +30,8 @@ router.get('/add', isAuth ,   async (req, res)=>{
                 success : req.flash('success'),
                 errors: req.flash('errors'),
                 userdata:userdata,
-                data:''
+                data:'',
+                footer
             })
         } else {
           req.flash("errors", "You do not have permission to add supliar Account.");
@@ -99,13 +103,16 @@ router.post('/addsupplier', upload.single("supImg"), async (req, res)=>{
 router.get('/list', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne({});
+
         const suppList = await Supplier.find({});
 
         res.render('supplierList',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            data:suppList
+            data:suppList,
+            footer
         })
     } catch (error) {
         console.log(error);
@@ -115,13 +122,16 @@ router.get('/list', isAuth , async (req, res)=>{
 router.get('/views/:id', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne({});
+
         const suppList = await Supplier.findById({_id:req.params.id});
 
         res.render('supplierView',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
-            data:suppList
+            data:suppList,
+            footer
         })
     } catch (error) {
         console.log(error);
@@ -133,9 +143,11 @@ router.get('/updateSupli/:id', isAuth, async (req, res)=>{
         
 
         const userdata = await User.findOne({ _id: req.user.id });
+        const footer = await Shop.findOne({});
+
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
     
         if(userrole[0].supplier.includes("update")) {
             const userdata = await User.findOne({_id:req.user.id})
@@ -144,7 +156,8 @@ router.get('/updateSupli/:id', isAuth, async (req, res)=>{
                 success : req.flash('success'),
                 errors: req.flash('errors'),
                 userdata:userdata,
-                data:sup
+                data:sup,
+                footer
             })
 
         } else {
@@ -238,7 +251,8 @@ router.get('/delsupp/:id', isAuth, async (req,res)=>{
         const userdata = await User.findOne({ _id: req.user.id });
         const findrole = userdata.role;
         const userrole = await UserRole.find({ titel: findrole });
-        console.log(userrole);
+        
+        
     
         if(userrole[0].supplier.includes("delet")) {
             const del = await Supplier.findByIdAndDelete(req.params.id)
@@ -267,17 +281,129 @@ router.get('/supllist',async (req,res)=>{
 router.get('/product/:id', isAuth, async (req,res)=>{
     try {
         const accessdata = await access (req.user)
+        const productSpliyer = await Product.aggregate([
+            {
+              '$lookup': {
+                'from': 'orders',
+                'let': {
+                  'serch': '$Name'
+                },
+                'pipeline': [
+                  {
+                    '$match': {
+                      '$expr': {
+                        '$in': [
+                          '$$serch', '$item.productName'
+                        ]
+                      }
+                    }
+                  }, {
+                    '$project': {
+                      'item': 1
+                    }
+                  }
+                ],
+                'as': 'order'
+              }
+            }, {
+              '$unwind': {
+                'path': '$order'
+              }
+            }, {
+              '$unwind': {
+                'path': '$order.item'
+              }
+            }, {
+              '$match': {
+                '$expr': {
+                  '$eq': [
+                    '$order.item.productName', '$Name'
+                  ]
+                }
+              }
+            }, {
+              '$group': {
+                '_id': '$_id',
+                'order': {
+                  '$sum': '$order.item.productCount'
+                }
+              }
+            }
+          ])
+        //   console.log(productSpliyer);
 
+          
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne({});
+
         const sup = await Supplier.findById(req.params.id);
         const prod = await Product.find({supplier:sup.suppName})
+console.log(prod);
+
+const productsWithOrders = await Product.aggregate([
+    {
+      $match: { supplier: sup.suppName } // Filter by supplier
+    },
+    {
+      $lookup: {
+        from: 'orders',
+        let: { productName: '$Name' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $in: ['$$productName', '$item.productName']
+              }
+            }
+          },
+          { $unwind: '$item' },
+          {
+            $match: {
+              $expr: {
+                $eq: ['$$productName', '$item.productName']
+              }
+            }
+          },
+          {
+            $group: {
+              _id: '$item.productName',
+              orderCount: { $sum: '$item.productCount' }
+            }
+          }
+        ],
+        as: 'orderDetails'
+      }
+    },
+    {
+      $addFields: {
+        order: {
+          $ifNull: [{ $arrayElemAt: ['$orderDetails.orderCount', 0] }, 0]
+        }
+      }
+    },
+    {
+      $project: {
+        orderDetails: 0 // optional: remove raw lookup result
+      }
+    }
+  ]);
+       
+
+  console.log(productsWithOrders);
+  
+      
+       
+       
+         
+
         res.render('supplierProduct',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
             data:sup,
-            product: prod,
-            accessdata:accessdata
+            product: productsWithOrders,
+            accessdata:accessdata,
+            footer,
         })
     } catch (error) {
         console.log(error);
@@ -334,6 +460,7 @@ router.get('/transection/:id', isAuth , async (req, res)=>{
 
         
         const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne({});
 
         res.render('supplierTransection',{
             success : req.flash('success'),
@@ -343,7 +470,8 @@ router.get('/transection/:id', isAuth , async (req, res)=>{
             list:transList,
             Orderamount:Orderamu,
             payAmount:paymony,
-            accessdata:accessdata
+            accessdata:accessdata,
+            footer
         })
     } catch (error) {
         console.log(error);
@@ -354,6 +482,7 @@ router.get('/transection/:id', isAuth , async (req, res)=>{
 router.get('/OrderList/:id', isAuth , async (req, res)=>{
     try {
         const accessdata = await access (req.user)
+        const footer = await Shop.findOne({});
 
         const userdata = await User.findOne({_id:req.user.id})
         const suppList = await Supplier.findById({_id:req.params.id});
@@ -363,7 +492,8 @@ router.get('/OrderList/:id', isAuth , async (req, res)=>{
             errors: req.flash('errors'),
             userdata:userdata,
             data:suppList,
-            accessdata:accessdata
+            accessdata:accessdata,
+            footer
         })
     } catch (error) {
         console.log(error);

@@ -95,11 +95,11 @@ const productSchema = new mongoose.Schema({
     productImage:{type:String}
     
 
-})
+}) 
 
-const Product = mongoose.model('product', productSchema);
+const Product = mongoose.model('product', productSchema); 
 
-
+ 
 // Coupon Modal
 const couponSchema = new mongoose.Schema({
     Titel:{type: String, require: true, trim: true},

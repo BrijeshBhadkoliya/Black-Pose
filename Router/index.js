@@ -17,6 +17,7 @@ const {
 const bcrypt = require("bcrypt");
 const { isAuth, isAdmin, upload } = require("../Router/Auth");
 const { findSourceMap } = require("module");
+const { log } = require("console");
 
 router.get("/", (req, res) => {
   res.redirect("/login");
@@ -34,8 +35,11 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { userName, password } = req.body;
+    
+    
     const user = await User.findOne({ username: userName });
-
+    
+ 
     // check for user name
     if (!user) {
       return res.status(401).render("login", {
@@ -75,8 +79,10 @@ router.post("/login", async (req, res) => {
 });
 
 //  register get router
-router.get("/register", isAdmin, async (req, res) => {
-  const userdata = req.user._id;
+router.get("/register",isAuth, isAdmin, async (req, res) => {
+  const userdata = req.user.id;
+  const footer = await Shop.findOne()
+
   if (userdata == undefined) {
     res.redirect("/");
   }
@@ -91,11 +97,12 @@ router.get("/register", isAdmin, async (req, res) => {
     userdata: userdata,
     role: roles,
     data: users,
+    footer
   });
 });
 
 ///register Post router
-router.post("/register", upload.single("img"), async (req, res) => {
+router.post("/register",isAuth ,upload.single("img"), async (req, res) => {
   const roles = await UserRole.find({});
   const users = await User.find({});
   // const userdata = req.user._id; 
@@ -112,7 +119,8 @@ router.post("/register", upload.single("img"), async (req, res) => {
     userdata,
   } = req.body;
 
-  const userData = await User.findOne({ _id: userdata });
+  const userData = await User.findOne({ _id: req.user.id });
+  const footer = await Shop.findOne()
  
   // console.log(userData);
 
@@ -124,6 +132,7 @@ router.post("/register", upload.single("img"), async (req, res) => {
       userdata: userData,
       role: roles,
       data: users,
+      footer
     });
   }
 
@@ -135,6 +144,7 @@ router.post("/register", upload.single("img"), async (req, res) => {
       userdata: userData,
       role: roles,
       data: users,
+      footer
     });
   }
 
@@ -179,6 +189,9 @@ router.post("/register", upload.single("img"), async (req, res) => {
 router.get("/admin", isAuth, async (req, res) => {
   const porLim = await Product.find({ quantity: { $lte: 50 } });
   const userdata = await User.findOne({ _id: req.user.id });
+  const footer = await Shop.findOne()
+
+  
   const accountList = await Account.aggregate([
     {
       $project: {
@@ -394,6 +407,7 @@ chartdata.forEach((item) => {
     chartdata: chartdata,
     incomedata: fullIncome,
     expenses:fullExpense,
+    footer:footer
     // transactionDate: transactionDate,
 
   });
@@ -409,12 +423,14 @@ router.get("/logout", isAuth, async (req, res) => {
 //profile setting get router
 router.get("/profile", isAuth, async (req, res) => {
   const data = await User.findOne({ _id: req.user.id });
-
+  const footer = await Shop.findOne()
   res.render("profile", {
     success: req.flash("success"),
     errors: req.flash("errors"),
     userdata: data,
     data: data,
+    footer:footer
+
   });
 });
 
