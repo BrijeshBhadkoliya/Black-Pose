@@ -163,7 +163,7 @@
                                         </div>
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="default-datatable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -186,9 +186,9 @@
                                                                 <td><%=i%></td>
                                                                 <td><%=cou.Titel%></td>
                                                                 <td><%=cou.Code%></td>
-                                                                <td><%=cou.minOrder%></td>
-                                                                <td><%=cou.maxDiscount%></td>
-                                                                <td><%=cou.disAmount%></td>
+                                                                <td><%=footer.Currency%> <%=cou.minOrder%></td>
+                                                                <td><%=footer.Currency%> <%=cou.maxDiscount%></td>
+                                                                <td><%=footer.Currency%> <%=cou.disAmount%></td>
                                                                 <td><%=cou.disType%></td>
                                                                 <td><%=cou.startDate.toLocaleDateString()%></td>
                                                                 <td><%=cou.endDate.toLocaleDateString()%></td>

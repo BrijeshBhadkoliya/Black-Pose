@@ -287,10 +287,12 @@ router.get('/viewtransection/:id', isAuth , async (req, res)=>{
 //order invoice download get router
 router.get('/invoice/:id', async (req, res)=>{
     const order = await Order.findById(req.params.id)
+    const footer = await Shop.findOne()
     
     res.status(200).json({
         status:'success',
-        data:order
+        data:order,
+        footer
     })
 
 })

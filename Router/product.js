@@ -11,7 +11,7 @@ const {
   Product,
   Account,
   UserRole,
-  Shop
+  Shop,
 } = require("../model/Schema");
 const path = require("path");
 const sharp = require("sharp");
@@ -19,35 +19,33 @@ const fs = require("fs");
 var csv = require("fast-csv");
 const { parse } = require("fast-csv");
 var Excel = require("exceljs");
+const { log } = require("console");
 
 // add product get router
 router.get("/add", isAuth, async (req, res) => {
   try {
-
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({});
 
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    
 
     if (userrole[0].product.includes("add")) {
-     
-    const brand = await Brand.find({});
-    const unit = await Unit.find({});
-    const category = await Category.find({ status: "active" });
-    const supp = await Supplier.find({});
+      const brand = await Brand.find({});
+      const unit = await Unit.find({});
+      const category = await Category.find({ status: "active" });
+      const supp = await Supplier.find({});
 
-    res.render("product", {
-      success: req.flash("success"),
-      errors: req.flash("errors"),
-      userdata: userdata,
-      brand: brand,
-      unit: unit,
-      category: category,
-      supp: supp,
-      footer
-    });
+      res.render("product", {
+        success: req.flash("success"),
+        errors: req.flash("errors"),
+        userdata: userdata,
+        brand: brand,
+        unit: unit,
+        category: category,
+        supp: supp,
+        footer,
+      });
     } else {
       req.flash("errors", "You do not have permission to add product.");
       return res.redirect("/product/list");
@@ -56,8 +54,27 @@ router.get("/add", isAuth, async (req, res) => {
     console.log(error);
   }
 });
-
 // add Product post router
+
+router.get("/subcate", async (req, res) => {
+  if (req.query.cat) {
+    const subcatfind = await Category.findOne({ catName: req.query.cat });
+    console.log(subcatfind);
+
+    const subCategoryNames = subcatfind.subcatNames.map(
+      (sub) => sub.subcatname
+    );
+
+    console.log(subCategoryNames);
+
+    return res.send({
+      subcat: subCategoryNames,
+    });
+  } else {
+    res.redirect("back");
+  }
+});
+
 router.post("/addproduct", upload.single("proimg"), async (req, res) => {
   try {
     const { filename: image } = req.file;
@@ -171,7 +188,6 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
 
     req.flash("success", `${Name}  added success fully !!!!!`);
     return res.redirect("/product/list");
-
   } catch (error) {
     console.log(error);
   }
@@ -181,42 +197,34 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
 router.get("/update/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
-    
+    const footer = await Shop.findOne({});
+
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    
 
-    if(userrole[0].product.includes("update")) {
+    if (userrole[0].product.includes("update")) {
+      const userdata = await User.findOne({ _id: req.user.id });
+      const brand = await Brand.find({});
+      const unit = await Unit.find({});
+      const category = await Category.find({});
+      const supp = await Supplier.find({});
+      const product = await Product.findOne({ _id: req.params.id });
 
-       
-    const userdata = await User.findOne({ _id: req.user.id });
-    const brand = await Brand.find({});
-    const unit = await Unit.find({});
-    const category = await Category.find({});
-    const supp = await Supplier.find({});
-    const product = await Product.findOne({ _id: req.params.id });
-
-    res.render("updateProduct", {
-      success: req.flash("success"),
-      errors: req.flash("errors"),
-      userdata: userdata,
-      pro: product,
-      brand: brand,
-      unit: unit,
-      category: category,
-      supp: supp,
-      footer
-    });
-
+      res.render("updateProduct", {
+        success: req.flash("success"),
+        errors: req.flash("errors"),
+        userdata: userdata,
+        pro: product,
+        brand: brand,
+        unit: unit,
+        category: category,
+        supp: supp,
+        footer,
+      });
     } else {
       req.flash("errors", "You do not have permission to update product.");
       return res.redirect("/product/list");
     }
-
-
-
-
   } catch (error) {
     console.log(error);
   }
@@ -307,97 +315,98 @@ router.post(
 router.get("/list", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
-    
+    const footer = await Shop.findOne({});
+
     const productSpliyer = await Product.aggregate([
-        {
-          '$lookup': {
-            'from': 'orders',
-            'let': {
-              'serch': '$Name'
+      {
+        $lookup: {
+          from: "orders",
+          let: {
+            serch: "$Name",
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ["$$serch", "$item.productName"],
+                },
+              },
             },
-            'pipeline': [
-              {
-                '$match': {
-                  '$expr': {
-                    '$in': [
-                      '$$serch', '$item.productName'
-                    ]
-                  }
-                }
-              }, {
-                '$project': {
-                  'item': 1
-                }
-              }
-            ],
-            'as': 'order'
-          }
-        }, {
-          '$unwind': {
-            'path': '$order'
-          }
-        }, {
-          '$unwind': {
-            'path': '$order.item'
-          }
-        }, {
-          '$match': {
-            '$expr': {
-              '$eq': [
-                '$order.item.productName', '$Name'
-              ]
-            }
-          }
-        }, {
-          '$group': {
-            '_id': '$_id',
-            'Name': {
-              '$first': '$Name'
+            {
+              $project: {
+                item: 1,
+              },
             },
-            'proCode': {
-              '$first': '$proCode'
-            },
-            'brand': {
-              '$first': '$brand'
-            },
-            'quantity': {
-              '$first': '$quantity'
-            },
-            'unitType': {
-              '$first': '$unitType'
-            },
-            'unitValue': {
-              '$first': '$unitValue'
-            },
-            'category': {
-              '$first': '$category'
-            },
-            'purchasePrice': {
-              '$first': '$purchasePrice'
-            },
-            'sellingPrice': {
-              '$first': '$sellingPrice'
-            },
-            'productImage': {
-              '$first': '$productImage'
-            },
-            'supplier': {
-              '$first': '$supplier'
-            },
-            'order': {
-              '$sum': '$order.item.productCount'
-            }
-          }
-        }
-      ])
-  
+          ],
+          as: "order",
+        },
+      },
+      {
+        $unwind: {
+          path: "$order",
+        },
+      },
+      {
+        $unwind: {
+          path: "$order.item",
+        },
+      },
+      {
+        $match: {
+          $expr: {
+            $eq: ["$order.item.productName", "$Name"],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          Name: {
+            $first: "$Name",
+          },
+          proCode: {
+            $first: "$proCode",
+          },
+          brand: {
+            $first: "$brand",
+          },
+          quantity: {
+            $first: "$quantity",
+          },
+          unitType: {
+            $first: "$unitType",
+          },
+          unitValue: {
+            $first: "$unitValue",
+          },
+          category: {
+            $first: "$category",
+          },
+          purchasePrice: {
+            $first: "$purchasePrice",
+          },
+          sellingPrice: {
+            $first: "$sellingPrice",
+          },
+          productImage: {
+            $first: "$productImage",
+          },
+          supplier: {
+            $first: "$supplier",
+          },
+          order: {
+            $sum: "$order.item.productCount",
+          },
+        },
+      },
+    ]);
+
     res.render("productList", {
       success: req.flash("success"),
       errors: req.flash("errors"),
       userdata: userdata,
       data: productSpliyer,
-      footer
+      footer,
     });
   } catch (error) {
     console.log(error);
@@ -407,40 +416,30 @@ router.get("/list", isAuth, async (req, res) => {
 //delet Product
 router.get("/delet/:id", isAuth, async (req, res) => {
   try {
-
-
     const userdata = await User.findOne({ _id: req.user.id });
-    
+
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    
 
-    if(userrole[0].product.includes("delet")) {
+    if (userrole[0].product.includes("delet")) {
       const del = await Product.findByIdAndDelete(req.params.id);
-     
-      const supplier = await Supplier.findOne({suppName:del.supplier});
-      
-        supplier.productList.forEach((data, index)=>{
-            if (data.productName == del.Name) {
-                supplier.productList.splice(index,1)
-            }
-       })
-    
-       await supplier.save()
 
-        req.flash('success', `${del.Name} Delet success fuly`)
-        res.redirect('/product/list')
+      const supplier = await Supplier.findOne({ suppName: del.supplier });
 
+      supplier.productList.forEach((data, index) => {
+        if (data.productName == del.Name) {
+          supplier.productList.splice(index, 1);
+        }
+      });
+
+      await supplier.save();
+
+      req.flash("success", `${del.Name} Delet success fuly`);
+      res.redirect("/product/list");
     } else {
       req.flash("errors", "You do not have permission to delet product.");
       return res.redirect("/product/list");
     }
-
-
-    
-
-
-
   } catch (error) {
     console.log(error);
   }
@@ -455,7 +454,7 @@ router.get("/bulkimport", isAuth, async (req, res) => {
     success: req.flash("success"),
     errors: req.flash("errors"),
     userdata: userdata,
-    footer
+    footer,
   });
 });
 
@@ -578,25 +577,26 @@ router.get("/export-Bulk", async (req, res) => {
 router.get("/limited", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({});
 
     const findrole = userdata.role;
     const userrole = await UserRole.find({ titel: findrole });
-    
 
-    if(userrole[0].limit_product_list.includes("views")) {
-        const userdata = await User.findOne({ _id: req.user.id });
-        const proList = await Product.find({ quantity: { $lte: 50 } });
-        res.render("limitProduct", {
-          success: req.flash("success"),
-          errors: req.flash("errors"),
-          userdata: userdata,
-          data: proList,
-          footer
-        });
-
+    if (userrole[0].limit_product_list.includes("views")) {
+      const userdata = await User.findOne({ _id: req.user.id });
+      const proList = await Product.find({ quantity: { $lte: 50 } });
+      res.render("limitProduct", {
+        success: req.flash("success"),
+        errors: req.flash("errors"),
+        userdata: userdata,
+        data: proList,
+        footer,
+      });
     } else {
-      req.flash("errors", "You do not have permission to view limit Products list.");
+      req.flash(
+        "errors",
+        "You do not have permission to view limit Products list."
+      );
       return res.redirect("back");
     }
   } catch (error) {
@@ -610,83 +610,84 @@ router.post("/subcat", async (req, res) => {
 });
 
 // product Quntity increase by + butten
-router.post("/quantity",isAuth ,async (req, res) => {
-    const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
+router.post("/quantity", isAuth, async (req, res) => {
+  const userdata = await User.findOne({ _id: req.user.id });
+  const footer = await Shop.findOne({});
 
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-    
+  const findrole = userdata.role;
+  const userrole = await UserRole.find({ titel: findrole });
 
-    if(userrole[0].limit_product_list.includes("views")) {
-        var qunt = req.body.quantity;
-  var date = req.body.date;
-  console.log(qunt);
+  if (userrole[0].limit_product_list.includes("views")) {
+    var qunt = req.body.quantity;
+    var date = req.body.date;
+    console.log(qunt);
 
-  //****** save new product Quntity */
-  const product = await Product.findById(req.body.editqun);
-  console.log(product); 
+    //****** save new product Quntity */
+    const product = await Product.findById(req.body.editqun);
+    console.log(product);
 
-  product.quantity = parseInt(product.quantity) + parseInt(qunt);
-  await product.save();
+    product.quantity = parseInt(product.quantity) + parseInt(qunt);
+    await product.save();
 
-  var totalAmount = parseInt(product.purchasePrice) * parseInt(qunt);
+    var totalAmount = parseInt(product.purchasePrice) * parseInt(qunt);
 
-  //****** save new Order detail in supplier data */
-  const supplier = await Supplier.findOne({ suppName: product.supplier });
-  supplier.orderList = supplier.orderList.concat({
-    productName: product.Name,
-    productQuntity: qunt,
-    productPrice: product.purchasePrice,
-    totalAmount: totalAmount,
-    date: new Date(date),
-  });
+    //****** save new Order detail in supplier data */
+    const supplier = await Supplier.findOne({ suppName: product.supplier });
+    supplier.orderList = supplier.orderList.concat({
+      productName: product.Name,
+      productQuntity: qunt,
+      productPrice: product.purchasePrice,
+      totalAmount: totalAmount,
+      date: new Date(date),
+    });
 
-  var id = supplier._id;
-  await supplier.save();
+    var id = supplier._id;
+    await supplier.save();
 
-  //********** Add  total purchase amount in Payable account*****/
-  //**********  Add balance in Paybale account************/
+    //********** Add  total purchase amount in Payable account*****/
+    //**********  Add balance in Paybale account************/
 
-  const payableAccoountdetail = await Account.aggregate([
-    { $match: { accTitel: { $eq: "Payable" } } },
-    {
-      $project: {
-        debet: { $sum: "$transaction.debit" },
-        credit: { $sum: "$transaction.credit" },
+    const payableAccoountdetail = await Account.aggregate([
+      { $match: { accTitel: { $eq: "Payable" } } },
+      {
+        $project: {
+          debet: { $sum: "$transaction.debit" },
+          credit: { $sum: "$transaction.credit" },
+        },
       },
-    },
-  ]);
-  var payTotal =
-    parseInt(payableAccoountdetail[0].credit) -
-    parseInt(payableAccoountdetail[0].debet);
-  var payableAccoount = await Account.findOne({ accTitel: "Payable" });
+    ]);
+    var payTotal =
+      parseInt(payableAccoountdetail[0].credit) -
+      parseInt(payableAccoountdetail[0].debet);
+    var payableAccoount = await Account.findOne({ accTitel: "Payable" });
 
-  payableAccoount.transaction = payableAccoount.transaction.concat({
-    walletName: id,
-    type: "Payable",
-    amount: totalAmount,
-    description: "New Product Purchase",
-    debit: 0,
-    credit: totalAmount,
-    balance: parseInt(payTotal) + parseInt(totalAmount),
-    date: new Date(date),
-  });
-  await payableAccoount.save();
+    payableAccoount.transaction = payableAccoount.transaction.concat({
+      walletName: id,
+      type: "Payable",
+      amount: totalAmount,
+      description: "New Product Purchase",
+      debit: 0,
+      credit: totalAmount,
+      balance: parseInt(payTotal) + parseInt(totalAmount),
+      date: new Date(date),
+    });
+    await payableAccoount.save();
 
-  res.redirect("back");
-    } else {
-      req.flash("errors", "You do not have permission to update limit Products list quantity.");
-      return res.redirect("back");
-    }
- 
+    res.redirect("back");
+  } else {
+    req.flash(
+      "errors",
+      "You do not have permission to update limit Products list quantity."
+    );
+    return res.redirect("back");
+  }
 });
 
 // print data get router
 router.get("/printdata/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({});
 
     const product = await Product.findById(req.params.id);
 
@@ -695,7 +696,7 @@ router.get("/printdata/:id", isAuth, async (req, res) => {
       errors: req.flash("errors"),
       userdata: userdata,
       pro: product,
-      footer
+      footer,
     });
   } catch (error) {
     console.log(error);

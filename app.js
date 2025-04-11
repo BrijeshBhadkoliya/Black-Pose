@@ -33,7 +33,7 @@ const PORT = process.env.PORT || 5000;
 ////*********mongo connection */
 
 mongoose
-  .connect("mongodb://localhost:27017/blackpos", {
+  .connect("mongodb+srv://parsotam:cscode@cluster0.ik5ghm4.mongodb.net/9pos?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     bufferCommands: false,
@@ -48,11 +48,11 @@ mongoose
     console.log(error);
   });
 
-const URI = "mongodb://localhost:27017/blackpos";
+const URI = "mongodb+srv://parsotam:cscode@cluster0.ik5ghm4.mongodb.net/mysession?retryWrites=true&w=majority";
 //******setup for flash message */
 const store = new mongoDbsession({
-  uri: URI,
-  collection: "mySessions",
+  uri: URI, 
+  collection: "mySessions", 
 });
 
 app.use(

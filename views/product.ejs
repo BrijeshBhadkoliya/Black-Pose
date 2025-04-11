@@ -117,29 +117,23 @@
 
                             <div class="form-group">
                               <label for="procat">Category </label>
-                              <select
-                                name="category"
-                                id="procat"
-                                class="form-control border-secondary"
-                                onchange="autochange()"
-                              >
-                                <option>Select Category</option>
-                                <% category.forEach(function(data){ %>
-                                <option><%=data.catName%></option>
-                                <% }) %>
+                              <select name="category" id="procat" class="form-control border-secondary">
+                                  <option >Select Category</option>
+                                  <% category.forEach(function(data){ %>
+                                      <option ><%=data.catName%></option>
+                                     <% }) %>
+
                               </select>
-                            </div>
+                          </div>
 
-                            <div class="form-group">
+                          <div class="form-group">
                               <label for="prosubcat">Sub category </label>
-                              <select
-                                name="SubCategory"
-                                id="prosubcat"
-                                class="form-control border-secondary"
-                                onchange="autochange()"
+                              <select name="SubCategory" id="prosubcat" class="form-control border-secondary">
+                                 
+                                  
 
-                              ></select>
-                            </div>
+                              </select>
+                          </div>
 
                             <div class="form-group">
                               <label for="utype">Unit type</label>
@@ -199,7 +193,7 @@
                               </div>
                               <div class="col-3 m-t-30">
                                 <div class="form-group">
-                                  <button class="btn btn-primary" onclick="codegenretor()" id="gen_code">
+                                  <button class="btn btn-primary" onclick="codegenretor()" id="gen_codes">
                                     <i
                                       class="fa fa-refresh"
                                       aria-hidden="true"
@@ -334,32 +328,7 @@
       <!-- Start Rightbar -->
     </div>
     <!-- end Containerbar -->
-    <script>
  
-
-
-      async function validate(event) {
-        const ccode = String(document.getElementById("ccode").value);
-        if (ccode.length < 8) {
-          const removeClass = document.getElementById("codeerror");
-          removeClass.style.display = "block";
-          event.preventDefault();
-        } else {
-          const removeClass = document.getElementById("codeerror");
-          removeClass.style.display = "none";
-        }
-      }
-      function codegenretor(){
-        const code = "ABCDEFGHIJKLMNOPQRSTUVWXVZ1234567890"
-        let cuponcode = ""
-        while(cuponcode.length<8) {
-            cuponcode += code[Math.floor(Math.random()*code.length)]
-            // console.log(Math.floor(Math.random()*code.length));
-        }
-         document.getElementById('ccode').value = cuponcode
-  
-     }
-    </script>
     <!-- start Toastr -->
     <%- include('./onestep/toastr')-%>
     <!-- End Toastr -->
@@ -367,5 +336,6 @@
     <!-- start JS -->
     <%- include('./onestep/script')-%>
     <!-- end JS -->
+   
   </body>
 </html>

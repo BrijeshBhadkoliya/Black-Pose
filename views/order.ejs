@@ -59,7 +59,7 @@
                                         
                                         <div class="card-body gx-30">  
                                             <div class="table-responsive">
-                                                <table id="default-datatable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th> SR</th>
@@ -83,11 +83,11 @@
                                                                 <td><%=order.orderId%></td>
                                                                 <td><%=order.createdAt.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%></td>
                                                                 <td><%=order.paymentMethod.type%></td>
-                                                                <td><%=order.SubTotal%></td>
-                                                                <td><%=order.Tax%></td>
-                                                                <td><%=order.Productdiscount%></td>
-                                                                <td><%=order.Coupondiscount%></td>
-                                                                <td><%=order.Amount%></td>
+                                                                <td><%=footer.Currency%> <%=order.SubTotal%></td>
+                                                                <td><%=footer.Currency%> <%=order.Tax%></td>
+                                                                <td><%=footer.Currency%> <%=order.Productdiscount%></td>
+                                                                <td><%=footer.Currency%> <%=order.Coupondiscount%></td>
+                                                                <td><%=footer.Currency%> <%=order.Amount%></td>
                                                                 <td>
                                                                     
                                                                     <button class="btn  btn-primary-rgba" id="pos_order_invoices" value="<%=order._id%>"><i class="dripicons-download mr-2"></i>Invoice</button></td> 
@@ -168,13 +168,13 @@
             success: function(res) {
                 // Handle Currency Placement
                 var placement_left = "";
-                var placement_right = res.Currency;
+                var placement_right = res.footer.Currency;
 
                 if (res.Currency_placement === 1) {
                     placement_left = " ";
-                    placement_right = res.Currency;
+                    placement_right = res.footer.Currency;
                 } else {
-                    placement_left = res.Currency;
+                    placement_left = res.footer.Currency;
                     placement_right = " ";
                 }
 

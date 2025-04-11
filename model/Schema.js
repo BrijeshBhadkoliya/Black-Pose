@@ -183,8 +183,6 @@ const cartSchema = new mongoose.Schema({
     Amount: {type: Number, require: true},
     coustomerId: {type:String,},
     cartNote:{type:String, trim: true},
-
-   
 },{
     timestamps:true
 });

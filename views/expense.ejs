@@ -137,12 +137,13 @@
                                                         class="btn btn-rounded btn-danger-rgba col-4">Clear Filter</a>
                                                 </div>
                                             </div>
-                                    </div>
                                     </form>
+
+                                    </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table id="default-datatable" class="display table table-bordered">
+                                            <table id="DataTable" class="display table table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th> Date</th>
@@ -171,19 +172,19 @@
                                                                     <%= tra.transaction.type %>
                                                                 </td>
                                                                 <td>
-                                                                    <%= tra.transaction.amount %>
+                                                                    <%=footer.Currency%> <%= tra.transaction.amount %>
                                                                 </td>
                                                                 <td>
                                                                     <%= tra.transaction.description %>
                                                                 </td>
                                                                 <td>
-                                                                    <%= tra.transaction.debit %>
+                                                                    <%=footer.Currency%> <%= tra.transaction.debit  %>
                                                                 </td>
                                                                 <td>
-                                                                    <%= tra.transaction.credit %>
+                                                                    <%=footer.Currency%> <%= tra.transaction.credit %>
                                                                 </td>
                                                                 <td>
-                                                                    <%= tra.transaction.balance %>
+                                                                    <%=footer.Currency%> <%= tra.transaction.balance %>
                                                                 </td>
                                                             </tr>
 
@@ -227,7 +228,11 @@
         <!-- start JS -->
         <%- include('./onestep/script')-%>
             <!-- end JS -->
-
+            <script>
+                $(document).ready( function () {
+                    $('#myTable').DataTable();
+                } );
+                </script>
 </body>
 
 </html>

@@ -59,9 +59,9 @@
                                                 
                                             </div>
                                         </div>
-                                        <div class="card-body py-0 pl-0 pr-2">
+                                        <!-- <div class="card-body py-0 pl-0 pr-2">
                                             <div id="apex-basic-column-chart"></div>
-                                        </div>
+                                        </div> -->
                                     </div>            
                                 </div>
                                 <!-- End col --> 
@@ -78,7 +78,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body appointment-widget">
-                                            <h3 id="revweek"></h3>
+                                            <h3><%=footer.Currency%> <%=weeklyRev%></h3>
                                             <p>Total This Week</p>
                                             <ul class="list-unstyled py-3">
                                                 <li><i class="mdi mdi-circle text-primary mr-2"></i> Total Revenue</li>
@@ -113,24 +113,24 @@
                                             
                                             <div class="row">
                                                 <div class="col-4 m-b-40">
-                                                     <h4><%=(income.credit - expense.debit).toFixed(2) %> $</h4>
+                                                     <h4><%=(income.credit - expense.debit).toFixed(2) %> <%=footer.Currency%></h4>
                                                     <p class="mb-1">Total Revenue</p>
                                                     
                                                 </div>
                                                 <div class="col-4 m-b-40">
-                                                    <h4><%=(income.credit).toFixed(2)%> $</h4>
+                                                    <h4><%=(income.credit).toFixed(2)%> <%=footer.Currency%></h4>
                                                     <p class="mb-1">Total Income</p>
                                                      
                                                 </div>
                                                 <div class="col-4 m-b-40">
-                                                     <h4><%=(expense.debit).toFixed(2)%> $</h4>
+                                                     <h4><%=(expense.debit).toFixed(2)%> <%=footer.Currency%></h4>
                                                      <p class="mb-1">Total Expense</p>
                                                  
                                                 </div>
                                                 
                                                 <div class="col-6 m-b-40">
                                                   
-                                                    <h4><%=(payable.credit - payable.debit).toFixed(2) %> $</h4>
+                                                    <h4><%=(payable.credit - payable.debit).toFixed(2) %> <%=footer.Currency%></h4>
                                                      <p class="mb-1">Account Payable</p>
                                                   
                                                      
@@ -138,7 +138,7 @@
                                                 </div>
                                                 <div class="col-6 m-b-40">
                                                  
-                                                     <h4><%=(recivebale.credit - recivebale.debit).toFixed(2) %> $</h4>                                                  
+                                                     <h4><%=(recivebale.credit - recivebale.debit).toFixed(2) %> <%=footer.Currency%></h4>                                                  
                                                     <p class="mb-1">Account Recivable</p>
                                                   
                                                 </div>
@@ -163,7 +163,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table id="default-datatable" class="display table  table-bordered">
+                                                <table id="DataTable" class="display table  table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -203,7 +203,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table table-borderless">
+                                                <table id="AccDataTable" class="display table  table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr.No</th>
@@ -218,7 +218,7 @@
                                                             <tr>
                                                                 <td><%=i%></td>
                                                                 <td><%=pro.accTitel%></td>
-                                                                <td><%=(pro.credit - pro.debit).toFixed(2)%> $</td>      
+                                                                <td><%=(pro.credit - pro.debit).toFixed(2)%> <%=footer.Currency%></td>      
                                                             </tr>
                                                                 <% i++ %>
                                                         <% }) %>

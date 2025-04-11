@@ -59,7 +59,7 @@
                                         
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="default-datatable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -71,7 +71,6 @@
                                                     <tbody class="justify-content-center">
                                                         <% data.forEach((pro,i)=>{ %>
                                                             <%if(pro.accDesscri !== 'Default'){ %>
-
                                                                 <tr>
                                                                     <td><%=i+=1%></td>
                                                                     <td>
@@ -79,9 +78,9 @@
                                                                     </td>
                                                                     
                                                                     <td>
-                                                                        Balance : <%=pro.credit - pro.debet%> $<br>
-                                                                        Total in : <%=pro.credit%> $<br>
-                                                                        Total out : <%=pro.debet%> $
+                                                                        Balance : <%=pro.credit - pro.debet%> <%=footer.Currency%><br>
+                                                                        Total in : <%=pro.credit%> <%=footer.Currency%><br>
+                                                                        Total out : <%=pro.debet%> <%=footer.Currency%>
                                                                     </td>
                                                                     <td>
                                                                         <a href="/account/update/<%=pro._id%>" class="btn btn-round btn-success accupdate "><i class="feather icon-edit"></i></a>
@@ -97,9 +96,9 @@
                                                                     </td>
                                                                     
                                                                     <td>
-                                                                        Balance : <%=(pro.credit - pro.debet)%> $<br>
-                                                                        Total in : <%=pro.credit%> $<br>
-                                                                        Total out : <%=pro.debet%> $
+                                                                        Balance : <%=(pro.credit - pro.debet)%> <%=footer.Currency%><br>
+                                                                        Total in : <%=pro.credit%> <%=footer.Currency%><br>
+                                                                        Total out : <%=pro.debet%> <%=footer.Currency%>
                                                                     </td>
                                                                     <td>
                                                                         Default

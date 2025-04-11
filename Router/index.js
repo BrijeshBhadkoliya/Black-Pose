@@ -35,12 +35,12 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { userName, password } = req.body;
-    
-    
+
     const user = await User.findOne({ username: userName });
-    
- 
-    // check for user name
+   const users = await User.find()
+  console.log(users);
+  
+   // check for user name
     if (!user) {
       return res.status(401).render("login", {
         error: `invalid user name`,
@@ -79,9 +79,9 @@ router.post("/login", async (req, res) => {
 });
 
 //  register get router
-router.get("/register",isAuth, isAdmin, async (req, res) => {
+router.get("/register", isAuth, isAdmin, async (req, res) => {
   const userdata = req.user.id;
-  const footer = await Shop.findOne()
+  const footer = await Shop.findOne();
 
   if (userdata == undefined) {
     res.redirect("/");
@@ -97,15 +97,15 @@ router.get("/register",isAuth, isAdmin, async (req, res) => {
     userdata: userdata,
     role: roles,
     data: users,
-    footer
+    footer,
   });
 });
 
 ///register Post router
-router.post("/register",isAuth ,upload.single("img"), async (req, res) => {
+router.post("/register", isAuth, upload.single("img"), async (req, res) => {
   const roles = await UserRole.find({});
   const users = await User.find({});
-  // const userdata = req.user._id; 
+  // const userdata = req.user._id;
 
   const {
     firstName,
@@ -120,8 +120,8 @@ router.post("/register",isAuth ,upload.single("img"), async (req, res) => {
   } = req.body;
 
   const userData = await User.findOne({ _id: req.user.id });
-  const footer = await Shop.findOne()
- 
+  const footer = await Shop.findOne();
+
   // console.log(userData);
 
   const existUser = await User.findOne({ username: username });
@@ -132,7 +132,7 @@ router.post("/register",isAuth ,upload.single("img"), async (req, res) => {
       userdata: userData,
       role: roles,
       data: users,
-      footer
+      footer,
     });
   }
 
@@ -144,7 +144,7 @@ router.post("/register",isAuth ,upload.single("img"), async (req, res) => {
       userdata: userData,
       role: roles,
       data: users,
-      footer
+      footer,
     });
   }
 
@@ -189,9 +189,9 @@ router.post("/register",isAuth ,upload.single("img"), async (req, res) => {
 router.get("/admin", isAuth, async (req, res) => {
   const porLim = await Product.find({ quantity: { $lte: 50 } });
   const userdata = await User.findOne({ _id: req.user.id });
-  const footer = await Shop.findOne()
+  const footer = await Shop.findOne();
+  const moment = require("moment");
 
-  
   const accountList = await Account.aggregate([
     {
       $project: {
@@ -354,45 +354,116 @@ router.get("/admin", isAuth, async (req, res) => {
     },
   ]);
 
-
-  const moment = require('moment');
   const currentYear = moment().year();
-  
+
   const chartdata = await Account.aggregate([
     { $unwind: "$transaction" },
     {
       $match: {
         "transaction.type": { $nin: ["Transfer", "Payable", "Recivebal"] },
-        $expr: { $eq: [{ $year: "$transaction.date" }, currentYear] }
-      }
+        $expr: { $eq: [{ $year: "$transaction.date" }, currentYear] },
+      },
     },
     {
       $group: {
         _id: { month: { $month: "$transaction.date" } },
-        income: { $sum: { $cond: [{ $eq: ["$transaction.type", "Income"] }, "$transaction.credit", 0] } },
-        expense: { $sum: { $cond: [{ $eq: ["$transaction.type", "Expense"] }, "$transaction.debit", 0] } },
-      }
+        income: {
+          $sum: {
+            $cond: [
+              { $eq: ["$transaction.type", "Income"] },
+              "$transaction.credit",
+              0,
+            ],
+          },
+        },
+        expense: {
+          $sum: {
+            $cond: [
+              { $eq: ["$transaction.type", "Expense"] },
+              "$transaction.debit",
+              0,
+            ],
+          },
+        },
+      },
     },
     {
       $project: {
         month: "$_id.month",
         income: 1,
         expense: 1,
-        _id: 0
-      }
+        _id: 0,
+      },
     },
-    { $sort: { month: 1 } }
+    { $sort: { month: 1 } },
   ]);
 
- const fullIncome = Array(12).fill(0);
-const fullExpense = Array(12).fill(0);
+  const fullIncome = Array(12).fill(0);
+  const fullExpense = Array(12).fill(0);
 
-chartdata.forEach((item) => {
-  const idx = item.month - 1; // 0-based index
-  fullIncome[idx] = item.income;
-  fullExpense[idx] = item.expense;
-});
+  chartdata.forEach((item) => {
+    const idx = item.month - 1; // 0-based index
+    fullIncome[idx] = item.income;
+    fullExpense[idx] = item.expense;
+  });
 
+  // Weekly Revenue
+  // 📈 Weekly Revenue (group by day)
+
+  const startOfWeek = moment().startOf("week").toDate();
+  const endOfWeek = moment().endOf("week").toDate();
+
+  const weeklyRevenue = await Account.aggregate([
+    { $unwind: "$transaction" },
+    {
+      $match: {
+        "transaction.date": { $gte: startOfWeek, $lte: endOfWeek },
+        "transaction.type": { $in: ["Income", "Expense"] },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          day: { $dayOfWeek: "$transaction.date" },
+          type: "$transaction.type",
+        },
+        total: {
+          $sum: {
+            $cond: [
+              { $eq: ["$transaction.type", "Income"] },
+              "$transaction.credit",
+              "$transaction.debit",
+            ],
+          },
+        },
+      },
+    },
+  ]);
+
+  // 🧮 Format into daily arrays
+  const weeklyIncome = Array(7).fill(0); // Sunday to Saturday
+  const weeklyExpense = Array(7).fill(0);
+
+  weeklyRevenue.forEach((entry) => {
+    const dayIndex = entry._id.day - 1; // 0-based: Sunday=0
+    if (entry._id.type === "Income") {
+      weeklyIncome[dayIndex] = entry.total;
+    } else {
+      weeklyExpense[dayIndex] = entry.total;
+    }
+  });
+
+  let weeklyRevenueTotal = 0;
+
+  weeklyRevenue.forEach((val) => {
+    if (val._id.type === "Income") {
+      weeklyRevenueTotal += val.total;
+    }else if(val._id.type === "Expense"){
+      weeklyRevenueTotal -= val.total;
+    }
+  });
+  //  console.log(weeklyRevenueTotal);
+   
 
   res.render("admin", {
     success: req.flash("success"),
@@ -406,10 +477,10 @@ chartdata.forEach((item) => {
     recivebale: recivebale[0],
     chartdata: chartdata,
     incomedata: fullIncome,
-    expenses:fullExpense,
-    footer:footer
+    expenses: fullExpense,
+    footer: footer,
+    weeklyRev:weeklyRevenueTotal
     // transactionDate: transactionDate,
-
   });
 });
 
@@ -423,14 +494,13 @@ router.get("/logout", isAuth, async (req, res) => {
 //profile setting get router
 router.get("/profile", isAuth, async (req, res) => {
   const data = await User.findOne({ _id: req.user.id });
-  const footer = await Shop.findOne()
+  const footer = await Shop.findOne();
   res.render("profile", {
     success: req.flash("success"),
     errors: req.flash("errors"),
     userdata: data,
     data: data,
-    footer:footer
-
+    footer: footer,
   });
 });
 

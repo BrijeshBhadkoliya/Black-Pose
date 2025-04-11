@@ -82,7 +82,7 @@
                                         <div class="card-body">
                                             <div class="fixtable">
                                                 <div class="table-responsive">
-                                                    <table id="default-datatable" class="display table table-bordered">
+                                                    <table id="DataTable" class="display table table-bordered">
                                                         <thead>
                                                             <tr>
                                                                 <th> Date</th>
@@ -102,11 +102,11 @@
                                                                     <td><%=tra.transaction.date.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%></td>
                                                                     <td><%=tra.accTitel%></td>
                                                                     <td><%=tra.transaction.type%></td>
-                                                                    <td><%=tra.transaction.amount%></td>
+                                                                    <td><%=footer.Currency%> <%=tra.transaction.amount%></td>
                                                                     <td><%=tra.transaction.description%></td>
-                                                                    <td><%=tra.transaction.debit%></td>
-                                                                    <td><%=tra.transaction.credit%></td>
-                                                                    <td><%=tra.transaction.balance%></td> 
+                                                                    <td><%=footer.Currency%> <%=tra.transaction.debit%></td>
+                                                                    <td><%=footer.Currency%> <%=tra.transaction.credit%></td>
+                                                                    <td><%=footer.Currency%> <%=tra.transaction.balance%></td> 
                                                             </tr>
                                                                 
                                                             <% }) %>
@@ -142,7 +142,7 @@
                                                     <i class="dripicons-basket p-2  rounded text-success-gradient"></i>
                                                 </div>
                                                 <div class="text-body align-content-center m-l-20">
-                                                    <span > <%=data.order.length%> Orders</span>
+                                                    <span > <%= order.length%> Orders</span>
                                                 </div>
 
                                             </div>
@@ -151,7 +151,7 @@
                                                     <i class="dripicons-wallet p-1  rounded text-success-gradient"></i>
                                                 </div>
                                                 <div class="text-body align-content-center m-l-20">
-                                                    <span > <%=data.Balance%> $</span>
+                                                    <span > <%=data.Balance%> <%=footer.Currency%></span>
                                                 </div>
 
                                             </div>

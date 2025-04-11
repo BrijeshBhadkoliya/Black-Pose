@@ -148,6 +148,7 @@ router.post("/addCart", async (req, res) => {
   try {
     const product = await Product.findById(req.body.id);
     const cartdata = await Cart.findOne({ coustomerId: req.body.coust_id });
+    
     var discount = product.discount.toFixed(2);
     if (product.discountType == "percent") {
       discount = (
@@ -192,6 +193,7 @@ router.post("/addCart", async (req, res) => {
         discount: discount,
         tax: tax,
         total: total,
+      
       });
       (cartdata.SubTotal =
         parseInt(cartdata.SubTotal) + parseInt(product.sellingPrice)),
@@ -228,7 +230,8 @@ router.post("/addCart", async (req, res) => {
       });
 
       const cart = await data.save();
-
+ 
+   
       res.status(200).json({
         success: "The product has been added to the cart",
         data: cart,
@@ -238,6 +241,8 @@ router.post("/addCart", async (req, res) => {
     console.log(error);
   }
 });
+
+
 
 //////cart user id post router
 router.post("/userId", async (req, res) => {
@@ -266,7 +271,6 @@ router.post("/userId", async (req, res) => {
       { $match: { _id: { $eq: ObjectId(req.body.userId) } } },
       { $project: { _id: 0, cousName: 1 } },
     ]);
-
     res.status(200).json({
       success: "success",
       coust_name: coustomerName[0].cousName,
@@ -742,7 +746,7 @@ router.get("/orderlist", isAuth, async (req, res) => {
         const footer = await Shop.findOne({});
  console.log(footer);
 
-    const order = await Order.find({});
+    const order = await Order.find({}).sort({ _id: -1 });
 
     res.render("order", {
       success: req.flash("success"),

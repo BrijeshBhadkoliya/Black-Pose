@@ -62,7 +62,7 @@
                                         
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="default-datatable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr class="text-center">
                                                             <th>Sr No</th>
@@ -86,8 +86,8 @@
                                                                 <td><img src="../uploads/resized/<%=pro.productImage%>" class="rounded-circle" width="50px" height="50px" alt=""></td>
                                                                 <td><%=pro.supplier%> </td>
                                                                 <td><%=pro.proCode%></td>
-                                                                <td><%=pro.purchasePrice%></td>
-                                                                <td><%=pro.sellingPrice%></td>
+                                                                <td><%=footer.Currency%> <%=pro.purchasePrice%></td>
+                                                                <td><%=footer.Currency%> <%=pro.sellingPrice%></td>
                                                                 <td class="d-flex align-items-center mb-0">
                                                                     <form action="/product/quantity" class="d-flex" method="post">
                                                                     

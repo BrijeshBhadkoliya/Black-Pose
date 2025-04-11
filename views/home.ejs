@@ -72,41 +72,17 @@
 
                                                                 <div class="form-group">
                                                                     <label for="Country">Country</label>
-                                                                    <select name="Country" id="Country" class="form-control border-secondary">
-                                                                        <option value="INDIA" <%= data.Country == "INDIA" ? 'selected' : '' %>>INDIA</option>
-                                                                        <option value="Australia" <%= data.Country == "Australia" ? 'selected' : '' %>>Australia</option>
-                                                                        <option value="Belize" <%= data.Country == "Belize" ? 'selected' : '' %>>Belize</option>
-                                                                        <option value="China" <%= data.Country == "China" ? 'selected' : '' %>>China</option>
-                                                                        <option value="Egyp" <%= data.Country == "Egyp" ? 'selected' : '' %>>Egyp</option>
-                                                                        <option value="Netherland" <%= data.Country == "Netherland" ? 'selected' : '' %>>Netherland</option>
-                                                                        <option value="Nigeria" <%= data.Country == "Nigeria" ? 'selected' : '' %>>Nigeria</option>
-                                                                        <option value="Russia" <%= data.Country == "Russia" ? 'selected' : '' %>>Russia</option>
-                                                                        <option value="Saudi Arabia" <%= data.Country == "Saudi Arabia" ? 'selected' : '' %>>Saudi Arabia</option>
-                                                                        <option value="Thailand" <%= data.Country == "Thailand" ? 'selected' : '' %>>Thailand</option>
-                                                                       
-                                
-                                                                    </select>
+                                                                    <input type="text" class="form-control border-secondary" id="Country" name="Country" value="<%=data.Country%>" required>
                                                                 </div>
 
-                                                                
-                                                            
                                                                 <div class="form-group">
-                                                                    <label for="Currency">Currency </label>
-                                                                    <select name="Currency" id="Currency" class="form-control border-secondary">
-                                                                        <option value="₹" <%= data.Currency == "₹" ? 'selected' : '' %>>INDIA (₹)</option>
-                                                                        <option value="$" <%= data.Currency == "$" ? 'selected' : '' %>>Australia Dollar ($)</option>
-                                                                        <option value="BZ$" <%= data.Currency == "BZ$" ? 'selected' : '' %>>Belize Dollar (BZ$)</option>
-                                                                        <option value="¥" <%= data.Currency == "¥" ? 'selected' : '' %>>China (¥)</option>
-                                                                        <option value="£" <%= data.Currency == "£" ? 'selected' : '' %>>Egypt Pound (£)</option>
-                                                                        <option value="ƒ" <%= data.Currency == "ƒ" ? 'selected' : '' %>>Netherland (ƒ)</option>
-                                                                        <option value="₦" <%= data.Currency == "₦" ? 'selected' : '' %>>Nigeria (₦)</option>
-                                                                        <option value="₽" <%= data.Currency == "₽" ? 'selected' : '' %>>Russia (₽)</option>
-                                                                        <option value="﷼" <%= data.Currency == "﷼" ? 'selected' : '' %>>Saudi Arabia (﷼)</option>
-                                                                        <option value="฿" <%= data.Currency == "฿" ? 'selected' : '' %>>Thailand (฿)</option>
-                                
-                                                                    </select>
-                                                                </div>
-
+                                                                    <label for="Currency">Currency</label>
+                                                                    <div class="input-group">
+                                                                   <input type="text" name="Currency" id="Currency" value="<%=data.Currency%>"  class="form-control border-secondary">
+                                                                      <!-- Hint input -->
+                                                                    
+                                                                    </div>
+                                                                  </div>
                                                                 <div class="form-group">
                                                                     <label for="Timezone">Time zone </label>
                                                                     <select name="Timezone" id="Timezone" class="form-control border-secondary">

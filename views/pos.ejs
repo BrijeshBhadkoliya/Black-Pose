@@ -72,7 +72,7 @@
                                         <div class="card-body">
                                             
 
-                                                <div class="row d-flex " id="product_list">
+                                                <div class="row d-flex" id="product_list">
 
                                                     <% list.forEach(function(pro){ %>
                                                     <div class="col-xl-4 col-md-6 col-sm-12 m-b-20 p-2">
@@ -83,7 +83,7 @@
                                                                 <div class="media-body ml-3">
                                                                     <h6 class="mb-2"><%=pro.Name%></h6>
                                                                     <p>code : <%=pro.proCode%></p>
-                                                                    <p class="font-15"><%=pro.sellingPrice%> $</p>
+                                                                    <p class="font-15"><%=pro.sellingPrice%> <%=footer.Currency%></p>
                                                                     <button class="btn btn-round btn-primary-rgba" data-id="<%=pro._id%>" id="add_prod"><i class="dripicons-basket  font-15" type="submit" value="submit"></i></button>                                                           
                                                                 </div>
                                                             </div>
@@ -105,18 +105,39 @@
                                             <div class="row justify-content-between d-flex w-100">
                                                 
                                                 <div class="col-6">
+                                                    
                                                     <div class="cosutomer">
-                                                        <form>
-                                                            <div class="input-group border-search p-1 mb-3 bg-body rounded">
-                                                             <select name="customer" id="cust" class="form-control" aria-placeholder="search by category">
-                                                                <option value="">Select Customer</option>
-                                                                <% coust.forEach(function(data){ %>
-                                                                    <option value="<%=data._id%>" <%=data._id.toString() == coust_id.toString() ? 'selected' : '' %> > <%=data.cousName%> </option>
-                                                                <% }) %>
-                                                             </select>
-                                                              
-                                                            </div>
-                                                        </form>
+                                                        <div class="position-relative" style="max-width: 600px;">
+                                                            <form id="customer-form">
+                                                                <div class="position-relative" style="max-width: 600px;">
+                                                                  <div class="input-group border-search p-1 mb-3 bg-body rounded">
+                                                                    <input 
+                                                                      id="search-input" 
+                                                                      class="form-control me-2" 
+                                                                      type="search" 
+                                                                      oninput="search()" 
+                                                                      onclick="showList()" 
+                                                                      placeholder="Search Customer" 
+                                                                      name="customer"
+                                                                      aria-placeholder="Search by category"
+                                                                      value="<%=coustomerName%>"
+                                                                    >
+                                                                    <!-- Hidden field to store selected customer ID -->
+                                                                    <input type="hidden" id="cust" name="customerId">
+                                                                  </div>
+                                                            
+                                                                  <ul class="list-group rounded bg-white d-none position-absolute top-100 start-0 end-0 z-3 overflow-auto" 
+                                                                      id="results-list" 
+                                                                      style="z-index: 10; max-height: 350px; overflow-y: auto;">
+                                                                    <% coust.forEach(function(data){ %>
+                                                                      <li class="list-group-item" value="<%=data._id%>"><%=data.cousName%></li>
+                                                                    <% }) %>
+                                                                  </ul>
+                                                                </div>
+                                                              </form>
+                                                            
+                                                          </div>
+                                                        
                                                     </div>
                                                 </div>
 
@@ -143,7 +164,7 @@
                                                         </h5>
                                                     </div>
                                                     <div class="col-4 text-center">
-                                                        <h5 id="curr_cus" > Current Customer <br><span class="text-lg-center text-info"><%=coustomerName%></span></h5>
+                                                        <h5 id="curr_cusmer" > Current Customer <br><span class="text-lg-center text-info"><%=coustomerName%></span></h5>
                                                     </div>
                                                 </div>  
 
@@ -178,10 +199,10 @@
                                                                                                     <input type="number" class="form-control cart-qty" name="cartQty1" id="cartQty1" min="1" value="<%=value.productCount%>" data-name="<%=value.productName%>" data-id="<%=value._id%>">     
                                                                                                 </div>
                                                                                             </td>
-                                                                                            <td><%=value.productPrice%></td>
-                                                                                            <td >$ <%=value.discount%></td>
-                                                                                            <td >$ <%=value.tax%></td>
-                                                                                            <td >$ <%=value.total%></td>
+                                                                                            <td><%=footer.Currency%> <%=value.productPrice%></td>
+                                                                                            <td><%=footer.Currency%> <%=value.discount%></td>
+                                                                                            <td><%=footer.Currency%> <%=value.tax%></td>
+                                                                                            <td><%=footer.Currency%> <%=value.total%></td>
                                                                                             <td><button  type="button" class="btn btn-round btn-danger-rgba" id="del_cart_item" value="<%=value._id%>"><i class="feather icon-trash-2"></i></button></td>
                                                                                         </tr>
     
@@ -235,23 +256,23 @@
                                                                                        
                                                                                             <tr>
                                                                                                 <td>Sub Total :</td>
-                                                                                                <td><%=cart.SubTotal %> $</td>
+                                                                                                <td><%=cart.SubTotal %> <%=footer.Currency%></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td>Product discount :</td>
-                                                                                                <td><%=cart.Productdiscount %> $</td>
+                                                                                                <td><%=cart.Productdiscount %> <%=footer.Currency%></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td>Coupon discount :</td>
-                                                                                                <td><%=cart.Coupondiscount %> $</td>
+                                                                                                <td><%=cart.Coupondiscount %> <%=footer.Currency%></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td>Tax :</td>
-                                                                                                <td><%=cart.Tax %> $</td>
+                                                                                                <td><%=cart.Tax %> <%=footer.Currency%></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td class="f-w-7 font-18"><h4>Amount :</h4></td>
-                                                                                                <td class="f-w-7 font-18"><h4><%=cart.Amount %> $</h4></td>
+                                                                                                <td class="f-w-7 font-18"><h4><%=cart.Amount %> <%=footer.Currency%></h4></td>
                                                                                             </tr>
         
                                                                                         
@@ -259,23 +280,23 @@
 
                                                                                         <tr>
                                                                                             <td>Sub Total :</td>
-                                                                                            <td>0 $</td>
+                                                                                            <td>0 <%=footer.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td>Product discount :</td>
-                                                                                            <td>0 $</td>
+                                                                                            <td>0 <%=footer.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td>Coupon discount :</td>
-                                                                                            <td>0 $</td>
+                                                                                            <td>0 <%=footer.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td>Tax :</td>
-                                                                                            <td>0 $</td>
+                                                                                            <td>0 <%=footer.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td class="f-w-7 font-18"><h4>Amount :</h4></td>
-                                                                                            <td class="f-w-7 font-18"><h4>0 $</h4></td>
+                                                                                            <td class="f-w-7 font-18"><h4>0 <%=footer.Currency%></h4></td>
                                                                                         </tr>
 
 
@@ -344,8 +365,76 @@
     <!-- start JS -->
     
     <%- include('./onestep/script')-%>
-    <!-- end JS -->
  
+    <script>
+          const form = document.getElementById('customer-form');
+        const input = document.getElementById('search-input');
+        const results = document.getElementById('results-list');
+        const items = Array.from(results.getElementsByTagName('li'));
+        const hiddenInput = document.getElementById('cust'); 
+      
+        function showList() {
+          results.classList.remove('d-none');
+          showAllItems();
+        }
+      
+        function search() {
+          const query = input.value.toLowerCase();
+          results.classList.remove('d-none');
+      
+          let anyVisible = false;
+      
+          items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            const match = text.includes(query);
+            item.style.display = match ? 'block' : 'none';
+            if (match) anyVisible = true;
+          });
+      
+          if (!anyVisible) {
+            results.classList.add('d-none');
+          }
+        }
+      
+        function showAllItems() {
+          items.forEach(item => item.style.display = 'block');
+        }
+      
+         items.forEach(item => {
+          item.addEventListener('click', () => {
+            input.value = item.textContent;
+            hiddenInput.value = item.getAttribute('value'); 
+            results.classList.add('d-none');
+
+       
+      fetch('/user/userId', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: hiddenInput.value })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const currentCusmElem = document.getElementById('curr_cusmer');
+       if (currentCusmElem && data.coust_name) {
+             currentCusmElem.innerHTML = `Current Customer <br><span class="text-lg-center text-info">${data.coust_name}</span>`;
+           }
+      })
+      .catch(err => console.error('Error:', err));
+    
+                  
+
+
+          });
+        });
+       
+        document.addEventListener('click', (event) => {
+          const isClickInside = input.contains(event.target) || results.contains(event.target);
+          if (!isClickInside) {
+            results.classList.add('d-none');
+          }
+        });
+      </script>
+      
 </body>
 </html>
 
