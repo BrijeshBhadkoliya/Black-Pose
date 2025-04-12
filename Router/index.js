@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const sharp = require("sharp");
 const fs = require("fs");
+require("dotenv").config();
+
 const {
   User,
   Category,
@@ -37,8 +39,6 @@ router.post("/login", async (req, res) => {
     const { userName, password } = req.body;
 
     const user = await User.findOne({ username: userName });
-   const users = await User.find()
-  console.log(users);
   
    // check for user name
     if (!user) {
@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
         id: user._id,
         role: user.role,
       },
-      "brijesh"
+      process.env.KEY
     );
 
     // send token vai cookies

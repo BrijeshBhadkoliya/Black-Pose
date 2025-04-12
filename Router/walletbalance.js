@@ -195,7 +195,7 @@ router.get('/home', isAuth , async (req, res)=>{
     if(userrole[0].setting.includes("views")) {
 
         const data = await Shop.findOne({_id:'6350e15d1b18d032e2858b7c'})
-       
+    
         res.render('home',{
             success : req.flash('success'),
             errors: req.flash('errors'),

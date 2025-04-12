@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+require("dotenv").config();
 
 
 
@@ -12,7 +13,7 @@ const isAuth = (req,res,next)=>{
        return res.redirect('/login');
     }
    
-    var user = jwt.verify(token ,"brijesh");
+    var user = jwt.verify(token ,process.env.KEY);
    
     if(!user){
        return res.redirect('/login');
@@ -24,21 +25,14 @@ const isAuth = (req,res,next)=>{
 
 const isAdmin = (req, res, next)=>{
     isAuth(req, res,async function(user){
-       
-      
         if(req.user.role == "admin"){
             next()
         }else{
             req.flash('errors', `!!! ONLY ADMIN CAN DO THIS!!!!!!`),
-            res.redirect('back')
-           
+            res.redirect('back')   
     }
     }
 )}
-
-
-
-
 
 const upload = multer({storage:
     multer.diskStorage({

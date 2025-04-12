@@ -100,10 +100,7 @@ function addtocart(prod_id){
             if(res.error){
                 toastr["error"](res.error);
             }
-
-                 
-                      
-            
+   
             if (res.data.Currency_placement == 1) {  
 
                 var SubTotal = res.data.SubTotal + " " + res.data.Currency

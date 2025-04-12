@@ -177,6 +177,7 @@ router.post("/userupdate", isAuth, upload.single("img"), async (req, res) => {
     const roles = await UserRole.find({});
     const users = await User.find({});
     const userData = await User.findOne({ _id: req.user.id });
+    const footer = await Shop.findOne({})
     console.log(req.body, req.file);
 
     if (req.file) {
@@ -196,6 +197,8 @@ router.post("/userupdate", isAuth, upload.single("img"), async (req, res) => {
         userdata: userData,
         role: roles,
         data: users,
+        footer
+
       });
     } else {
       const data = await User.findByIdAndUpdate(userid, {
@@ -211,6 +214,7 @@ router.post("/userupdate", isAuth, upload.single("img"), async (req, res) => {
         userdata: userData,
         role: roles,
         data: users,
+        footer
       });
     }
   } catch (error) {

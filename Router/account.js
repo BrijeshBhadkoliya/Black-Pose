@@ -422,9 +422,7 @@ router.get('/expense', isAuth , async (req, res)=>{
                         }
             }
         ]);
-
-              console.log(data);
-              
+        
         res.render('expense',{
             success : req.flash('success'),
             errors: req.flash('errors'),

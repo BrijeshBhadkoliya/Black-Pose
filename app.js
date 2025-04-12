@@ -1,99 +1,60 @@
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const env = require("dotenv");
-const bodyParser = require("body-parser");
+const session = require("express-session");
+const MongoStore = require("connect-mongodb-session")(session);
 const path = require("path");
-const cookieParser = require("cookie-parser");
-const ejs = require("ejs");
-const multer = require("multer");
-const nocache = require("nocache");
-const flash = require("connect-flash");
-var session = require("express-session");
-const mongoDbsession = require("connect-mongodb-session")(session);
+const bodyParser = require("body-parser");
+const app = express();
 
-const indexRouter = require("./Router/index");
-const categoryRouter = require("./Router/category");
-const brandRouter = require("./Router/brand");
-const unitRouter = require("./Router/unit");
-const supplierRouter = require("./Router/supplier");
-const productRouter = require("./Router/product");
-const couponRouter = require("./Router/coupon");
-const coustomerRouter = require("./Router/Coustomer");
-const accountRouter = require("./Router/account");
-const walletRouter = require("./Router/walletbalance");
-const posRouter = require("./Router/pos");
-const userRouter = require("./Router/userRole");
+require("dotenv").config();
 
-///***********Dotenv config */
-
-env.config({ path: "./config.env" });
-const DB = process.env.DATABASE;
 const PORT = process.env.PORT || 5000;
-////*********mongo connection */
+const DB = process.env.DATABASE;
+const SESSION_DB = process.env.SESSION_DB;
 
-mongoose
-  .connect("mongodb+srv://parsotam:cscode@cluster0.ik5ghm4.mongodb.net/9pos?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    bufferCommands: false,
-    serverSelectionTimeoutMS: 10000,
-    socketTimeoutMS: 45000,
-    family: 4,
-  })
-  .then(() => {
-    console.log("DB connected !!!!!!!!!!!");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+mongoose.connect(DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MozgoDB Connected"))
+.catch((err) => console.error("MongoDB Error:", err));
 
-const URI = "mongodb+srv://parsotam:cscode@cluster0.ik5ghm4.mongodb.net/mysession?retryWrites=true&w=majority";
-//******setup for flash message */
-const store = new mongoDbsession({
-  uri: URI, 
-  collection: "mySessions", 
+const store = new MongoStore({
+  uri: SESSION_DB,
+  collection: "mySessions",
 });
 
-app.use(
-  session({
-    secret: "thisismysecretkey",
-    resave: false,
-    cookie: { maxAge: 1000 * 60 },
-    saveUninitialized: true,
-    store: store,
-  })
-);
+app.use(session({
+  secret: "mySecretKey",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 },
+  store,
+}));
 
-//********set dependency */
-app.use(flash());
+
 app.set("view engine", "ejs");
 app.set(path.join(__dirname, "uploads"));
 app.set(path.join(__dirname, "public"));
-app.use(nocache());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(require("connect-flash")());
+app.use(require("nocache")());
+app.use(require("cookie-parser")())
+app.use(bodyParser.json());;
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-///******set router *******/
+app.use("/", require("./Router/index"));
+app.use("/category", require("./Router/category"));
+app.use("/brand", require("./Router/brand"));
+app.use("/unit", require("./Router/unit"));
+app.use("/supplier", require("./Router/supplier"));
+app.use("/product", require("./Router/product"));
+app.use("/coupon", require("./Router/coupon"));
+app.use("/coustomer", require("./Router/Coustomer"));
+app.use("/account", require("./Router/account"));
+app.use("/wallet", require("./Router/walletbalance"));
+app.use("/user", require("./Router/pos"));
+app.use("/userrole", require("./Router/userRole"));
 
-app.use("/", indexRouter);
-app.use("/category", categoryRouter);
-app.use("/brand", brandRouter);
-app.use("/unit", unitRouter);
-app.use("/supplier", supplierRouter);
-app.use("/product", productRouter);
-app.use("/coupon", couponRouter);
-app.use("/coustomer", coustomerRouter);
-app.use("/account", accountRouter);
-app.use("/wallet", walletRouter);
-app.use("/user", posRouter);
-app.use("/userrole", userRouter);
-
-///**********Port config */
-
-app.listen(PORT, () => {
-  console.log(`server running on port http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

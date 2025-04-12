@@ -162,14 +162,17 @@ router.get('/list', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
         const footer = await Shop.findOne()
-
+  
         const costList = await Coustomer.find({});
+  
+        
+     
         res.render('coustomer',{
             success : req.flash('success'),
             errors: req.flash('errors'),
             userdata:userdata,
             data:costList,
-            footer
+            footer,
         })
     } catch (error) {
         console.log(error);
@@ -247,7 +250,6 @@ router.get('/viewtransection/:id', isAuth , async (req, res)=>{
         var id=req.params.id
         const userdata = await User.findOne({_id:req.user.id})
         const footer = await Shop.findOne()
-        const order = await Order.find({coustomerId:req.params.id})
 
         const cost = await Coustomer.findById({_id:req.params.id});
         const transList =  await Account.aggregate([
@@ -273,7 +275,7 @@ router.get('/viewtransection/:id', isAuth , async (req, res)=>{
             userdata:userdata,
             data:cost,
             list: transList,
-            footer,order
+            footer,
         })
 
 

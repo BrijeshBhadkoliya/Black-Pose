@@ -39,7 +39,7 @@
         <!-- End Breadcrumbbar -->
 
         <!-- Start Contentbar -->
-        <div class="contentbar">
+        <div class="contentbar" style="margin-bottom: 60px;">
           <!-- Start row -->
           <div class="row">
             <!-- Start col -->
@@ -336,6 +336,54 @@
     <!-- start JS -->
     <%- include('./onestep/script')-%>
     <!-- end JS -->
+    <script>
+      
+      function codegenretor(){
+         const code = "ABCDEFGHIJKLMNOPQRSTUVWXVZ1234567890"
+         let cuponcode = ""
+         while(cuponcode.length<8) {
+             cuponcode += code[Math.floor(Math.random()*code.length)]
+             // console.log(Math.floor(Math.random()*code.length));
+         }
+          document.getElementById('ccode').value = cuponcode
    
+      }
+ 
+ 
+      async function validate(event) {
+         const ccode = String(document.getElementById("ccode").value);
+         if (ccode.length < 8) {
+           const removeClass = document.getElementById("codeerror");
+           removeClass.style.display = "block";
+           removeClass.innerText = `Product length ${ccode.length} and it is not valid`
+           event.preventDefault();
+         } else {
+           const removeClass = document.getElementById("codeerror");
+           removeClass.style.display = "none";
+         }
+       }
+ 
+         const  dateArr = document.getElementsByClassName('dateArr')
+           for(let i = 0; i<dateArr.length; i++ ){
+                dateArr[i].value = new Date().toISOString().split('T')[0];
+                
+           }
+           console.log(dateArr);
+           
+           
+           async function setstues(id){
+             const catId = id
+ 
+         //   const newStatus = this.checked ? "active" : "deactive";
+ 
+           const response = await fetch(`/coupon/updatestatus/${catId}`, {
+             method: "GET",
+           });
+ 
+           const result = await response.json();
+         
+         }
+      
+       </script>
   </body>
 </html>

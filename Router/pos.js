@@ -231,10 +231,11 @@ router.post("/addCart", async (req, res) => {
 
       const cart = await data.save();
  
-   
+     const footer = await Shop.findOne({})  
       res.status(200).json({
         success: "The product has been added to the cart",
         data: cart,
+        footer
       });
     }
   } catch (error) {
@@ -729,6 +730,11 @@ router.post("/order", async (req, res) => {
     });
 
     const confirmOrder = await oreder.save();
+    // update code 
+    await Coustomer.findByIdAndUpdate(
+      cart.coustomerId,
+      { $push: { order: confirmOrder } }
+    );
 
     const cleareCart = await Cart.findByIdAndDelete(cart._id);
     req.flash("success", `Your Order has been submitted`);
@@ -743,10 +749,9 @@ router.post("/order", async (req, res) => {
 router.get("/orderlist", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
- console.log(footer);
+    const footer = await Shop.findOne({});
 
-    const order = await Order.find({}).sort({ _id: -1 });
+    const order = await Order.find({});
 
     res.render("order", {
       success: req.flash("success"),
