@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS | Login</title>
-    <link rel="shortcut icon" href="images/blackPOSlogo.png">
+    <link rel="shortcut icon" href="/uploads/resized/<%= footer?.Logo %>">
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -29,9 +29,9 @@
                             <div class="card">
                                 <div class="card-body">
                                     <form  method="post" action="/login">
-                                        <div class="form-head">
-                                           <img src="images/blackPOSlogo.png" alt="logo" width="150px">
-                                        </div>                                        
+                                        
+                                            <div class="d-flex align-items-center justify-content-center form-head"><img id="logo" src="/uploads/resized/<%= footer?.Logo %>" class="img-fluid" alt="logo"></div>
+                                                                               
                                         <h4 class="text-primary my-4">Log in to your account !</h4>
                                         <div class="form-group">
                                             <input type="text" id="userName" class="form-control" value="admin" name="userName" placeholder="Enter Username" required/>
@@ -79,8 +79,7 @@
     
 
 
- <!--  Bootstrap Bundle with Popper -->
- <script src="assets/js/bootstrap.bundle.min.js" ></script>
+
 
 
 </body>

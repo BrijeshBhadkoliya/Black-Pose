@@ -57,11 +57,12 @@
                         enctype="multipart/form-data"
                         class="needs-validation"
                         onsubmit="validate(event)"
+                        onsubmit="return  validateForm()"
                       >
                         <div class="row">
                           <div class="col-6">
                             <div class="form-group">
-                              <label for="proName">Product Name</label>
+                              <label for="proName ">Product Name</label>
                               <input
                                 type="text"
                                 class="form-control border-secondary"
@@ -79,7 +80,7 @@
                             />
                             </div>
                             <div class="form-group">
-                              <label for="sprice">Selling price </label>
+                              <label for="sprice">Selling price</label>
                               <input
                                 type="number"
                                 class="form-control border-secondary"
@@ -95,12 +96,13 @@
                                 name="brand"
                                 id="brand"
                                 class="form-control border-secondary"
-                              >
-                                <option>Select Brand</option>
+                              required>
+                                <option value="">Select Brand</option>
                                 <% brand.forEach(function(data){ %>
                                 <option><%=data.brandName%></option>
                                 <% }) %>
                               </select>
+                            
                             </div>
 
                             <div class="form-group">
@@ -117,22 +119,25 @@
 
                             <div class="form-group">
                               <label for="procat">Category </label>
-                              <select name="category" id="procat" class="form-control border-secondary">
-                                  <option >Select Category</option>
+                              <select name="category" id="procat" class="form-control border-secondary" required>
+                                  <option value="" >Select Category</option>
                                   <% category.forEach(function(data){ %>
                                       <option ><%=data.catName%></option>
                                      <% }) %>
 
                               </select>
+                        
                           </div>
 
                           <div class="form-group">
                               <label for="prosubcat">Sub category </label>
-                              <select name="SubCategory" id="prosubcat" class="form-control border-secondary">
+                              <select name="SubCategory" id="prosubcat" class="form-control border-secondary" required>
                                  
                                   
 
                               </select>
+                            
+
                           </div>
 
                             <div class="form-group">
@@ -141,12 +146,13 @@
                                 name="unitType"
                                 id="utype"
                                 class="form-control border-secondary"
-                              >
-                                <option>Select Unit</option>
+                                required>
+                                <option value="">Select Unit</option>
                                 <% unit.forEach(function(data){ %>
                                 <option><%=data.unit%></option>
                                 <% }) %>
                               </select>
+                             
                             </div>
 
                             <div class="form-group">
@@ -224,7 +230,7 @@
                                 name="discountType"
                                 id="distype"
                                 class="form-control border-secondary"
-                              >
+                                required>
                                 <option value="percent">percent (%)</option>
                                 <option value="Amount" selected>Amount</option>
                               </select>
@@ -263,12 +269,13 @@
                                     name="supplier"
                                     id="supp"
                                     class="form-control border-secondary"
-                                  >
-                                    <option>select supplier</option>
+                                    required>
+                                    <option value="">select supplier</option>
                                     <% supp.forEach(function(data){ %>
                                     <option><%=data.suppName%></option>
                                     <% }) %>
                                   </select>
+                                  
                                 </div>
                                 <div class="form-group">
                                   <label for="proimg">Product Image</label>
@@ -294,12 +301,14 @@
                               </div>
                               <div class="col-6">
                                 <div class="img align-items-center">
-                                  <div class="col-lg-12">
+                                  <div class="col-lg-12" style=" max-width:250px; max-height: 250px;">
                                     <center>
                                       <img
                                         id="catdemoimg"
                                         alt="your image"
                                         src="../images/one.png"
+                                        width="250"
+                                        height="250"
                                       />
                                       <h5>Image Preview</h5>
                                     </center>
@@ -383,7 +392,6 @@
            const result = await response.json();
          
          }
-      
        </script>
   </body>
 </html>

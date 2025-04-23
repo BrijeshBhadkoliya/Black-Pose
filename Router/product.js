@@ -19,23 +19,16 @@ const fs = require("fs");
 var csv = require("fast-csv");
 const { parse } = require("fast-csv");
 var Excel = require("exceljs");
-const { log } = require("console");
 
 // add product get router
 router.get("/add", isAuth, async (req, res) => {
   try {
-    const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
-
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-
-    if (userrole[0].product.includes("add")) {
       const brand = await Brand.find({});
       const unit = await Unit.find({});
       const category = await Category.find({ status: "active" });
       const supp = await Supplier.find({});
-
+      const userdata = await User.findOne({ _id: req.user.id });
+      const footer = await Shop.findOne({})
       res.render("product", {
         success: req.flash("success"),
         errors: req.flash("errors"),
@@ -46,10 +39,6 @@ router.get("/add", isAuth, async (req, res) => {
         supp: supp,
         footer,
       });
-    } else {
-      req.flash("errors", "You do not have permission to add product.");
-      return res.redirect("/product/list");
-    }
   } catch (error) {
     console.log(error);
   }
@@ -57,23 +46,30 @@ router.get("/add", isAuth, async (req, res) => {
 // add Product post router
 
 router.get("/subcate", async (req, res) => {
-  if (req.query.cat) {
-    const subcatfind = await Category.findOne({ catName: req.query.cat });
-    console.log(subcatfind);
+  try {
+    if (req.query.cat) {
+      const subcatfind = await Category.findOne({ catName: req.query.cat });
 
-    const subCategoryNames = subcatfind.subcatNames.map(
-      (sub) => sub.subcatname
-    );
+      if (!subcatfind) {
+        return res.status(404).send({ subcat: [] });
+      }
 
-    console.log(subCategoryNames);
+      const subCategoryNames = subcatfind.subcatNames.map(
+        (sub) => sub.subcatname
+      );
 
-    return res.send({
-      subcat: subCategoryNames,
-    });
-  } else {
-    res.redirect("back");
+      return res.send({
+        subcat: subCategoryNames,
+      });
+    } else {
+      return res.status(400).send({ error: "Category not provided." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
   }
 });
+
 
 router.post("/addproduct", upload.single("proimg"), async (req, res) => {
   try {
@@ -95,6 +91,18 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
       supplier,
     } = req.body;
     const productImage = req.file.filename;
+
+
+
+    const missingF = Object.entries(req.body)
+    .filter(([key, val]) => val.trim() === "")
+    .map(([key]) => key);
+  
+  if (missingF.length > 0) {
+    req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+    return res.redirect("back");
+  }
+
 
     const proname = await Product.findOne({ Name: Name });
     if (proname) {
@@ -118,6 +126,8 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
       .jpeg({ quality: 90 })
       .toFile(path.resolve(req.file.destination, "resized", image));
 
+      
+
     fs.unlinkSync(req.file.path);
 
     const newProduct = await Product.create({
@@ -138,6 +148,8 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
       productImage,
     });
     const supp = await Supplier.findOne({ suppName: supplier });
+
+    
     supp.productList = supp.productList.concat({
       productName: newProduct.Name,
     });
@@ -169,11 +181,18 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
         },
       },
     ]);
+    
     var payTotal =
-      parseInt(payableAccoountdetail[0].credit) -
-      parseInt(payableAccoountdetail[0].debet);
+      parseInt(payableAccoountdetail[0]?.credit) || 0-
+      parseInt(payableAccoountdetail[0]?.debet) || 0;
     var payableAccoount = await Account.findOne({ accTitel: "Payable" });
-
+    if(!payableAccoount){
+      payableAccoount = new Account({
+        accTitel: "Payable",
+        accDesscri: "Default",
+        transaction: [],
+      });
+    }
     payableAccoount.transaction = payableAccoount.transaction.concat({
       walletName: id,
       type: "Payable",
@@ -196,21 +215,16 @@ router.post("/addproduct", upload.single("proimg"), async (req, res) => {
 // update Product get router
 router.get("/update/:id", isAuth, async (req, res) => {
   try {
-    const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
-
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-
-    if (userrole[0].product.includes("update")) {
       const userdata = await User.findOne({ _id: req.user.id });
       const brand = await Brand.find({});
       const unit = await Unit.find({});
       const category = await Category.find({});
       const supp = await Supplier.find({});
       const product = await Product.findOne({ _id: req.params.id });
-
-      res.render("updateProduct", {
+      console.log(product);
+      
+      const  footer =await Shop.findOne({})
+     res.render("updateProduct", {
         success: req.flash("success"),
         errors: req.flash("errors"),
         userdata: userdata,
@@ -221,109 +235,182 @@ router.get("/update/:id", isAuth, async (req, res) => {
         supp: supp,
         footer,
       });
-    } else {
-      req.flash("errors", "You do not have permission to update product.");
-      return res.redirect("/product/list");
-    }
   } catch (error) {
     console.log(error);
   }
 });
 
 //update Product post router
-router.post(
-  "/updateproduct/:id",
-  isAuth,
-  upload.single("proimg"),
-  async (req, res) => {
-    try {
-      const {
-        Name,
-        proCode,
-        brand,
-        quantity,
-        unitType,
-        unitValue,
-        category,
-        SubCategory,
-        sellingPrice,
-        purchasePrice,
-        discountType,
-        discount,
-        tax,
-        supplier,
-      } = req.body;
+router.post("/updateproduct/:id", isAuth, upload.single("proimg"), async (req, res) => {
+  try {
+    const {
+      Name,
+      proCode,
+      brand,
+      quantity,
+      unitType,
+      unitValue,
+      category,
+      SubCategory,
+      sellingPrice,
+      purchasePrice,
+      discountType,
+      discount,
+      tax,
+      supplier,
+    } = req.body;
 
-      const proname = await Product.findOne({
-        Name: Name,
-        _id: { $ne: req.params.id },
-      });
-      if (proname) {
-        req.flash("errors", `${Name} alredy added please choose onother`);
-        return res.redirect("/product/list");
-      }
-
-      const pcode = await Product.findOne({
-        proCode: proCode,
-        _id: { $ne: req.params.id },
-      });
-      if (pcode) {
-        req.flash(
-          "errors",
-          ` Same Product Code Faund.......${proCode} alredy added please choose onother`
-        );
-        return res.redirect("/product/list");
-      }
-      const pro = await Product.findById(req.params.id);
-
-      pro.Name = Name;
-      pro.proCode = proCode;
-      pro.brand = brand;
-      pro.quantity = quantity;
-      pro.unitType = unitType;
-      pro.unitValue = unitValue;
-      pro.category = category;
-      pro.SubCategory = SubCategory;
-      pro.sellingPrice = sellingPrice;
-      pro.purchasePrice = purchasePrice;
-      pro.discountType = discountType;
-      pro.discount = discount;
-      pro.tax = tax;
-      pro.supplier = supplier;
-
-      if (req.file) {
-        const { filename: image } = req.file;
-        await sharp(req.file.path)
-          .resize(200, 200)
-          .jpeg({ quality: 90 })
-          .toFile(path.resolve(req.file.destination, "resized", image));
-
-        fs.unlinkSync(req.file.path);
-        pro.productImage = req.file.filename;
-      }
-
-      await pro.save();
-      req.flash("success", `${Name} update success fuly`);
-      res.redirect("/product/list");
-    } catch (error) {
-      console.log(error);
+    const missingF = Object.entries(req.body)
+      .filter(([key, val]) => val.trim() === "")
+      .map(([key]) => key);
+    
+    if (missingF.length > 0) {
+      req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+      return res.redirect("back");
     }
+
+    const proname = await Product.findOne({
+      Name: Name,
+      _id: { $ne: req.params.id },
+    });
+    if (proname) {
+      req.flash("errors", `${Name} already added, please choose another`);
+      return res.redirect("/product/list");
+    }
+
+    const pcode = await Product.findOne({
+      proCode: proCode,
+      _id: { $ne: req.params.id },
+    });
+    if (pcode) {
+      req.flash("errors", `Product Code already exists: ${proCode}`);
+      return res.redirect("/product/list");
+    }
+
+    const pro = await Product.findById(req.params.id);
+
+    const oldQuantity = parseInt(pro.quantity);
+    const oldPurchasePrice = parseInt(pro.purchasePrice);
+    const oldTotal = oldQuantity * oldPurchasePrice;
+    const newQuantity = parseInt(quantity);
+    const newPurchasePrice = parseInt(purchasePrice);
+    const newTotal = newQuantity * newPurchasePrice;
+
+    // Update product fields
+    pro.Name = Name;
+    pro.proCode = proCode;
+    pro.brand = brand;
+    pro.quantity = quantity;
+    pro.unitType = unitType;
+    pro.unitValue = unitValue;
+    pro.category = category;
+    pro.SubCategory = SubCategory;
+    pro.sellingPrice = sellingPrice;
+    pro.purchasePrice = purchasePrice;
+    pro.discountType = discountType;
+    pro.discount = discount;
+    pro.tax = tax;
+    pro.supplier = supplier;
+
+    if (req.file) {
+       if (pro?.productImage) {
+                const oldImagePath = path.join(__dirname, '../public/uploads/resized/', pro.productImage);
+                  
+                try {
+                  if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath); 
+                  }
+                } catch (err) {
+                  console.error("Error deleting old image:", err);
+                }
+              }
+      const { filename: image } = req.file;
+      await sharp(req.file.path)
+        .resize(200, 200)
+        .jpeg({ quality: 90 })
+        .toFile(path.resolve(req.file.destination, "resized", image));
+
+      fs.unlinkSync(req.file.path);
+      pro.productImage = req.file.filename;
+    }
+
+    await pro.save();
+
+    //  Check if quantity or purchasePrice changed
+    if (oldTotal !== newTotal) {
+      const supplierData = await Supplier.findOne({ suppName: supplier });
+
+      // Order history update
+      supplierData.orderList = supplierData.orderList.concat({
+        productName: Name,
+        productQuntity: newQuantity,
+        productPrice: newPurchasePrice,
+        totalAmount: newTotal,
+        date: Date.now(),
+      });
+
+      await supplierData.save();
+
+      // Account Payable update
+      const account = await Account.aggregate([
+        { $match: { accTitel: { $eq: "Payable" } } },
+        {
+          $project: {
+            debet: { $sum: "$transaction.debit" },
+            credit: { $sum: "$transaction.credit" },
+          },
+        },
+      ]);
+
+      let payTotal = (parseInt(account[0]?.credit) || 0) - (parseInt(account[0]?.debet) || 0);
+
+      let payableAccount = await Account.findOne({ accTitel: "Payable" });
+      if (!payableAccount) {
+        payableAccount = new Account({
+          accTitel: "Payable",
+          accDesscri: "Default",
+          transaction: [],
+        });
+      }
+
+      // Subtract old, add new amount
+      let amountDiff = newTotal - oldTotal;
+
+      payableAccount.transaction = payableAccount.transaction.concat({
+        walletName: supplierData._id,
+        type: "Payable",
+        amount: amountDiff,
+        description: "Product updated",
+        debit: amountDiff < 0 ? Math.abs(amountDiff) : 0,
+        credit: amountDiff > 0 ? amountDiff : 0,
+        balance: payTotal + amountDiff,
+        date: Date.now(),
+      });
+
+      await payableAccount.save();
+    }
+
+    req.flash("success", `${Name} updated successfully`);
+    res.redirect("/product/list");
+
+  } catch (error) {
+    console.log(error);
+    req.flash("errors", "Something went wrong while updating product.");
+    res.redirect("back");
   }
-);
+});
+
 
 // Product List router
 router.get("/list", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
-
+    const footer = await Shop.findOne({})
     const productSpliyer = await Product.aggregate([
       {
         $lookup: {
           from: "orders",
-          let: {
-            serch: "$Name",
-          },
+          let: { serch: "$Name" },
           pipeline: [
             {
               $match: {
@@ -332,9 +419,18 @@ router.get("/list", isAuth, async (req, res) => {
                 },
               },
             },
+            { $unwind: "$item" },
             {
-              $project: {
-                item: 1,
+              $match: {
+                $expr: {
+                  $eq: ["$item.productName", "$$serch"],
+                },
+              },
+            },
+            {
+              $group: {
+                _id: "$item.productName",
+                totalOrder: { $sum: "$item.productCount" },
               },
             },
           ],
@@ -344,63 +440,32 @@ router.get("/list", isAuth, async (req, res) => {
       {
         $unwind: {
           path: "$order",
+          preserveNullAndEmptyArrays: true,
         },
       },
       {
-        $unwind: {
-          path: "$order.item",
+        $addFields: {
+          order: { $ifNull: ["$order.totalOrder", 0] }, 
         },
       },
       {
-        $match: {
-          $expr: {
-            $eq: ["$order.item.productName", "$Name"],
-          },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          Name: {
-            $first: "$Name",
-          },
-          proCode: {
-            $first: "$proCode",
-          },
-          brand: {
-            $first: "$brand",
-          },
-          quantity: {
-            $first: "$quantity",
-          },
-          unitType: {
-            $first: "$unitType",
-          },
-          unitValue: {
-            $first: "$unitValue",
-          },
-          category: {
-            $first: "$category",
-          },
-          purchasePrice: {
-            $first: "$purchasePrice",
-          },
-          sellingPrice: {
-            $first: "$sellingPrice",
-          },
-          productImage: {
-            $first: "$productImage",
-          },
-          supplier: {
-            $first: "$supplier",
-          },
-          order: {
-            $sum: "$order.item.productCount",
-          },
+        $project: {
+          Name: 1,
+          proCode: 1,
+          brand: 1,
+          quantity: 1,
+          unitType: 1,
+          unitValue: 1,
+          category: 1,
+          purchasePrice: 1,
+          sellingPrice: 1,
+          productImage: 1,
+          supplier: 1,
+          order: 1,
         },
       },
     ]);
-
+    
     res.render("productList", {
       success: req.flash("success"),
       errors: req.flash("errors"),
@@ -416,39 +481,67 @@ router.get("/list", isAuth, async (req, res) => {
 //delet Product
 router.get("/delet/:id", isAuth, async (req, res) => {
   try {
-    const userdata = await User.findOne({ _id: req.user.id });
+    const pro = await Product.findById(req.params.id);
 
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
+    if (pro?.productImage) {
+      const oldImagePath = path.join(__dirname, '../public/uploads/resized/', pro.productImage);
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
+    }
 
-    if (userrole[0].product.includes("delet")) {
-      const del = await Product.findByIdAndDelete(req.params.id);
+    const del = await Product.findByIdAndDelete(req.params.id);
 
-      const supplier = await Supplier.findOne({ suppName: del.supplier });
+   
+    const totalAmountToRemove = parseInt(del.purchasePrice) * parseInt(del.quantity);
 
-      supplier.productList.forEach((data, index) => {
-        if (data.productName == del.Name) {
-          supplier.productList.splice(index, 1);
-        }
-      });
+ t
+    const supplier = await Supplier.findOne({ suppName: del.supplier });
+    if (supplier) {
+      supplier.productList = supplier.productList.filter(p => p.productName !== del.Name);
+
+     
+      supplier.orderList = supplier.orderList.filter(order => order.productName !== del.Name);
 
       await supplier.save();
-
-      req.flash("success", `${del.Name} Delet success fuly`);
-      res.redirect("/product/list");
-    } else {
-      req.flash("errors", "You do not have permission to delet product.");
-      return res.redirect("/product/list");
     }
+
+ 
+    const payableAccount = await Account.findOne({ accTitel: "Payable" });
+
+    if (payableAccount) {
+      const lastTransaction = payableAccount.transaction.at(-1);
+      const prevBalance = lastTransaction ? lastTransaction.balance : 0;
+
+      payableAccount.transaction = payableAccount.transaction.concat({
+        walletName: supplier?._id || null,
+        type: "Payable",
+        amount: totalAmountToRemove,
+        description: `Product Deleted: ${del.Name}`,
+        debit: totalAmountToRemove,
+        credit: 0,
+        balance: parseInt(prevBalance) - totalAmountToRemove,
+        date: Date.now()
+      });
+
+      await payableAccount.save();
+    }
+
+    req.flash("success", `${del.Name} Deleted successfully and payable amount updated.`);
+    res.redirect("/product/list");
+
   } catch (error) {
-    console.log(error);
+    console.log("Delete Error:", error);
+    req.flash("errors", "Something went wrong while deleting product.");
+    res.redirect("/product/list");
   }
 });
+
 
 //bulkimport get
 router.get("/bulkimport", isAuth, async (req, res) => {
   const userdata = await User.findOne({ _id: req.user.id });
-  const footer = await User.findOne({});
+  const footer = await Shop.findOne({})
 
   res.render("bulkImport", {
     success: req.flash("success"),
@@ -469,13 +562,13 @@ router.post(
   uploadcsv.single("impCSV"),
   async function (req, res) {
     var pathf = req.file.path;
-    console.log(path);
+   
 
     const rows = [];
     var filename = path.join(__dirname, "../public/uploads/product.csv");
     const fs = require("fs");
     if (fs.existsSync(filename)) {
-      console.log("File exists");
+      
       fs.createReadStream(filename)
         .pipe(parse({ headers: true }))
         .on("error", (error) => console.error(error))
@@ -579,30 +672,49 @@ router.get("/limited", isAuth, async (req, res) => {
     const userdata = await User.findOne({ _id: req.user.id });
     const footer = await Shop.findOne({});
 
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-
-    if (userrole[0].limit_product_list.includes("views")) {
-      const userdata = await User.findOne({ _id: req.user.id });
-      const proList = await Product.find({ quantity: { $lte: 50 } });
-      res.render("limitProduct", {
-        success: req.flash("success"),
-        errors: req.flash("errors"),
-        userdata: userdata,
-        data: proList,
-        footer,
-      });
-    } else {
-      req.flash(
-        "errors",
-        "You do not have permission to view limit Products list."
-      );
-      return res.redirect("back");
-    }
+    const limit = 50;
+   console.log(limit);
+   
+    const proList = await Product.find({ quantity: { $lte: limit } });
+    console.log(proList);
+ 
+    res.render("limitProduct", {
+      success: req.flash("success"),
+      errors: req.flash("errors"),
+      userdata,
+      data: proList,
+      footer,
+    });
   } catch (error) {
     console.log(error);
+    res.redirect("back");
   }
 });
+
+router.get("/limitedAjax", isAuth, async (req, res) => {
+  try {
+    const userdata = await User.findOne({ _id: req.user.id });
+    const footer = await Shop.findOne({});
+
+    const limit = parseInt(req.query.limit) || 50;
+
+   
+    const proList = await Product.find({ quantity: { $lte: limit } });
+
+ 
+    res.json({
+      success: req.flash("success"),
+      errors: req.flash("errors"),
+      userdata,
+      data: proList,
+      footer,
+    });
+  } catch (error) {
+    console.log(error);
+    res.redirect("back");
+  }
+});
+
 
 router.post("/subcat", async (req, res) => {
   const data = await Category.findOne({ catName: req.body.cat_id });
@@ -610,84 +722,94 @@ router.post("/subcat", async (req, res) => {
 });
 
 // product Quntity increase by + butten
-router.post("/quantity", isAuth, async (req, res) => {
-  const userdata = await User.findOne({ _id: req.user.id });
-  const footer = await Shop.findOne({});
+router.post("/quantity/:id", isAuth, async (req, res) => {
+  try {
+    const userdata = await User.findById(req.user.id);
 
-  const findrole = userdata.role;
-  const userrole = await UserRole.find({ titel: findrole });
 
-  if (userrole[0].limit_product_list.includes("views")) {
-    var qunt = req.body.quantity;
-    var date = req.body.date;
-    console.log(qunt);
+    const userRoleName = userdata.role;
+    const userRole = await UserRole.findOne({ titel: userRoleName });
 
-    //****** save new product Quntity */
-    const product = await Product.findById(req.body.editqun);
-    console.log(product);
+    const hasPermission =
+      userRole?.limit_product_list?.includes("add") || userRoleName === "admin";
 
-    product.quantity = parseInt(product.quantity) + parseInt(qunt);
+    if (!hasPermission) {
+      req.flash("errors", "You do not have permission to update product quantity.");
+      return res.redirect("back");
+    }
+
+    const quantity = parseInt(req.body.quantity);
+    const date = new Date(req.body.date);
+
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      req.flash("errors", "Product not found.");
+      return res.redirect("back");
+    }
+
+    product.quantity += quantity;
     await product.save();
 
-    var totalAmount = parseInt(product.purchasePrice) * parseInt(qunt);
+    const totalAmount = product.purchasePrice * quantity;
 
-    //****** save new Order detail in supplier data */
     const supplier = await Supplier.findOne({ suppName: product.supplier });
-    supplier.orderList = supplier.orderList.concat({
+    if (!supplier) {
+      req.flash("errors", "Supplier not found.");
+      return res.redirect("back");
+    }
+
+    supplier.orderList.push({
       productName: product.Name,
-      productQuntity: qunt,
+      productQuntity: quantity,
       productPrice: product.purchasePrice,
       totalAmount: totalAmount,
-      date: new Date(date),
+      date: date,
     });
-
-    var id = supplier._id;
     await supplier.save();
 
-    //********** Add  total purchase amount in Payable account*****/
-    //**********  Add balance in Paybale account************/
-
-    const payableAccoountdetail = await Account.aggregate([
-      { $match: { accTitel: { $eq: "Payable" } } },
+    const payableAccountDetail = await Account.aggregate([
+      { $match: { accTitel: "Payable" } },
       {
         $project: {
-          debet: { $sum: "$transaction.debit" },
+          debit: { $sum: "$transaction.debit" },
           credit: { $sum: "$transaction.credit" },
         },
       },
     ]);
-    var payTotal =
-      parseInt(payableAccoountdetail[0].credit) -
-      parseInt(payableAccoountdetail[0].debet);
-    var payableAccoount = await Account.findOne({ accTitel: "Payable" });
 
-    payableAccoount.transaction = payableAccoount.transaction.concat({
-      walletName: id,
+    const currentBalance =
+      (payableAccountDetail[0]?.credit || 0) -
+      (payableAccountDetail[0]?.debit || 0);
+
+    const payableAccount = await Account.findOne({ accTitel: "Payable" });
+
+    payableAccount.transaction.push({
+      walletName: supplier._id,
       type: "Payable",
       amount: totalAmount,
       description: "New Product Purchase",
       debit: 0,
       credit: totalAmount,
-      balance: parseInt(payTotal) + parseInt(totalAmount),
-      date: new Date(date),
+      balance: currentBalance + totalAmount,
+      date: date,
     });
-    await payableAccoount.save();
 
+    await payableAccount.save();
+    req.flash("success", "Quantity successfully add");
     res.redirect("back");
-  } else {
-    req.flash(
-      "errors",
-      "You do not have permission to update limit Products list quantity."
-    );
-    return res.redirect("back");
+  } catch (error) {
+    console.error("Error updating product quantity:", error);
+    req.flash("errors", "Something went wrong.");
+    res.redirect("back");
   }
 });
+
 
 // print data get router
 router.get("/printdata/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({})
 
     const product = await Product.findById(req.params.id);
 

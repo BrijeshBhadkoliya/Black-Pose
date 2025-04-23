@@ -53,7 +53,7 @@
                                 <section>
                                     <h5>Product Code</h5>
                                     <span id="code"><%=pro.proCode%></span>
-                                    <input type="hidden" id="price" name="price" value="<%=pro.sellingPrice%>">
+                                    <input type="hidden" id="price" name="price" value="<%=footer.Currency%><%=pro.sellingPrice%>">
                                     <input type="hidden" id="printredy" name="printredy" value="">
                                 </section>
                                 <section>
@@ -63,7 +63,7 @@
                                
                                 <section>
                                     <h5> Quntity</h5>
-                                    <input type="number" id="prinquntity" name="prinquntity" value="3" class="form-control border-secondary" required>
+                                    <input type="number" id="prinquntity" name="prinquntity" value="<%=pro.quantity%>" class="form-control border-secondary" required>
                                 </section>
                                 <!-- End Start product detail -->
                            
@@ -78,7 +78,7 @@
                                 <section class="w-100">
                                     <h5>Paper Size</h5>
                                     <div class="form-group">
-                                        <select name="papersize" id="papersize" class="form-control border-secondary">
+                                        <select name="papersize" id="papersize" required class="form-control border-secondary">
                                             <option value="">select size</option>
                                             <option value="sheet40" selected>40 per sheet (a4) (1.927*0.937)</option>
                                             <option value="sheet32">32 per sheet (a4) (1.927*1.166)</option>
@@ -107,8 +107,8 @@
                     </div>
                             <!-- End row -->
                             <!-- printing area -->
-                            <div id="printLable" >
-                                <div class="printArea " id="printdiv"></div> 
+                            <div id="printLable">
+                                <div class="printArea " id="printdiv" style="overflow-y: auto;"></div> 
                             </div>
                             <!--printing area  -->
 
@@ -122,7 +122,7 @@
                         <!-- end Footerbar -->
             </div>
             <!-- Start Rightbar -->  
-           
+          
     </div>
     <!-- end Containerbar -->
    

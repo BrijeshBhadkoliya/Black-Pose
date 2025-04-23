@@ -59,7 +59,7 @@
                                                         
                                                         <div class="form-group">
                                                             <label for="catName">Category Name</label>
-                                                            <input type="text" class="form-control border-secondary" id="catName" name="catName"  value="<%=data.catName%>">
+                                                            <input type="text" class="form-control border-secondary" id="catName" name="catName" required value="<%=data.catName%>">
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="catImg">Category Image</label>
@@ -76,7 +76,7 @@
                                                        
                                                         <div class="col-lg-12  ">
                                                            <center>
-                                                            <img id="blah" alt="your image" width="200" height="250" src="/uploads/resized/<%=data.catImg%>"/>
+                                                            <img id="blah" alt="your image" width="200" height="250" src="<%= data.catImg ? '/uploads/resized/' + data.catImg : '../images/one.png' %>"/>
                                                             <h5>Image Preview </h5>
                                                            </center>
                                                             

@@ -50,11 +50,11 @@
                                                     <div class="searchbar">
                                                         <form>
                                                             <div class="input-group border-search p-1 mb-3 bg-body rounded">
-                                                             <select name="poscat" id="poscat" class="form-control" aria-placeholder="search by category">
+                                                             <select name="poscat" id="poscat" class="form-control" required aria-placeholder="search by category">
                                                                 
                                                                 <option value="all">All category</option>
-                                                                <% catlist.forEach(function(data){ %>
-                                                                    <option value="<%=data.catName%>" <%= catname == data.catName ? 'selected' : '' %>> <%=data.catName%> </option>
+                                                                <% catlist?.forEach(function(data){ %>
+                                                                    <option value="<%=data.catName%>" <%= catname == data.catName ? 'selected' : '' %>> <%=data?.catName%> </option>
                                                                 <% }) %>
                                                              </select>
                                                               
@@ -74,7 +74,7 @@
 
                                                 <div class="row d-flex " id="product_list">
 
-                                                    <% list.forEach(function(pro){ %>
+                                                    <% list?.forEach(function(pro){ %>
                                                     <div class="col-xl-4 col-md-6 col-sm-12 m-b-20 p-2">
                                                         <form id="<%=pro._id%>" class="mb-2" >
                                                             
@@ -83,7 +83,11 @@
                                                                 <div class="media-body ml-3">
                                                                     <h6 class="mb-2"><%=pro.Name%></h6>
                                                                     <p>code : <%=pro.proCode%></p>
-                                                                    <p class="font-15"><%=pro.sellingPrice%> <%=footer.Currency%></p>
+                                                                     <% if(pro.discountType === "percent" ) {%>
+                                                                        <p class="font-15"> <span><%=footer?.Currency%> <%=pro.sellingPrice -(pro.sellingPrice * pro.discount /100).toFixed(1) %> </span>&nbsp;<span><small><del> <%=footer?.Currency%><%=pro.sellingPrice%> </del></small></span> </p>
+                                                                        <%}else{ %>
+                                                                    <p class="font-15"> <span><%=footer?.Currency%> <%=pro.sellingPrice - pro.discount%> </span>&nbsp;<span><small><del> <%=footer?.Currency%><%=pro.sellingPrice%> </del></small></span> </p>
+                                                                    <% } %>
                                                                     <button class="btn btn-round btn-primary-rgba" data-id="<%=pro._id%>" id="add_prod"><i class="dripicons-basket  font-15" type="submit" value="submit"></i></button>                                                           
                                                                 </div>
                                                             </div>
@@ -126,12 +130,14 @@
                                                                     <input type="hidden" id="cust" name="customerId">
                                                                   </div>
                                                             
-                                                                  <ul class="list-group rounded bg-white d-none position-absolute top-100 start-0 end-0 z-3 overflow-auto" 
-                                                                      id="results-list" 
-                                                                      style="z-index: 10; max-height: 350px; overflow-y: auto;">
-                                                                    <% coust.forEach(function(data){ %>
+                                                                  <ul class="list-group rounded bg-white col-9 d-none position-absolute top-100 start-0 end-0 z-3 overflow-auto" 
+                                                                      id="results-list"  
+                                                                      style="z-index: 10; max-height: 350px; overflow-y: auto; cursor: pointer;">
+                                                                    <% coust?.forEach(function(data){ %>
+                                                                      
                                                                       <li class="list-group-item" value="<%=data._id%>"><%=data.cousName%></li>
-                                                                    <% }) %>
+                                                                       
+                                                                    <%  }) %>
                                                                   </ul>
                                                                 </div>
                                                               </form>
@@ -191,18 +197,18 @@
                                                                             </thead>
                                                                             <tbody id="cart_item">
                                                                                 <% if(cart){ %>
-                                                                                    <% cart.item.forEach(function(value, index){ %>
+                                                                                    <% cart?.item.forEach(function(value, index){ %>
                                                                                         <tr class="text-center" > 
-                                                                                            <td><%=value.productName%></td>
+                                                                                            <td><%=value?.productName%></td>
                                                                                             <td>
                                                                                                 <div class="form-group mb-0">
                                                                                                     <input type="number" class="form-control cart-qty" name="cartQty1" id="cartQty1" min="1" value="<%=value.productCount%>" data-name="<%=value.productName%>" data-id="<%=value._id%>">     
                                                                                                 </div>
                                                                                             </td>
-                                                                                            <td><%=footer.Currency%> <%=value.productPrice%></td>
-                                                                                            <td><%=footer.Currency%> <%=value.discount%></td>
-                                                                                            <td><%=footer.Currency%> <%=value.tax%></td>
-                                                                                            <td><%=footer.Currency%> <%=value.total%></td>
+                                                                                            <td><%=value.productPrice%></td>
+                                                                                            <td><%=value.discount%></td>
+                                                                                            <td><%=value.tax%></td>
+                                                                                            <td><%=value.total%></td>
                                                                                             <td><button  type="button" class="btn btn-round btn-danger-rgba" id="del_cart_item" value="<%=value._id%>"><i class="feather icon-trash-2"></i></button></td>
                                                                                         </tr>
     
@@ -221,14 +227,32 @@
                                                                         <div class="order-note">
                                                                             <form class="needs-validation">
                                                                                 <div class="form-group ">
-                                                                                    <div class="input-group">
-                                                                                        <form action="/pos/coupon/">
-                                                                                        <input type="text" class="form-control" placeholder="Coupon Code" id="coupon" name="code" aria-label="Search" aria-describedby="button-addonTags" required>
-                                                                                        <div class="input-group-append">
-                                                                                            <button class="input-group-text  btn-secondary-rgba"  type="submit" id="button-addonTags"><i class="feather icon-save mr-2"></i> Apply</button>
+                                                                                        <% if (!cart || cart.Coupondiscount === 0) { %>
+                                                                                    <div class="input-group" id="formcopupons">
+
+                                                                                          <form  >
+                                                                                            <input type="text" class="form-control" placeholder="Coupon Code" id="coupon" name="code" aria-label="Search" aria-describedby="button-addonTags" required>
+                                                                                            <div class="input-group-append">
+                                                                                              <button class="input-group-text btn-secondary-rgba" onclick="" type="submit" id="button-addonTags">
+                                                                                                <i class="feather icon-save mr-2"></i> Apply
+                                                                                              </button>
+                                                                                            </div>
+                                                                                          </form>
                                                                                         </div>
-                                                                                    </form>
-                                                                                    </div>
+                                                                                        <button class="input-group-text rounded btn-danger d-none" id="removecupon">
+                                                                                            <i class="feather icon-x-circle mr-2"></i> Remove Coupon
+                                                                                          </button>
+                                                                                     
+
+                                                                                        <% } else { %>
+                                                                                     
+
+                                                                                                <button class="input-group-text rounded btn-danger " id="removecupon">
+                                                                                                    <i class="feather icon-x-circle mr-2"></i> Remove Coupon
+                                                                                                  </button>
+                                                                                            
+                                                                                         
+                                                                                        <% } %>
                                                                                 </div>
                                                                                
                                                                                 <% if(cart){ %>
@@ -264,7 +288,7 @@
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td>Coupon discount :</td>
-                                                                                                <td><%=cart.Coupondiscount %> <%=footer.Currency%></td>
+                                                                                                <td id="discountcopon"><%=cart.Coupondiscount %> <%=footer.Currency%></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td>Tax :</td>
@@ -280,23 +304,23 @@
 
                                                                                         <tr>
                                                                                             <td>Sub Total :</td>
-                                                                                            <td>0 <%=footer.Currency%></td>
+                                                                                            <td>0 <%=footer?.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td>Product discount :</td>
-                                                                                            <td>0 <%=footer.Currency%></td>
+                                                                                            <td>0 <%=footer?.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td>Coupon discount :</td>
-                                                                                            <td>0 <%=footer.Currency%></td>
+                                                                                            <td>0 <%=footer?.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td>Tax :</td>
-                                                                                            <td>0 <%=footer.Currency%></td>
+                                                                                            <td>0 <%=footer?.Currency%></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td class="f-w-7 font-18"><h4>Amount :</h4></td>
-                                                                                            <td class="f-w-7 font-18"><h4>0 <%=footer.Currency%></h4></td>
+                                                                                            <td class="f-w-7 font-18"><h4>0 <%=footer?.Currency%></h4></td>
                                                                                         </tr>
 
 
@@ -391,9 +415,17 @@
             if (match) anyVisible = true;
           });
       
-          if (!anyVisible) {
-            results.classList.add('d-none');
-          }
+          const noResultItem = results.querySelector('.no-result');
+                    if (noResultItem) {
+                        results.removeChild(noResultItem);
+                    }
+
+                    if (!anyVisible) {
+                        const li = document.createElement('li');
+                        li.textContent = `${query} is Not found`;
+                        li.className = 'no-result text-danger';
+                        results.appendChild(li);
+                    }
         }
       
         function showAllItems() {
@@ -420,10 +452,6 @@
            }
       })
       .catch(err => console.error('Error:', err));
-    
-                  
-
-
           });
         });
        
@@ -434,7 +462,8 @@
           }
         });
       </script>
-      
+
+
 </body>
 </html>
 

@@ -11,7 +11,8 @@ require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const DB = process.env.DATABASE;
 const SESSION_DB = process.env.SESSION_DB;
-
+// const DB = 'mongodb://localhost:27017/blackpos'
+// const SESSION_DB = 'mongodb://localhost:27017/blackpos'
 mongoose.connect(DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -32,7 +33,7 @@ app.use(session({
   store,
 }));
 
-
+ 
 app.set("view engine", "ejs");
 app.set(path.join(__dirname, "uploads"));
 app.set(path.join(__dirname, "public"));
@@ -43,6 +44,8 @@ app.use(bodyParser.json());;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
+const compression = require('compression');
+app.use(compression());
 
 app.use("/", require("./Router/index"));
 app.use("/category", require("./Router/category"));

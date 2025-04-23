@@ -13,40 +13,19 @@ const access = require('../Router/symbol');
 // add supplier get router
 router.get('/add', isAuth ,   async (req, res)=>{
     try {
-
-
-        const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
-     
-
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        
-    
-        if(userrole[0].supplier.includes("add")) {
-            const userdata = await User.findOne({_id:req.user.id})
-            const catList = await Category.find({});
-            res.render('addSupplier',{
-                success : req.flash('success'),
-                errors: req.flash('errors'),
-                userdata:userdata,
-                data:'',
-                footer
-            })
-        } else {
-          req.flash("errors", "You do not have permission to add supliar Account.");
-          return res.redirect("/supplier/list");
-        } 
-
-
-
-
-
-     
+      const userdata = await User.findOne({_id:req.user.id})
+      const footer = await Shop.findOne({})
+      res.render('addSupplier',{
+          success : req.flash('success'),
+          errors: req.flash('errors'),
+          userdata:userdata,
+          footer
+      })
     } catch (error) {
         console.log(error);
     }
 });
+
 // add supplier post router
 router.post('/addsupplier', upload.single("supImg"), async (req, res)=>{
     try {
@@ -57,7 +36,16 @@ router.post('/addsupplier', upload.single("supImg"), async (req, res)=>{
        const suppImage = req.file.filename;
        const suppState = req.body.supstat;
        const suppPINcode = req.body.suppico;
-       
+
+       const missingF = Object.entries(req.body)
+       .filter(([key, val]) => val.trim() === "")
+       .map(([key]) => key);
+     
+     if (missingF.length > 0) {
+       req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+       return res.redirect("back");
+     }
+
         const supList = await Supplier.findOne({suppName:suppName});
             if(supList){
                 fs.unlinkSync(req.file.path)
@@ -102,8 +90,8 @@ router.post('/addsupplier', upload.single("supImg"), async (req, res)=>{
 // supplier List
 router.get('/list', isAuth , async (req, res)=>{
     try {
-        const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne({});
+      const userdata = await User.findOne({_id:req.user.id})
+        const footer = await Shop.findOne({})
 
         const suppList = await Supplier.find({});
 
@@ -114,6 +102,7 @@ router.get('/list', isAuth , async (req, res)=>{
             data:suppList,
             footer
         })
+
     } catch (error) {
         console.log(error);
     }
@@ -122,7 +111,7 @@ router.get('/list', isAuth , async (req, res)=>{
 router.get('/views/:id', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne({});
+        const footer = await Shop.findOne({})
 
         const suppList = await Supplier.findById({_id:req.params.id});
 
@@ -141,31 +130,16 @@ router.get('/views/:id', isAuth , async (req, res)=>{
 router.get('/updateSupli/:id', isAuth, async (req, res)=>{
     try {
         
-
-        const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
-
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        
-    
-        if(userrole[0].supplier.includes("update")) {
-            const userdata = await User.findOne({_id:req.user.id})
-            const sup = await Supplier.findOne({_id:req.params.id})
-            res.render('updateSupplier',{
-                success : req.flash('success'),
-                errors: req.flash('errors'),
-                userdata:userdata,
-                data:sup,
-                footer
-            })
-
-        } else {
-          req.flash("errors", "You do not have permission to update supliar Account.");
-          return res.redirect("back");
-        } 
-
-
+      const userdata = await User.findOne({_id:req.user.id})
+      const sup = await Supplier.findOne({_id:req.params.id})
+      const footer = await Shop.findOne({})
+      res.render('updateSupplier',{
+          success : req.flash('success'),
+          errors: req.flash('errors'),
+          userdata:userdata,
+          data:sup,
+          footer
+      })
 
       
     } catch (error) {
@@ -176,10 +150,6 @@ router.get('/updateSupli/:id', isAuth, async (req, res)=>{
 //update Supplier post router
 router.post('/updatesupplier/:id', isAuth, upload.single("supImg"), async (req, res)=>{
     try {
-       
-     
-
-
        const suppl = await Supplier.findById({_id:req.params.id})
        const suppName = req.body.supName;
        const suppMobile = req.body.supMob;
@@ -189,7 +159,15 @@ router.post('/updatesupplier/:id', isAuth, upload.single("supImg"), async (req, 
        const suppState = req.body.supstat;
        const suppPINcode = req.body.suppico;
 
-      
+       const missingF = Object.entries(req.body)
+      .filter(([key, val]) => val.trim() === "")
+      .map(([key]) => key);
+    
+    if (missingF.length > 0) {
+      req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+      return res.redirect("back");
+    }
+
        const supList = await Supplier.findOne({suppName:suppName, _id: {$ne : req.params.id}});
     
        if(supList){
@@ -210,12 +188,31 @@ router.post('/updatesupplier/:id', isAuth, upload.single("supImg"), async (req, 
        }
 
 
+       
+       if(suppName!==suppl.suppName){
+        const changPro = await Product.find({supplier:suppl.suppName})
+        changPro.map((product)=>{
+          product.supplier = suppName
+          product.save();
+        })
+       
+       }
+
        suppl.suppName = suppName;
        suppl.suppMobile = suppMobile
        suppl.suppEmail =suppEmail
        suppl.suppAddres =suppAddres
        if(req.file){
-
+         if(suppl?.suppImage) {
+                  const oldImagePath = path.join(__dirname, '../public/uploads/resized/', suppl.suppImage);
+                  try {
+                    if (fs.existsSync(oldImagePath)) {
+                      fs.unlinkSync(oldImagePath);
+                    }
+                  } catch (err) {
+                    console.error("Error deleting old image:", err);
+                  }
+                }
            //*****resized image */
            const { filename: image } = req.file;
            await sharp(req.file.path)
@@ -229,6 +226,10 @@ router.post('/updatesupplier/:id', isAuth, upload.single("supImg"), async (req, 
 
             suppl.suppImage = req.file.filename
         }
+   
+       
+
+
        suppl.suppState =suppState
        suppl.suppPINcode =suppPINcode
      
@@ -245,27 +246,20 @@ router.post('/updatesupplier/:id', isAuth, upload.single("supImg"), async (req, 
 //delet Supplier
 router.get('/delsupp/:id', isAuth, async (req,res)=>{
     try {
-      
-        
-
-        const userdata = await User.findOne({ _id: req.user.id });
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        
-        
-    
-        if(userrole[0].supplier.includes("delet")) {
-            const del = await Supplier.findByIdAndDelete(req.params.id)
-            req.flash('success', `${del.suppName} Delet success fuly`)
-            res.redirect('/supplier/list')
-        } else {
-          req.flash("errors", "You do not have permission to delet supliar Account.");
-          return res.redirect("back");
-        } 
-
-        
-      
-
+      const suppl = await Supplier.findById(req.params.id)
+      if(suppl?.suppImage) {
+        const oldImagePath = path.join(__dirname, '../public/uploads/resized/', suppl.suppImage);
+        try {
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        } catch (err) {
+          console.error("Error deleting old image:", err);
+        }
+      }
+      const del = await Supplier.findByIdAndDelete(req.params.id)
+      req.flash('success', `${del.suppName} Delet success fuly`)
+      res.redirect('/supplier/list')
     } catch (error) {
         console.log(error);
     }
@@ -330,15 +324,14 @@ router.get('/product/:id', isAuth, async (req,res)=>{
               }
             }
           ])
-        //   console.log(productSpliyer);
+      
 
           
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne({});
+        const footer =await Shop.findOne({})
 
         const sup = await Supplier.findById(req.params.id);
         const prod = await Product.find({supplier:sup.suppName})
-console.log(prod);
 
 const productsWithOrders = await Product.aggregate([
     {
@@ -388,14 +381,6 @@ const productsWithOrders = await Product.aggregate([
     }
   ]);
        
-
-  console.log(productsWithOrders);
-  
-      
-       
-       
-         
-
         res.render('supplierProduct',{
             success : req.flash('success'),
             errors: req.flash('errors'),
@@ -460,7 +445,7 @@ router.get('/transection/:id', isAuth , async (req, res)=>{
 
         
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne({});
+        const footer = await Shop.findOne({})
 
         res.render('supplierTransection',{
             success : req.flash('success'),
@@ -482,8 +467,7 @@ router.get('/transection/:id', isAuth , async (req, res)=>{
 router.get('/OrderList/:id', isAuth , async (req, res)=>{
     try {
         const accessdata = await access (req.user)
-        const footer = await Shop.findOne({});
-
+        const footer = await Shop.findOne({})
         const userdata = await User.findOne({_id:req.user.id})
         const suppList = await Supplier.findById({_id:req.params.id});
       
@@ -551,7 +535,13 @@ router.post('/paysupplier/:id', isAuth , async (req, res)=>{
         ]);
         var payTotal = parseInt(payableAccoountdetail[0].credit) - parseInt(payableAccoountdetail[0].debet)
         var payableAccoount = await Account.findOne({accTitel:"Payable"});
-
+      if(!payableAccoount){
+                 payableAccoount = new Account({
+                     accTitel:"Payable",
+                     accDesscri: "Default",
+                     transaction:[]
+                })
+             }
         payableAccoount.transaction =   payableAccoount.transaction.concat({
             walletName:id,
             type: 'Payable',

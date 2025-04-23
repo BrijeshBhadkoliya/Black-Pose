@@ -54,7 +54,7 @@
                                                 <div class="col-2">
                                                     <h5>Customer List</h5>
                                                 </div>
-                                                <div class="col-2 comadd text-right" >
+                                                <div class="col-2 comadd d-none text-right" >
                                                     <a href="/coustomer/add"><button class="btn btn-primary">Add Customer</button></a>
                                                 </div>
                                             </div> 
@@ -62,7 +62,7 @@
                                         
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -84,20 +84,28 @@
                                                                 <td><%=cos.order.length%></td>
                                                                 <td class="d-flex"> 
                                                                   
-                                                                    <form action="/coustomer/balance" class="d-flex" method="post">                            
+                                                                    <!-- <form action="/coustomer/balance" class="d-flex" method="post">                            
                                                                         <input type="hidden" name="addbal" value="<%=cos._id%>">
                                                                         <input type="date" hidden  name="date" class="dateArr">
                                                                         <input type="number" class="form-control cart-qty" style="width: 120px;" name="balance" value="<%=cos.Balance%>">
-                                                                        <button class="btn btn-round btn-primary-rgba" type="submit">
+                                                                        <button class="btn btn-round btn-primary-rgba" id="addbalce" type="submit">
                                                                             <i class="feather icon-plus-circle"></i>
                                                                         </button>
-                                                                </form>
+                                                                   </form> -->
+
+                                                                   <div class="col-6 d-flex">
+                                                                    <input type="number" disabled style="background-color: rgb(248, 248, 248);" class="form-control cart-qty" value="<%=cos.Balance%>">
+                                                                    <button class="btn btn-round btn-primary-rgba" id="addbalce" style="margin-left: -10px;" type="button" value="<%= cos._id %>">
+                                                                      <i class="feather icon-plus-circle"></i>
+                                                                    </button>
+                                                                  </div>
+
                                                                 </td>
                                                                 <td>
                                                                     
-                                                                    <a href="/coustomer/views/<%=cos._id%>" class="btn btn-round btn-primary comviews"><i class="dripicons-user-id"></i></a>
-                                                                    <a href="/coustomer/update/<%=cos._id%>" class="btn btn-round btn-success comupdate"><i class="feather icon-edit"></i></a>
-                                                                    <a href="/coustomer/delet/<%=cos._id%>" class="btn btn-round btn-danger comdelet"><i class="feather icon-trash-2"></i></a>
+                                                                    <a href="/coustomer/views/<%=cos._id%>" class="btn btn-round btn-primary d-none comviews"><i class="dripicons-user-id"></i></a>
+                                                                    <a href="/coustomer/update/<%=cos._id%>" class="btn btn-round btn-success d-none comupdate"><i class="feather icon-edit"></i></a>
+                                                                    <a href="/coustomer/delet/<%=cos._id%>" class="btn btn-round btn-danger d-none comdelet"><i class="feather icon-trash-2"></i></a>
                                                                     
                                                                 </td>
                                                             </tr>
@@ -139,15 +147,7 @@
            
     </div>
     <!-- end Containerbar -->
-     <script>
-  const  dateArr = document.getElementsByClassName('dateArr')
-    for(let i = 0; i<dateArr.length; i++ ){
-         dateArr[i].value = new Date().toISOString().split('T')[0];
-         
-    }
-    console.log(dateArr);
-    
-</script>
+ 
     <!-- start Toastr -->
     <%- include('./onestep/toastr')-%>
     <!-- End Toastr -->

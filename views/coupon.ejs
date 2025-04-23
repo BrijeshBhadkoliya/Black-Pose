@@ -43,7 +43,7 @@
                              <!-- Start row -->
                              <div class="row">
                                 <!-- Start col -->
-                                <div class="col-lg-12 couadd ">
+                                <div class="col-lg-12 couadd d-none">
                                     <div class="card m-b-30">
                                         <div class="card-header">                                
                                             
@@ -60,20 +60,12 @@
                                                                 <div class="form-group">
                                                                     <label for="Titel">Title</label>
                                                                         <input type="text" class="form-control border-secondary" id="Titel" name="Titel"  required>
-                                                                    <input
-                                                                    type="hidden"
-                                                                    class="form-control border-secondary"
-                                                                    id="catName"
-                                                                    name="userid"
-                                                                    value="<%= userdata._id %>"
-                                                                    required
-                                                                  />
                                                                 </div>
                                                             
                                                             
                                                                 <div class="form-group">
                                                                     <label for="couponType">Coupon type </label>
-                                                                    <select name="couponType" id="couponType" class="form-control border-secondary">
+                                                                    <select name="couponType" id="couponType" required class="form-control border-secondary">
                                                                        <option value="Default">Default</option>
                                                                        <option value="firstoder">First Order</option>
                                 
@@ -83,11 +75,11 @@
                                                                 <div class="form-group">
                                                                     <label for="startDate">Start date </label>
                                                                     <input type="date" class="form-control border-secondary dateArr" id="startDate" name="startDate" required>
-                                                                    </select>
+                                                                   
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="disType">Discount type</label>
-                                                                    <select name="disType" id="disType" class="form-control border-secondary">
+                                                                    <select name="disType" required id="disType" class="form-control border-secondary">
                                                                         <option value="percent" >percent (%)</option>
                                                                         <option value="Amount" selected > Amount</option>
                                                                     </select>
@@ -125,7 +117,7 @@
 
                                                                 <div class="form-group">
                                                                     <label for="endDate">Expire date</label>
-                                                                    <input type="date" class="form-control border-secondary" id="endDate" name="endDate" required>
+                                                                    <input type="date" class="form-control border-secondary" id="endDat" name="endDate" required>
                                                                 </div>
 
                                                                 <div class="form-group">
@@ -163,7 +155,7 @@
                                         </div>
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -175,7 +167,7 @@
                                                             <th>DISCOUNT TYPE</th>
                                                             <th>START DATE</th>
                                                             <th>EXPIRE DATE</th>
-                                                            <th class="couupdate ">status</th>
+                                                            <th class="couupdate d-none">status</th>
                                                             <th>Action</th>     
                                                         </tr>
                                                     </thead>
@@ -193,10 +185,10 @@
                                                                 <td><%=cou.startDate.toLocaleDateString()%></td>
                                                                 <td><%=cou.endDate.toLocaleDateString()%></td>
                                                                 
-                                                                <td class="couupdate "><div class="check-box"><input type="checkbox" id="coup_status" onclick="setstues('<%=cou._id%>')" class="js-switch-primary-small" <%= cou.status == 'active' ?  'checked' : '' %> /></div></td>
+                                                                <td class="couupdate d-none"><div class="check-box"><input type="checkbox" id="coup_status" onclick="setstues('<%=cou._id%>')" class="js-switch-primary-small" <%= cou.status == 'active' ?  'checked' : '' %> /></div></td>
                                                                 <td >
-                                                                    <a href="/coupon/updatecoupon/<%=cou._id%>" class="btn btn-round btn-success couupdate"><i class="feather icon-edit"></i></a>
-                                                                    <a href="/coupon/delet/<%=cou._id%>" class="btn btn-round btn-danger coudelet "><i class="feather icon-trash-2"></i></a>
+                                                                    <a href="/coupon/updatecoupon/<%=cou._id%>" class="btn btn-round btn-success d-none couupdate"><i class="feather icon-edit"></i></a>
+                                                                    <a href="/coupon/delet/<%=cou._id%>" class="btn btn-round btn-danger d-none coudelet "><i class="feather icon-trash-2"></i></a>
                                                                 </td>
                                                         </tr>
                                                                 <% i++ %>

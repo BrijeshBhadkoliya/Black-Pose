@@ -51,7 +51,7 @@
                                                 <div class="col-2">
                                                     <h5>Account List</h5>
                                                 </div>
-                                                <div class="col-2 accadd text-right">
+                                                <div class="col-2 accadd d-none text-right">
                                                     <a href="/account/add"><button class="btn btn-primary">Add Account</button></a>
                                                 </div>
                                             </div> 
@@ -59,7 +59,7 @@
                                         
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -83,8 +83,8 @@
                                                                         Total out : <%=pro.debet%> <%=footer.Currency%>
                                                                     </td>
                                                                     <td>
-                                                                        <a href="/account/update/<%=pro._id%>" class="btn btn-round btn-success accupdate "><i class="feather icon-edit"></i></a>
-                                                                        <a href="/account/delet/<%=pro._id%>" class="btn btn-round btn-danger accdelet "><i class="feather icon-trash-2"></i></a>
+                                                                        <a href="/account/update/<%=pro._id%>" class="btn btn-round btn-success d-none accupdate "><i class="feather icon-edit"></i></a>
+                                                                        <a href="/account/delet/<%=pro._id%>" class="btn btn-round btn-danger d-none accdelet "><i class="feather icon-trash-2"></i></a>
                                                                     
                                                                     </td>
                                                                 </tr>

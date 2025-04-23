@@ -51,66 +51,60 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 ">
-                                                    <form method="post" action="/wallet/setting/<%=data._id%>" enctype="multipart/form-data" class="needs-validation" >
+                                                    <form method="post" action="/wallet/setting/<%=dataid%>" enctype="multipart/form-data" class="needs-validation" >
                                                         <div class="row">
                                                             <div class="col-6 ">
                                                                 <div class="form-group">
                                                                     <label for="ShopName">Shop name</label>
-                                                                    <input type="text" class="form-control border-secondary" id="ShopName" name="ShopName" value="<%=data.ShopName%>" required>
+                                                                    <input type="text" class="form-control border-secondary" id="ShopName" name="ShopName" value="<%=data?.ShopName%>" required>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="Shopphone">Shop phone </label>
-                                                                    <input type="number" class="form-control border-secondary" id="Shopphone" name="Shopphone" value="<%=data.Shopphone%>" required>
+                                                                    <input type="number" class="form-control border-secondary" id="Shopphone" name="Shopphone" value="<%=data?.Shopphone%>" required>
                                                                 </div>
 
                                                                 
                                                                 
                                                                 <div class="form-group">
                                                                     <label for="VAT">VAT Registration No </label>
-                                                                    <input type="text" class="form-control border-secondary" id="VAT" name="VAT" value="<%=data.VAT%>" required>
+                                                                    <input type="text" class="form-control border-secondary" id="VAT" name="VAT" value="<%=data?.VAT%>" required>
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label for="Country">Country</label>
-                                                                    <input type="text" class="form-control border-secondary" id="Country" name="Country" value="<%=data.Country%>" required>
+                                                                    <input type="text" class="form-control border-secondary" id="Country" name="Country" value="<%=data?.Country%>" required>
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label for="Currency">Currency</label>
                                                                     <div class="input-group">
-                                                                   <input type="text" name="Currency" id="Currency" value="<%=data.Currency%>"  class="form-control border-secondary">
+                                                                   <input type="text" name="Currency" id="Currency" value="<%=data?.Currency%>"  class="form-control border-secondary">
                                                                       <!-- Hint input -->
                                                                     
                                                                     </div>
                                                                   </div>
                                                                 <div class="form-group">
                                                                     <label for="Timezone">Time zone </label>
-                                                                    <select name="Timezone" id="Timezone" class="form-control border-secondary">
-                                                                        <option value="UTC-05:00" <%= data.Timezone == "UTC-05:00" ? 'selected' : '' %>>(UTC-05:00) india</option>
-                                                                        
-                                
-                                                                    </select>
+                                                                     
+                                                                    <input type="text" name="Timezone" id="Timezone" required value="<%=data?.Timezone%>" class="form-control border-secondary">
                                                                 </div>
-                                                                <div class="form-group">
-                                                                    <label for="Reorderlevel">Reorder level</label>
-                                                                    <input type="number" class="form-control border-secondary" id="Reorderlevel" name="Reorderlevel" value="<%=data.Reorderlevel%>" required>
-                                                                </div>
+                                                                
 
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
                                                                     <label for="Shopemail">Shop email </label>
-                                                                    <input type="email" class="form-control border-secondary" id="Shopemail" name="Shopemail" value="<%=data.Shopemail%>" required>
+                                                                    <input type="email" class="form-control border-secondary" id="Shopemail" name="Shopemail" value="<%=data?.Shopemail%>" required>
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label for="Shopaddress">Shop address </label>
-                                                                    <input type="text-area" class="form-control border-secondary" id="Shopaddress" name="Shopaddress" value="<%=data.Shopaddress%>" required>
+                                                                    <input type="text-area" class="form-control border-secondary" id="Shopaddress" name="Shopaddress" value="<%=data?.Shopaddress%>" required>
                                                                 </div>
    
                                                                 <div class="form-group">
                                                                     <label for="Footer">Footer text</label>
-                                                                    <input type="text" class="form-control border-secondary" id="Footer" name="Footer" value="<%=data.Footer%>" required>
+                                                                    <input type="text" class="form-control border-secondary" id="Footer" name="Footer" value="<%=data?.Footer%>" required>
                                                                 </div>
 
                                                                 
@@ -122,7 +116,7 @@
                                                                 
                                                                     <div class="col-lg-12  m-t-50">
                                                                         <center>
-                                                                        <img id="catdemoimg" alt="your image" width="100" height="50" src="/uploads/resized/<%=data.Logo%>"/>
+                                                                        <img id="catdemoimg" alt="your image" style="width: auto;"  src="<%= data?.Logo ? `/uploads/resized/${data.Logo}` : '../images/one.png' %>" />
                                                                         <h5>Image Preview </h5>
                                                                         </center>
                                                                         
@@ -131,7 +125,7 @@
                                                             </div>  
                                                         </div>
                                                         <div class="form-group col-4 d-grid gap-2 text-center">
-                                                            <button class="btn btn-success my-3 btn-sm setupdate" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
+                                                            <button class="btn btn-success my-2 btn-sm setupdate d-none col-6" type="submit" value="submit"><i class="dripicons-checkmark"></i> Save</button>
                                                         </div>
                                                     </form>
                                                 </div> 

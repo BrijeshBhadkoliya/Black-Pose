@@ -9,7 +9,7 @@ router.get("/unit", isAuth, async (req, res) => {
   try {
     const unitList = await Unit.find({});
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
+    const footer =await Shop.findOne({})
 
     res.render("unit", {
       success: req.flash("success"),
@@ -26,6 +26,18 @@ router.get("/unit", isAuth, async (req, res) => {
 router.post("/unit-add", async (req, res) => {
   try {
     const unit = req.body.unit;
+
+
+    const missingF = Object.entries(req.body)
+      .filter(([key, val]) => val.trim() === "")
+      .map(([key]) => key);
+    
+    if (missingF.length > 0) {
+      req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+      return res.redirect("back");
+    }
+
+
 
     const unitList = await Unit.findOne({ unit: unit });
 
@@ -46,7 +58,7 @@ router.get("/updateunit/:id", isAuth, async (req, res) => {
   try {
     const unit = await Unit.findById({ _id: req.params.id });
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({})
 
     res.render("updateUnit", {
       success: req.flash("success"),
@@ -63,6 +75,17 @@ router.get("/updateunit/:id", isAuth, async (req, res) => {
 router.post("/unit-update", isAuth, async (req, res) => {
   try {
     const unitName = await Unit.findOne({ unit: req.body.unit });
+
+
+    const missingF = Object.entries(req.body)
+    .filter(([key, val]) => val.trim() === "")
+    .map(([key]) => key);
+  
+  if (missingF.length > 0) {
+    req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+    return res.redirect("back");
+  }
+
 
     if (unitName) {
       req.flash(

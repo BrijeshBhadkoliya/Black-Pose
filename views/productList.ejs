@@ -8,7 +8,15 @@
     
     
     <!-- meta and links end -->
-     
+    <style>
+        .btn-warning:visited {
+          background-color: #ffa700 !important;
+          border: none;
+        }
+        .btn-warning:hover {
+          background-color: #E69700 !important;
+        }
+      </style>
 </head>
 <body class="vertical-layout">
     <!-- Start Containerbar -->
@@ -54,7 +62,7 @@
                                                 <div class="col-2 ">
                                                     <h5>Product List</h5>
                                                 </div>
-                                                <div class="col-2 proadd  text-right">
+                                                <div class="col-2 proadd d-none  text-right">
                                                     <a href="/product/add"><button class="btn btn-primary">Add Product</button></a>
                                                 </div>
                                             </div> 
@@ -62,7 +70,7 @@
                                         
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr class="text-center">
                                                             <th>Sr No</th>
@@ -89,24 +97,24 @@
                                                                 <td><%=footer.Currency%> <%=pro.purchasePrice%></td>
                                                                 <td><%=footer.Currency%> <%=pro.sellingPrice%></td>
                                                                 <td class="d-flex align-items-center mb-0">
-                                                                    <form action="/product/quantity" class="d-flex" method="post">
-                                                                    
-                                                                        <input type="hidden" name="editqun" value="<%=pro._id%>">
-                                                                        <input type="date" hidden  name="date" class="dateArr">
-                                                                        <input type="number" class="form-control cart-qty" name="quantity" value="<%=pro.quantity%>">
-                                                                        <button class="btn btn-round btn-primary-rgba" type="submit">
-                                                                            <i class="feather icon-plus-circle"></i>
+                                                                    <div class="col-4 d-flex">
+                                                                        <input type="number" disabled style="background-color: rgb(248, 248, 248);" class="form-control cart-qty" value="<%= pro.quantity %>">
+                                                                        <button class="btn btn-round btn-primary-rgba" id="addqun" style="margin-left: -10px;" type="button" value="<%= pro._id %>">
+                                                                          <i class="feather icon-plus-circle"></i>
                                                                         </button>
-                                                                   
-                                                                </form>
+                                                                      </div>
+                                                                    </td>
                                                                     
                                                                  </td>
                                                                 <td><%=pro.order%></td>
                                                                
-                                                                <td><a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success proupdate "><i class="feather icon-edit"></i></a>
-                                                                    <a href="/product/delet/<%=pro._id%>" class="btn btn-round btn-danger prodelet "><i class="feather icon-trash-2"></i></a>
-                                                                    <a href="/product/printdata/<%=pro._id%>" class="btn btn-round btn-warning prodelet "><i class="feather icon-printer"></i></a>
-                                                                    
+                                                                <td >
+                                                                    <div class="col-4 d-flex">
+                                                                    <a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success d-none proupdate "><i class="feather icon-edit"></i></a>
+                                                                    <a href="/product/delet/<%=pro._id%>" class="btn btn-round btn-danger d-none prodelet ml-1 mr-1 "><i class="feather icon-trash-2"></i></a>
+                                                                    <a href="/product/printdata/<%=pro._id%>" class="btn btn-round btn-warning d-none prodelet"  onfocus="this.style.backgroundColor='#ffa800';this.style.border='none'"><i class="feather icon-printer"></i></a>
+                                                                
+                                                                </div>
                                                                 </td>
                                                         </tr>
                                                                 <% i++ %>
@@ -148,13 +156,7 @@
            
     </div>
     <!-- end Containerbar -->
-   <script>
-      const  dateArr = document.getElementsByClassName('dateArr')
-    for(let i = 0; i<dateArr.length; i++ ){
-         dateArr[i].value = new Date().toISOString().split('T')[0];
-         
-    }
-   </script>
+ 
     <!-- start Toastr -->
     <%- include('./onestep/toastr')-%>
     <!-- End Toastr -->

@@ -63,7 +63,7 @@
                                                 
                                                     <div class="form-group  col-sm-6 col-md-3 col-lg-3">
                                                         <label for="AccTitel">Account</label>
-                                                        <select name="AccTitel" id="AccTitel" class="form-control border-secondary">
+                                                        <select name="AccTitel" id="AccTitel" required class="form-control border-secondary">
                                                             <option value="">Select Account</option>
                                                             <% accunt.forEach(function(data){ %>
                                                                 <option value="<%=data.accTitel%>"><%=data.accTitel %></option>
@@ -73,7 +73,7 @@
                                                     </div>
                                                     <div class="form-group col-sm-6 col-md-3 col-lg-3">
                                                         <label for="Acctype">type</label>
-                                                       <select name="Acctype" id="Acctype" class="form-control border-secondary">
+                                                       <select name="Acctype" id="Acctype" required class="form-control border-secondary">
                                                             <option value="">Select type</option>
                                                             <option value="Income">income</option>
                                                             <option value="Expense">Expense</option>
@@ -104,6 +104,7 @@
                                                 <table id="DataTable" class="display table table-striped table-bordered">
                                                     <thead>
                                                         <tr>
+                                                            <th style="display: none;">SortDate</th>
                                                             <th> Date</th>
                                                             <th> ACCOUNT</th>
                                                             <th> TYPE</th>
@@ -119,6 +120,7 @@
                                                      
                                                         <% data.forEach((tra)=>{ %>
                                                             <tr>
+                                                                <td style="display: none;"><%= new Date(tra.transaction.date).toISOString() %></td>
                                                                 <td><%=tra.transaction.date.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%></td>
                                                                 <td><%=tra.accTitel%></td>
                                                                 <td><%=tra.transaction.type%></td>

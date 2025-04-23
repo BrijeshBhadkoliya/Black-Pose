@@ -11,26 +11,15 @@ const { parse } = require("fast-csv");
 // add account get router
 router.get('/add', isAuth ,   async (req, res)=>{
     try {
-        const userdata = await User.findOne({ _id: req.user.id });
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        const footer = await Shop.findOne()
+        const footer = await Shop.findOne({})
 
-        
-    
-        if(userrole[0].account.includes("add")) {
-
-            const userdata = await User.findOne({_id:req.user.id})
+        const userdata = await User.findOne({_id:req.user.id})
             res.render('addAccount',{
                success : req.flash('success'),
                errors: req.flash('errors'),
                userdata:userdata,
                footer
             })
-        } else {
-          req.flash("errors", "You do not have permission to Add Account.");
-          return res.redirect("back");
-        } 
     } catch (error) {
         console.log(error);
     }
@@ -41,6 +30,8 @@ router.post('/accountadd', isAuth, async (req, res)=>{
     
 
     const {accTitel, accBalance, accDesscri, accNumber} = req.body;
+
+
     const accNub = await Account.findOne({accNumber:accNumber});
     if(accNub){
         req.flash('errors', `${accNumber} alredy added please choose onother`)
@@ -71,63 +62,40 @@ router.post('/accountadd', isAuth, async (req, res)=>{
 //account update get router
 router.get('/update/:id', isAuth, async (req, res)=>{
 
-    const userdata = await User.findOne({ _id: req.user.id });
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        const footer = await Shop.findOne()
-
-        
+    const userdata = await User.findOne({_id:req.user.id})
+    const data = await Account.findById(req.params.id);
+        const footer = await Shop.findOne({})
     
-        if(userrole[0].account.includes("update")) {
-            const userdata = await User.findOne({_id:req.user.id})
-            const data = await Account.findById(req.params.id);
-        
-                res.render('updateAccount',{
-                    success : req.flash('success'),
-                    errors: req.flash('errors'),
-                    userdata:userdata,
-                    data:data,
-                    footer
-                })
-        } else {
-          req.flash("errors", "You do not have permission to update Account.");
-          return res.redirect("back");
-        } 
+        res.render('updateAccount',{
+            success : req.flash('success'),
+            errors: req.flash('errors'),
+            userdata:userdata,
+            data:data,
+            footer
+        })
 
 
 
   
 })
 router.get('/delet/:id', isAuth, async (req, res)=>{
-
-    const userdata = await User.findOne({ _id: req.user.id });
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        
     
-        if(userrole[0].account.includes("delet")) {
-            const data = await Account.findByIdAndDelete(req.params.id);
-        
-               
-          return res.redirect("back");
-
-        } else {
-          req.flash("errors", "You do not have permission to delet Account.");
-          return res.redirect("back");
-        } 
-
-
-
-  
+          const data = await Account.findByIdAndDelete(req.params.id);   
+          return res.redirect("back"); 
 })
 //update account POST router
 router.post('/accountupdate/:id', isAuth, async (req, res)=>{
-    
-
-
-
-
     const {accTitel, accDesscri, accNumber} = req.body;
+
+    const missingF = Object.entries(req.body)
+    .filter(([key, val]) => val.trim() === "")
+    .map(([key]) => key);
+  
+  if (missingF.length > 0) {
+    req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+    return res.redirect("back");
+  }
+
     const accNub = await Account.findOne({accNumber:accNumber, _id: {$ne: req.params.id}});
     if(accNub){
         req.flash('errors', `${accNumber} alredy added please choose onother`)
@@ -149,31 +117,33 @@ router.post('/accountupdate/:id', isAuth, async (req, res)=>{
 //account List Get router
 router.get('/list', isAuth , async (req, res)=>{
     try {
-        const footer = await Shop.findOne()
-        
-        const userdata = await User.findOne({_id:req.user.id})
-       const data = await Account.aggregate([
-       
-        {$project: {
-                accTitel: 1,
-                accDesscri:1,
-                accNumber:1,
-                debet: {$sum: "$transaction.debit"},
-                credit: {$sum : "$transaction.credit"},
-                balance: {$sum: "$transaction.balance"}
-        }
-                    
-        },
-        
-    ])
-        res.render('accountList',{
-            success : req.flash('success'),
-            errors: req.flash('errors'),
-            userdata:userdata,
-            data:data,
-            footer
-        })
 
+        const userdata = await User.findOne({ _id: req.user.id });
+            const footer = await Shop.findOne({})
+        
+        
+        
+        const data = await Account.aggregate([
+        
+         {$project: {
+                 accTitel: 1,
+                 accDesscri:1,
+                 accNumber:1,
+                 debet: {$floor:{$sum: "$transaction.debit"}},
+                 credit: {$floor:{$sum : "$transaction.credit"}},
+                 balance: {$floor:{ $sum: "$transaction.balance"},}
+         }
+                     
+         },
+         
+     ])
+         res.render('accountList',{
+             success : req.flash('success'),
+             errors: req.flash('errors'),
+             userdata:userdata,
+             data:data,
+             footer
+         })
 
         
     } catch (error) {
@@ -186,7 +156,8 @@ router.get('/list', isAuth , async (req, res)=>{
 router.get('/transection', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne()
+            const footer = await Shop.findOne({})
+        
 
         const acc = await Account.find({},{accTitel:1});
         const data = await Account.aggregate([
@@ -222,7 +193,8 @@ router.get('/transection', isAuth , async (req, res)=>{
 router.post('/transection-filter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id}) 
-        const footer = await Shop.findOne()
+        const footer = await Shop.findOne({})
+
 
         const startDate = req.body.StartDate;
         const endDate = req.body.enddate;
@@ -287,13 +259,7 @@ router.post('/transection-filter', isAuth , async (req, res)=>{
                                 ]
                         }
         }
-
-
-
-
-
-
-
+        
         const acc = await Account.find({},{accTitel:1});
         const data = await Account.aggregate([
                 {$unwind: "$transaction"},
@@ -403,8 +369,8 @@ router.get('/download-transection', isAuth ,async (req, res)=>{
 router.get('/expense', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne()
-
+            const footer = await Shop.findOne({})
+        
         const acc = await Account.aggregate([{$match : {$and: [ 
             {"accTitel": {$ne: 'Receivable'}},
             {"accTitel": {$ne: 'Payable'} }
@@ -443,7 +409,8 @@ router.get('/expense', isAuth , async (req, res)=>{
 router.post('/expensefilter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne()
+        const footer = await Shop.findOne({})
+
 
         const{startDate, endDate} = req.body;
         const acc = await Account.aggregate([{$match : {$and: [ 
@@ -492,15 +459,22 @@ router.post('/expensefilter', isAuth , async (req, res)=>{
 //add Expense Post router
 router.post('/addexpense', isAuth, async (req, res)=>{
     try {
-        
-
-
-
-
 
         const ObjectId = mongoose.Types.ObjectId; 
         const {AccTitel, expdesc, expamount, expdate} = req.body;
-        
+
+
+
+        const missingF = Object.entries(req.body)
+        .filter(([key, val]) => val.trim() === "")
+        .map(([key]) => key);
+      
+      if (missingF.length > 0) {
+        req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+        return res.redirect("back");
+      }
+
+
         const accou = await Account.aggregate([
             {$match : {_id : {$eq: ObjectId(AccTitel) } } },
             {$project: {
@@ -548,7 +522,8 @@ router.post('/addexpense', isAuth, async (req, res)=>{
 //Income Get router
 router.get('/income', isAuth , async (req, res)=>{
     try {
-        const footer = await Shop.findOne()
+        const footer = await Shop.findOne({})
+
         
         const userdata = await User.findOne({_id:req.user.id})
         const acc = await Account.aggregate([{$match : {$and: [ 
@@ -590,9 +565,11 @@ router.get('/income', isAuth , async (req, res)=>{
 router.post('/incomefilter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne()
+        const footer = await Shop.findOne({})
 
+     
         const{startDate, endDate} = req.body;
+
         const acc = await Account.aggregate([{$match : {$and: [ 
             {"accTitel": {$ne: 'Receivable'}},
             {"accTitel": {$ne: 'Payable'} }
@@ -645,7 +622,16 @@ router.post('/addincome', isAuth, async (req, res)=>{
 
         const ObjectId = mongoose.Types.ObjectId; 
         const {AccTitel, incdesc, incamount, incdate} = req.body;
-        
+
+        const missingF = Object.entries(req.body)
+        .filter(([key, val]) => val.trim() === "")
+        .map(([key]) => key);
+      
+      if (missingF.length > 0) {
+        req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+        return res.redirect("back");
+      }
+
         const accou = await Account.aggregate([
             {$match : {_id : {$eq: ObjectId(AccTitel) } } },
             {$project: {
@@ -682,7 +668,8 @@ router.post('/addincome', isAuth, async (req, res)=>{
 router.get('/transfer', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne()
+        const footer = await Shop.findOne({})
+
 
         const acc = await Account.aggregate([{$match : {$and: [ 
                                                                     {"accTitel": {$ne: 'Receivable'}},
@@ -725,7 +712,8 @@ router.get('/transfer', isAuth , async (req, res)=>{
 router.post('/transferfilter', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-        const footer = await Shop.findOne()
+        const footer = await Shop.findOne({})
+
 
         const{startDate, endDate} = req.body;
         const acc = await Account.aggregate([{$match : {$and: [ 
@@ -780,6 +768,19 @@ router.post('/addtransfer', isAuth, async (req, res)=>{
         
         const ObjectId = mongoose.Types.ObjectId; 
         const {Accfrom, AccTo, trndesc, trnamount, trandate} = req.body;
+
+
+
+        const missingF = Object.entries(req.body)
+    .filter(([key, val]) => val.trim() === "")
+    .map(([key]) => key);
+  
+  if (missingF.length > 0) {
+    req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+    return res.redirect("back");
+  }
+
+
 
         const fromacc = await Account.aggregate([
             {$match : {_id : {$eq: ObjectId(Accfrom) } } },
@@ -879,14 +880,5 @@ router.get('/listdata',async (req, res)=>{
         console.log(error);
     }
 })
-
-
-
-
-
-
-
-
-
 
 module.exports = router

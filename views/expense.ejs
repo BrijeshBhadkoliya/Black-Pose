@@ -146,6 +146,8 @@
                                             <table id="DataTable" class="display table table-bordered">
                                                 <thead>
                                                     <tr>
+                                                        <th style="display: none;">SortDate</th>
+
                                                         <th> Date</th>
                                                         <th> ACCOUNT</th>
                                                         <th> TYPE</th>
@@ -158,8 +160,10 @@
                                                 </thead>
                                                 <tbody class="justify-content-center">
                                                     <% data.forEach((tra)=> { %>
-                                                      
+
                                                             <tr>
+                                                        <td style="display: none;"><%= new Date(tra.transaction.date).toISOString() %></td>
+
                                                                 <td>
                                                                     <%= tra.transaction.date.toLocaleDateString('fr-CA',
                                                                         { year: 'numeric' , month: '2-digit' ,
@@ -227,12 +231,7 @@
 
         <!-- start JS -->
         <%- include('./onestep/script')-%>
-            <!-- end JS -->
-            <script>
-                $(document).ready( function () {
-                    $('#myTable').DataTable();
-                } );
-                </script>
+            
 </body>
 
 </html>

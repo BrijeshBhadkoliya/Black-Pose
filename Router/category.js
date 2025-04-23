@@ -11,7 +11,7 @@ const { User, Category, UserRole,Shop } = require("../model/Schema");
 router.get("/list", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne()
+    const footer = await Shop.findOne({})
 
     const catList = await Category.find({});
 
@@ -29,15 +29,23 @@ router.get("/list", isAuth, async (req, res) => {
 // add category post router
 router.post("/catlist-add", upload.single("catImg"), async (req, res) => {
   try {
-    const userdata = await User.findOne({ _id: req.body.userid });
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-    
+         const catName = req.body.catName;
+         const catImg = req.file.filename;
+         const catList = await Category.findOne({ catName: catName });
 
-    if(userrole[0].category.includes("update")) {
-        const catName = req.body.catName;
-        const catImg = req.file.filename;
-        const catList = await Category.findOne({ catName: catName });
+         const fields = {
+          catName:"Categorey Name"
+        }
+        const missingF = Object.entries(req.body)
+        .filter(([key, val]) => val.trim() === "")
+        .map(([key]) => fields[key] || key);
+      
+      if (missingF.length > 0) {
+        req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+        return res.redirect("back");
+      }
+       
+        
     
         if (catList) {
           fs.unlinkSync(req.file.path);
@@ -58,11 +66,6 @@ router.post("/catlist-add", upload.single("catImg"), async (req, res) => {
     
         req.flash("success", `${catName} Add success fuly`);
         res.redirect("/category/list");
-
-    } else {
-      req.flash("errors", "You do not have permission to add categories.");
-      return res.redirect("/category/list");
-    }
   } catch (error) {
     console.log(error);
   }
@@ -71,7 +74,6 @@ router.post("/catlist-add", upload.single("catImg"), async (req, res) => {
 router.get("/updateCatstatus/:id", isAuth, async (req, res) => {
   try {
     const cat = await Category.findOne({ _id: req.params.id });
-    console.log(cat);
 
     cat.status == "active"
       ? (cat.status = "deactive")
@@ -88,15 +90,10 @@ router.get("/updateCatstatus/:id", isAuth, async (req, res) => {
 // update category get router
 router.get("/updateCategory/:id", isAuth, async (req, res) => {
   try {
+    const cat = await Category.findOne({ _id: req.params.id });
+    const footer = await Shop.findOne({})
     const userdata = await User.findOne({ _id: req.user.id });
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-    const footer = await Shop.findOne()
-
-    
-
-    if(userrole[0].category.includes("update")) {
-      const cat = await Category.findOne({ _id: req.params.id });
+      
       res.render("updateCategory", {
         success: req.flash("success"),
         errors: req.flash("errors"),
@@ -104,10 +101,6 @@ router.get("/updateCategory/:id", isAuth, async (req, res) => {
         data: cat,
         footer:footer
       });
-    } else {
-      req.flash("errors", "You do not have permission to update categories.");
-      return res.redirect("/category/list");
-    }
   } catch (error) {
     console.log(error);
   }
@@ -121,7 +114,31 @@ router.post(
     try {
       var cat = await Category.findOne({ _id: req.params.id });
       cat.catName = req.body.catName;
+
+      const fields = {
+        catName:"Categorey Name"
+      }
+      const missingF = Object.entries(req.body)
+      .filter(([key, val]) => val.trim() === "")
+      .map(([key]) => fields[key] || key);
+    
+    if (missingF.length > 0) {
+      req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+      return res.redirect("back");
+    }
+
       if (req.file) {
+        if (cat?.catImg) {
+                const oldImagePath = path.join(__dirname, '../public/uploads/resized/', cat.catImg);
+                   
+                try {
+                  if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath);
+                  }
+                } catch (err) {
+                  console.error("Error deleting old image:", err);
+                }
+              }
         //*****resized image */
         const { filename: image } = req.file;
         await sharp(req.file.path)
@@ -157,19 +174,21 @@ router.post(
 //delet category
 router.get("/delcat/:id", isAuth, async (req, res) => {
   try {
-    const userdata = await User.findOne({ _id: req.user.id });
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-    
-
-    if (userrole[0].category.includes("delet")) {
-      const del = await Category.findByIdAndDelete(req.params.id);
+    const cat = await Category.findById(req.params.id)
+    if (cat?.catImg) {
+      const oldImagePath = path.join(__dirname, '../public/uploads/resized/', cat.catImg);
+        
+      try {
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      } catch (err) {
+        console.error("Error deleting old image:", err);
+      }
+    }
+    const del = await Category.findByIdAndDelete(req.params.id);
       req.flash("success", `${del.catName} Delet success fuly`);
       res.redirect("/category/list");
-    } else {
-      req.flash("errors", "You do not have permission to delet categories.");
-      return res.redirect("/category/list");
-    }
   } catch (error) {
     console.log(error);
   }
@@ -180,9 +199,10 @@ router.get("/delcat/:id", isAuth, async (req, res) => {
 // add sub category get router
 router.get("/subCategory", isAuth, async (req, res) => {
   try {
+
     const userdata = await User.findOne({ _id: req.user.id });
     const catList = await Category.find({});
-    const footer = await Shop.findOne()
+    const footer = await Shop.findOne({})
 
     res.render("subCategory", {
       success: req.flash("success"),
@@ -191,6 +211,7 @@ router.get("/subCategory", isAuth, async (req, res) => {
       data: catList,
       footer
     });
+
   } catch (error) {
     console.log(error);
   }
@@ -203,6 +224,20 @@ router.post("/subcatlist-add", upload.single("catImg"), async (req, res) => {
     const catList = await Category.findById({ _id: req.body.mainCat });
     var xyz = "";
     const subCat = await Category.aggregate([{ $unwind: "$subcatNames" }]);
+
+    const fields = {
+      mainCatL:"Categorey Name",
+      subcatName:"SubCategorey Name"
+    }
+    const missingF = Object.entries(req.body)
+    .filter(([key, val]) => val.trim() === "")
+    .map(([key]) => fields[key] || key);
+  
+  if (missingF.length > 0) {
+    req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+    return res.redirect("back");
+  }
+
     subCat.forEach(function (data) {
       if (data.subcatNames.subcatname == subcatName) {
         xyz = "true";
@@ -231,7 +266,7 @@ router.post("/subcatlist-add", upload.single("catImg"), async (req, res) => {
 router.get("/updateSubCategory/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne()
+    const footer = await Shop.findOne({})
 
     var data = {
       subcatnam: "",
@@ -269,6 +304,18 @@ router.post(
           subcat.subcatname = req.body.subcatName;
         }
       });
+
+      const fields = {
+        subcatName:"SubCategorey Name"
+      }
+      const missingF = Object.entries(req.body)
+      .filter(([key, val]) => val.trim() === "")
+      .map(([key]) => fields[key] || key);
+    
+    if (missingF.length > 0) {
+      req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+      return res.redirect("back");
+    }
 
       await cat.save();
       req.flash("success", `${req.body.catName} update success fuly`);

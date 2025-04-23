@@ -10,8 +10,8 @@ const {Coupon, User,UserRole,Shop} = require('../model/Schema');
 router.get('/list', isAuth , async (req, res)=>{
     try {
         const userdata = await User.findOne({_id:req.user.id})
-       var couponList = await Coupon.find({})
-       const footer = await Shop.findOne()
+        var couponList = await Coupon.find({})
+       const footer = await Shop.findOne({})
 
         res.render('coupon',{
             success : req.flash('success'),
@@ -28,27 +28,9 @@ router.get('/list', isAuth , async (req, res)=>{
 // add coupon post router
 router.post('/add', isAuth, async (req, res)=>{
     try {
-
-       
-        const userdata = await User.findOne({ _id: req.body.userid });
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        
-    
-        if(userrole[0].coupon.includes("add")) {
-            const coup = await Coupon.create(req.body)
-
-            req.flash('success', `${coup.Titel} Add success fuly`)
-            res.redirect('/coupon/list')
-            
-        } else {
-          req.flash("errors", "You do not have permission to add cupon.");
-          return res.redirect("/coupon/list");
-        } 
-
-        
-
-        
+        const coup = await Coupon.create(req.body)
+        req.flash('success', `${coup.Titel} Add success fuly`)
+        res.redirect('/coupon/list')  
     } catch (error) {
         console.log(error);
     }
@@ -57,32 +39,17 @@ router.post('/add', isAuth, async (req, res)=>{
 // update coupon get router
 router.get('/updatecoupon/:id', isAuth, async (req, res)=>{
     try {
+        const userdata = await User.findOne({_id:req.user.id})
+        const coup = await Coupon.findOne({_id:req.params.id})
+        const footer = await Shop.findOne({})
 
-
-
-
-        
-        const userdata = await User.findOne({ _id: req.user.id });
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        const footer = await Shop.findOne()
-        
-    
-        if(userrole[0].coupon.includes("update")) {
-
-            const userdata = await User.findOne({_id:req.user.id})
-            const coup = await Coupon.findOne({_id:req.params.id})
-            res.render('updateCoupon',{
-                success : req.flash('success'),
-                errors: req.flash('errors'),
-                userdata:userdata,
-                data:coup,
-                footer
-            })
-        } else {
-          req.flash("errors", "You do not have permission to update cupon.");
-          return res.redirect("back");
-        } 
+        res.render('updateCoupon',{
+            success : req.flash('success'),
+            errors: req.flash('errors'),
+            userdata:userdata,
+            data:coup,
+            footer
+        })
     } catch (error) {
         console.log(error);
     }
@@ -92,8 +59,6 @@ router.get('/updatecoupon/:id', isAuth, async (req, res)=>{
 //update coupon post router
 router.post('/update/:id', isAuth,  async (req, res)=>{
     try {
-    
-
        const data = await Coupon.findByIdAndUpdate(req.params.id, {
         $set: req.body
        },
@@ -114,26 +79,9 @@ router.post('/update/:id', isAuth,  async (req, res)=>{
 //delet Coupon
 router.get('/delet/:id', isAuth, async (req,res)=>{
     try {
-      
-
-         const userdata = await User.findOne({ _id: req.user.id });
-        const findrole = userdata.role;
-        const userrole = await UserRole.find({ titel: findrole });
-        
-    
-        if(userrole[0].coupon.includes("delet")) {
-
-            const cop = await Coupon.findByIdAndDelete(req.params.id)
-            req.flash('success', `${cop.Titel} Delet success fuly`)
-            res.redirect('back')
-        } else {
-          req.flash("errors", "You do not have permission to delet cupon.");
-          return res.redirect("back");
-        } 
-  
-
-
-
+        const cop = await Coupon.findByIdAndDelete(req.params.id)
+        req.flash('success', `${cop.Titel} Delet success fuly`)
+        res.redirect('/coupon/list')
     } catch (error) {
         console.log(error);
     }
@@ -141,9 +89,7 @@ router.get('/delet/:id', isAuth, async (req,res)=>{
 
 // coupon status switchry
 router.get('/updatestatus/:id', isAuth, async (req, res)=>{
-    try {
-       
-        
+    try {    
         const cou = await Coupon.findOne({_id:req.params.id})
         cou.status == "active" ? cou.status = "deactive" : cou.status = "active";
 

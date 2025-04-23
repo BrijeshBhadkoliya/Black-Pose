@@ -87,7 +87,7 @@
                                     
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -119,8 +119,8 @@
                                                                     <td><%=pro.order%></td>
                                                                     
                                                                     <td>
-                                                                        <a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success proupdate "><i class="feather icon-edit"></i></a>
-                                                                        <a href="/product/delet/<%=pro._id%>" class="btn btn-round btn-danger prodelet "><i class="feather icon-trash-2"></i></a>
+                                                                        <a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success d-none proupdate "><i class="feather icon-edit"></i></a>
+                                                                        <a href="/product/delet/<%=pro._id%>" class="btn btn-round btn-danger d-none prodelet "><i class="feather icon-trash-2"></i></a>
                                                                     </td>
                                                                 <% } else { %>
 
@@ -131,27 +131,20 @@
                                                                     <td><%=pro.proCode%></td>
                                                                     <td><%=accessdata.data.Currency%> <%=pro.purchasePrice%></td>
                                                                     <td><%=accessdata.data.Currency%> <%=pro.sellingPrice%></td>
-                                                                    <td class="row "> 
-                                                                        <!-- <div class="col-6 text-left"> -->
-    
-                                                                        <form action="/product/quantity" class="d-flex border-0" method="post">
-                                                                        
-                                                                                <input type="hidden" name="editqun" value="<%=pro._id%>">
-                                                                                <input type="date" hidden  name="date" class="dateArr">
-                                                                                <input type="number" class="form-control cart-qty" name="quantity" value="<%=pro.quantity%>">
-                                                                                <button class="btn btn-round btn-primary-rgba" type="submit">
-                                                                                    <i class="feather icon-plus-circle"></i>
-                                                                                </button>
-                                                                           
-                                                                    </form>
-                                                                </div>
-    
-                                                                    </td>   
+                                                                    <td class="row">
+                                                                        <div class="col-6 d-flex">
+                                                                          <input type="number" disabled style="background-color: rgb(248, 248, 248);" class="form-control cart-qty" value="<%= pro.quantity %>">
+                                                                          <button class="btn btn-round btn-primary-rgba" id="addqun" style="margin-left: -10px;" type="button" value="<%= pro._id %>">
+                                                                            <i class="feather icon-plus-circle"></i>
+                                                                          </button>
+                                                                        </div>
+                                                                      </td>
+                                                                      
                                                                     <td><%=pro.order%></td>
                                                                     
                                                                     <td>
-                                                                        <a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success proupdate "><i class="feather icon-edit"></i></a>
-                                                                        <a href="/product/delet/<%=pro._id%>" class="btn btn-round btn-danger prodelet "><i class="feather icon-trash-2"></i></a>
+                                                                        <a href="/product/update/<%=pro._id%>" class="btn btn-round btn-success d-none proupdate "><i class="feather icon-edit"></i></a>
+                                                                        <a href="/product/delet/<%=pro._id%>" class="btn btn-round btn-danger prodelet d-none "><i class="feather icon-trash-2"></i></a>
                                                                     </td>
                                                                 <% } %>
                                                         </tr>
@@ -193,19 +186,10 @@
     <!-- start Toastr -->
     <%- include('./onestep/toastr')-%>
     <!-- End Toastr -->
-    <script>
-        const  dateArr = document.getElementsByClassName('dateArr')
-          for(let i = 0; i<dateArr.length; i++ ){
-               dateArr[i].value = new Date().toISOString().split('T')[0];
-               
-          }
-          console.log(dateArr);
-          
-      </script>
+
     <!-- start JS -->
     <%- include('./onestep/script')-%>
-    <script src="/assets/js/custom/custom-model.js"></script>
-    <script src="/assets/js/custom/custom-supplier-product.js"></script>
+    
     <!-- end JS -->
 
   

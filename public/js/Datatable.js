@@ -1,11 +1,9 @@
 $(document).ready(function () {
-    $('#DataTable').DataTable({
-        order: [[0, 'desc']]
-    });
+    // $('#DataTable').DataTable({
+    //     order: [[0, 'desc']],
+    // });
 
-    $('#AccDataTable').DataTable({
-      
-    });
+    $('#AccDataTable').DataTable({});
 
     var table = $('#datatable-buttons').DataTable({
         lengthChange: false,

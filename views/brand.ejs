@@ -45,7 +45,7 @@
                              <!-- Start row -->
                              <div class="row">
                                 <!-- Start col -->
-                                <div class="col-lg-12 braadd">
+                                <div class="col-lg-12 d-none braadd">
                                     <div class="card m-b-30">
                                         <div class="card-body">                                
                                            
@@ -61,14 +61,7 @@
                                                         <div class="form-group">
                                                             <label for="braName">Brand Name</label>
                                                             <input type="text" class="form-control border-secondary" id="braName" name="braName"  required>
-                                                            <input
-                                                            type="hidden"
-                                                            class="form-control border-secondary"
-                                                            id="catName"
-                                                            name="userid"
-                                                            value="<%= userdata._id %>"
-                                                            required
-                                                          />
+                                                            
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="braImg">Brand Image</label>
@@ -85,7 +78,7 @@
                                                        
                                                         <div class="col-lg-12  ">
                                                            <center>
-                                                            <img id="catdemoimg" alt="your image" src="https://www.shutterstock.com/image-vector/image-icon-trendy-flat-style-600nw-643080895.jpg" width="300px"/>
+                                                            <img id="catdemoimg" alt="your image" src="../images/one.png" width="150"/>
                                                             <h5>Image Preview </h5>
                                                            </center>
                                                             
@@ -111,7 +104,7 @@
                                         </div>
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -129,8 +122,8 @@
                                                                 <td><%=brand.brandName%></td>
                                                                 <td><img src="../uploads/resized/<%=brand.brandImg%>" class="rounded" width="50px" height="50px" alt=""></td>
                                                                 <td>
-                                                                    <a href="/brand/updatebrand/<%=brand._id%>" class="btn btn-round btn-success braupdate "><i class="feather icon-edit"></i></a>
-                                                                    <a href="/brand/delbrand/<%=brand._id%>" class="btn btn-round btn-danger bradelet "><i class="feather icon-trash-2"></i></a>
+                                                                    <a href="/brand/updatebrand/<%=brand._id%>" class="btn btn-round btn-success d-none braupdate "><i class="feather  icon-edit"></i></a>
+                                                                    <a href="/brand/delbrand/<%=brand._id%>" class="btn btn-round btn-danger d-none bradelet "><i class="feather icon-trash-2"></i></a>
                                                                 </td>
                                                         </tr>
                                                                 <% i++ %>

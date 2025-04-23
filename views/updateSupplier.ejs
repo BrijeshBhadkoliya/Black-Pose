@@ -103,7 +103,7 @@
                                                        
                                                         <div class="col-lg-12  ">
                                                            <center>
-                                                            <img id="catdemoimg" alt="your image" width="280" height="300" src="/uploads/resized/<%=data.suppImage%>"/>
+                                                            <img id="catdemoimg" alt="your image" width="300" height="300" src="<%=data.suppImage ? '/uploads/resized/'+ data.suppImage : '../images/one.png'%>"/>
                                                             <br>
                                                             <h5 class="m-t-20">Image Preview </h5>
                                                            </center>

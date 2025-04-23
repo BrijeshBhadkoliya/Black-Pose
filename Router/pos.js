@@ -23,7 +23,7 @@ const ObjectId = mongoose.Types.ObjectId;
 router.get("/pos", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
+        const footer = await Shop.findOne({})
     const catList = await Category.aggregate([
       { $match: { status: { $eq: "active" } } },
       { $project: { _id: 1, catName: 1 } },
@@ -41,6 +41,8 @@ router.get("/pos", isAuth, async (req, res) => {
           Name: 1,
           proCode: 1,
           sellingPrice: 1,
+          discount:1,
+          discountType:1,
           productImage: 1,
         },
       },
@@ -87,8 +89,9 @@ router.get("/pos", isAuth, async (req, res) => {
 router.get("/srchcat/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-        const footer = await Shop.findOne({});
-
+    const footer = await Shop.findOne({})
+   
+      
     const catList = await Category.aggregate([
       { $match: { status: { $eq: "active" } } },
       { $project: { _id: 1, catName: 1 } },
@@ -103,9 +106,12 @@ router.get("/srchcat/:id", isAuth, async (req, res) => {
           proCode: 1,
           sellingPrice: 1,
           productImage: 1,
+          discount:1,
+          discountType:1,
         },
       },
     ]);
+ 
     var costomer = await Coustomer.find({});
 
     var cart = await Cart.findOne({});
@@ -124,7 +130,9 @@ router.get("/srchcat/:id", isAuth, async (req, res) => {
         var coust_id = "";
       }
     }
+ 
 
+  
     res.render("pos", {
       success: req.flash("success"),
       errors: req.flash("errors"),
@@ -148,6 +156,9 @@ router.post("/addCart", async (req, res) => {
   try {
     const product = await Product.findById(req.body.id);
     const cartdata = await Cart.findOne({ coustomerId: req.body.coust_id });
+    const footer = await Shop.findOne({})  
+  
+   
     
     var discount = product.discount.toFixed(2);
     if (product.discountType == "percent") {
@@ -175,14 +186,18 @@ router.post("/addCart", async (req, res) => {
 
     if (cartdata) {
       var cartitemavailabal = "";
+      
       cartdata.item.forEach((data) => {
         data.productName == product.Name ? (cartitemavailabal = "true") : "";
       });
 
       if (cartitemavailabal == "true") {
+        const cratOb = cartdata.toObject();
+        cratOb.Currency = footer.Currency;
+        cratOb.Currency_placement =  1
         return res.status(200).json({
           error: "The product already has been added to the cart",
-          data: cartdata,
+          data: cratOb,
         });
       }
 
@@ -203,10 +218,15 @@ router.post("/addCart", async (req, res) => {
       cartdata.Amount = parseInt(cartdata.Amount) + parseInt(total);
 
       const cart = await cartdata.save();
+      const cratOb = cart.toObject();
+      cratOb.Currency = footer.Currency;
+      cratOb.Currency_placement =  1
+      
+      
 
       res.status(200).json({
         success: "your product has been added to the cart.",
-        data: cart,
+        data: cratOb,
       });
     } else {
       const data = new Cart({
@@ -230,12 +250,13 @@ router.post("/addCart", async (req, res) => {
       });
 
       const cart = await data.save();
- 
-     const footer = await Shop.findOne({})  
+      const cratOb = cart.toObject();
+      cratOb.Currency = footer.Currency;
+      cratOb.Currency_placement = 1
+
       res.status(200).json({
         success: "The product has been added to the cart",
-        data: cart,
-        footer
+        data:cratOb
       });
     }
   } catch (error) {
@@ -298,55 +319,100 @@ router.get("/delet", async (req, res) => {
 ///change product Quntity
 router.post("/quntity", async (req, res) => {
   try {
-    var quntity = req.body.quntity;
+    const quntity = req.body.quntity;
     const cart = await Cart.findOne({});
+    const footer = await Shop.findOne({});
+
     const proQuntity = await Product.aggregate([
       { $match: { Name: { $eq: req.body.proName } } },
       { $project: { _id: 0, quantity: 1 } },
     ]);
 
     if (quntity > proQuntity[0].quantity) {
+      const data = await cart.save();
+      const cratOb = data.toObject();
+      cratOb.Currency = footer.Currency;
+      cratOb.Currency_placement = 1;
       return res.status(201).json({
         error: "Quantity not available in the store",
-        data: cart,
+        data: cratOb,
       });
     }
-    cart.item.forEach(function (pro) {
-      if (pro._id.toString() == req.body.id) {
-        var oldcount = pro.productCount;
+
+    let couponRemoved = false;
+
+    cart.item.forEach((pro) => {
+      if (pro._id.toString() === req.body.id) {
+        const oldcount = pro.productCount;
+
+       
+        if (quntity < oldcount) {
+          couponRemoved = true;
+        }
+
         pro.productCount = quntity;
         pro.total = (
-          (pro.productPrice + pro.tax - pro.discount) *
-          quntity
+          (pro.productPrice + pro.tax - pro.discount) * quntity
         ).toFixed(2);
+
         cart.SubTotal = (
-          cart.SubTotal +
+          parseFloat(cart.SubTotal) +
           pro.productPrice * (quntity - oldcount)
         ).toFixed(2);
+
         cart.Productdiscount = (
-          cart.Productdiscount +
+          parseFloat(cart.Productdiscount) +
           pro.discount * (quntity - oldcount)
         ).toFixed(2);
-        cart.Tax = (cart.Tax + pro.tax * (quntity - oldcount)).toFixed(2);
+
+        cart.Tax = (
+          parseFloat(cart.Tax) +
+          pro.tax * (quntity - oldcount)
+        ).toFixed(2);
+
         cart.Amount = (
-          cart.SubTotal +
-          cart.Tax -
-          cart.Productdiscount -
-          cart.Coupondiscount
+          parseFloat(cart.SubTotal) +
+          parseFloat(cart.Tax) -
+          parseFloat(cart.Productdiscount) -
+          parseFloat(cart.Coupondiscount || 0)
         ).toFixed(2);
       }
     });
 
-    var data = await cart.save();
+ 
+    if (couponRemoved && cart.Coupondiscount) {
+      cart.Amount = (
+        parseFloat(cart.Amount) + parseFloat(cart.Coupondiscount)
+      ).toFixed(2);
+      cart.Coupondiscount = 0;
+      cart.couponCode = null;
+
+      const data = await cart.save();
+      const cratOb = data.toObject();
+      cratOb.Currency = footer.Currency;
+      cratOb.Currency_placement = 1;
+
+      return res.status(201).json({
+        error: "Your coupon has been removed due to reduced quantity.",
+        data: cratOb,
+      });
+    }
+
+    const data = await cart.save();
+    const cratOb = data.toObject();
+    cratOb.Currency = footer.Currency;
+    cratOb.Currency_placement = 1;
 
     res.status(200).json({
       success: "Quantity has been updated!!!",
-      data: data,
+      data: cratOb,
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: "Server error" });
   }
 });
+
 
 // add cart note;
 router.post("/note", async (req, res) => {
@@ -389,36 +455,72 @@ router.post("/note", async (req, res) => {
 router.get("/deletitem/:id", async (req, res) => {
   try {
     const cart = await Cart.findOne({});
+    const footer = await Shop.findOne({ _id: '67ff457bb265c819e38adcfc' });
 
     cart.item.forEach(function (pro, index) {
       if (pro._id.toString() == req.params.id) {
         cart.SubTotal = (
-          cart.SubTotal -
-          pro.productPrice * pro.productCount
+          cart.SubTotal - pro.productPrice * pro.productCount
         ).toFixed(2);
         cart.Productdiscount = (
-          cart.Productdiscount -
-          pro.discount * pro.productCount
+          cart.Productdiscount - pro.discount * pro.productCount
         ).toFixed(2);
         cart.Tax = (cart.Tax - pro.tax * pro.productCount).toFixed(2);
         cart.Amount = (
-          cart.SubTotal +
+          cart.SubTotal -
+          cart.Productdiscount +
           cart.Tax -
-          cart.Productdiscount -
           cart.Coupondiscount
         ).toFixed(2);
         cart.item.splice(index, 1);
       }
     });
 
-    var data = await cart.save();
+  
+    if (cart.item.length === 0) {
+      cart.SubTotal = 0;
+      cart.Productdiscount = 0;
+      cart.Tax = 0;
+      cart.Amount = 0;
+      cart.Coupondiscount = 0;
+      cart.couponCode = null;
+    }
+
+   
+
+    if (cart.Coupondiscount) {
+      const coupon = await Coupon.findOne({ Code: cart.couponCode });
+    
+        cart.Amount = (
+          parseFloat(cart.Amount) + parseFloat(cart.Coupondiscount)
+        ).toFixed(2);
+        cart.Coupondiscount = 0;
+        cart.couponCode = null;
+
+        const data = await cart.save();
+        const cratOb = data.toObject();
+        cratOb.Currency = footer.Currency;
+        cratOb.Currency_placement = 1;
+
+        return res.status(201).json({
+          error: `Your coupon has been removed`,
+          data: cratOb,
+        });
+      
+    }
+
+    const data = await cart.save();
+    const cratOb = data.toObject();
+    cratOb.Currency = footer.Currency;
+    cratOb.Currency_placement = 1;
 
     res.status(200).json({
-      success: "Successfully removing the item.",
-      data: data,
+      success: "Successfully removed the item.",
+      data: cratOb,
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ success: false, message: "Something went wrong" });
   }
 });
 
@@ -427,6 +529,7 @@ router.post("/coupon", async (req, res) => {
   try {
     var coupon_code = req.body.code;
     var cart = await Cart.findOne({});
+    const footer = await Shop.findOne({})
     var coupon = await Coupon.aggregate([
       {
         $match: {
@@ -440,58 +543,130 @@ router.post("/coupon", async (req, res) => {
       },
     ]);
 
-    console.log(coupon_code);
-    console.log(coupon);
+    
+ if(cart.coustomerId === ""){
+  const newcart = await cart.save();
+  const cratOb = newcart.toObject();
+  cratOb.Currency = footer.Currency;
+  cratOb.Currency_placement = 1;
+  return res.status(200).json({
+    error: "Please Add Customer",
+    data: cratOb,
+  });
+ }
+
+ if (cart.couponCode && cart.couponCode === coupon_code) {
+  const newcart = await cart.save();
+  const cratOb = newcart.toObject();
+  cratOb.Currency = footer.Currency;
+  cratOb.Currency_placement = 1;
+  return res.status(201).json({
+    error: "Coupon already applied.",
+    data: cratOb,
+  });
+}
 
     if (coupon.length == 0) {
+      const newcart = await cart.save();
+      const cratOb = newcart.toObject();
+      cratOb.Currency = footer.Currency;
+      cratOb.Currency_placement = 1;
       return res.status(200).json({
         error: "This discount is no longer valid.",
-        data: cart,
+        data: cratOb,
       });
     }
     const userrepet = coupon[0].user.filter((id, index) => {
       return id == cart.coustomerId;
     });
 
-    console.log(userrepet);
+    ;
     if (userrepet.length >= coupon[0].limitSame) {
+      const newcart = await cart.save();
+      const cratOb = newcart.toObject();
+      cratOb.Currency = footer.Currency;
+      cratOb.Currency_placement = 1;
+
       return res.status(201).json({
         error: "you are not eligebal for this coupon",
-        data: cart,
+        data: cratOb,
       });
     }
 
     if (coupon[0].minOrder > cart.Amount) {
+      
+    const newcart = await cart.save();
+    const cratOb = newcart.toObject();
+    cratOb.Currency = footer.Currency;
+    cratOb.Currency_placement = 1;
+
       return res.status(201).json({
         error: `minimun ${coupon[0].minOrder} order required.`,
-        data: cart,
+        data: cratOb,
       });
     }
-    console.log(coupon[0].disAmount);
+    
 
     var discount = Number(coupon[0].disAmount.toFixed(2));
     if (coupon[0].disType == "percent") {
       discount = ((cart.Amount * coupon[0].disAmount) / 100).toFixed(2);
-
+        console.log(discount);
+        
       if (discount > coupon[0].maxDiscount) {
         discount = coupon[0].maxDiscount.toFixed(2);
       }
     }
-    // console.log(cart);
-    console.log(discount);
+  
+    
+   
 
-    cart.Amount = cart.Amount - cart.Coupondiscount + discount;
+    cart.Amount = parseFloat((cart.Amount - (cart.Coupondiscount + Math.floor(discount))).toFixed(2));
+   
+    cart.Amount =  cart.Amount%1 === 0 ? cart.Amount.toFixed(0) :cart.Amount.toFixed(2)
     cart.Coupondiscount = discount;
     cart.couponCode = coupon_code;
+
     const newcart = await cart.save();
+    const cratOb = newcart.toObject();
+    cratOb.Currency = footer.Currency;
+    cratOb.Currency_placement = 1;
+
     res.status(201).json({
       success: `your ${discount} discount has been successfully applied`,
-      data: newcart,
+      data: cratOb,
     });
   } catch (error) {
     console.log(error);
   }
 });
+
+// remove coupon 
+router.get("/removecoupon", async (req, res) => {
+  try {
+    const cartcupon = await Cart.findOne({});
+    const footer = await Shop.findOne({});
+
+    cartcupon.Amount = parseFloat((cartcupon.Amount + cartcupon.Coupondiscount).toFixed(2));
+    cartcupon.Amount =  cartcupon.Amount%1 === 0 ? cartcupon.Amount.toFixed(0) :cartcupon.Amount.toFixed(2)
+
+    cartcupon.Coupondiscount = 0;
+    cartcupon.couponCode = '';
+
+    const newcart = await cartcupon.save();
+    const cratOb = newcart.toObject();
+    cratOb.Currency = footer.Currency;
+    cratOb.Currency_placement = 1;
+
+    res.status(201).json({
+      success: `Coupon is removed`,
+      data: cratOb,
+    });
+  } catch (error) {
+    console.error("Error removing coupon:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 
 // get payment Router
 router.get("/payment", async (req, res) => {
@@ -516,11 +691,13 @@ router.get("/payment", async (req, res) => {
       });
     }
     const coustomer = await Coustomer.findOne({ _id: cart.coustomerId });
+    const footer = await Shop.findOne({})
 
     res.status(200).json({
       cart: cart,
       account: account,
       coustomer: coustomer,
+      Currency:footer.Currency
     });
   } catch (error) {
     console.log(error);
@@ -530,48 +707,38 @@ router.get("/payment", async (req, res) => {
 // post order Router
 router.post("/order", async (req, res) => {
   try {
-    var cart = await Cart.findOne({});
+    const cart = await Cart.findOne({});
 
-    //*******if coupon applied then save coustomer id to this coupon user detail*************/
+    // Apply coupon logic
     if (cart.couponCode) {
-      var coupon = await Coupon.findOne({ Code: cart.couponCode });
+      const coupon = await Coupon.findOne({ Code: cart.couponCode });
       coupon.user.push(cart.coustomerId);
       await coupon.save();
     }
 
-    //********change quntity of product available in store */
-    cart.item.forEach(async function (data) {
-      var product = await Product.findOne({ Name: data.productName });
-      product.quantity = product.quantity - data.productCount;
+    // Update product quantities
+    for (const data of cart.item) {
+      const product = await Product.findOne({ Name: data.productName });
+      product.quantity -= data.productCount;
       await product.save();
-    });
+    }
 
-    var Paymethod = {
+    // Prepare payment method
+    const Paymethod = {
       type: "",
-      tranRef: "",
-      amount: 0,
-      change: 0,
+      tranRef: req.body.transref || "",
+      amount: req.body.colleCash || 0,
+      change: req.body.returnCash || 0,
     };
-    if (req.body.transref) {
-      Paymethod.tranRef = req.body.transref;
-    }
-    if (req.body.colleCash) {
-      Paymethod.amount = req.body.colleCash;
-    }
-    if (req.body.returnCash) {
-      Paymethod.change = req.body.returnCash;
-    }
 
-    //**********save payment******** */
-    var accountId = req.body.accounttype;
+    const accountId = req.body.accounttype;
     if (accountId == 1) {
       Paymethod.type = "Wallet Balance";
-      //payment from wallet account
       const coustomer = await Coustomer.findOne({ _id: cart.coustomerId });
-      // if order amount is less then wallet balance then debet from payabale account
+
       if (cart.Amount <= coustomer.Balance) {
-        const payableAccoountdetail = await Account.aggregate([
-          { $match: { accTitel: { $eq: "Payable" } } },
+        let payableAccoountdetail = await Account.aggregate([
+          { $match: { accTitel: "Payable" } },
           {
             $project: {
               debet: { $sum: "$transaction.debit" },
@@ -579,28 +746,37 @@ router.post("/order", async (req, res) => {
             },
           },
         ]);
-        var payTotal =
-          parseInt(payableAccoountdetail[0].credit) -
-          parseInt(payableAccoountdetail[0].debet);
-        var payableAccoount = await Account.findOne({ accTitel: "Payable" });
-        payableAccoount.transaction = payableAccoount.transaction.concat({
+
+        let payTotal =
+          (parseInt(payableAccoountdetail[0]?.credit) || 0) -
+          (parseInt(payableAccoountdetail[0]?.debet) || 0);
+
+        let payableAccoount = await Account.findOne({ accTitel: "Payable" });
+        if (!payableAccoount) {
+          payableAccoount = new Account({
+            accTitel: "Payable",
+            accDesscri: "Default",
+            transaction: [],
+          });
+        }
+
+        payableAccoount.transaction.push({
           walletName: cart.coustomerId,
           type: "Payable",
           amount: cart.Amount,
           description: "POS Order",
           debit: cart.Amount,
           credit: 0,
-          balance: (parseInt(payTotal) - parseInt(cart.Amount)).toFixed(2),
+          balance: (payTotal - parseInt(cart.Amount)).toFixed(2),
           date: new Date(),
         });
+
         await payableAccoount.save();
       } else {
-        //******* if order amount is gretar then wallet balance then debet from payabale account as availabale*/
-
+        // Partial from wallet, rest to Receivable
         if (coustomer.Balance > 0) {
-          //***step 1 all wallet amount debit from payable account */
           const payableAccoountdetail = await Account.aggregate([
-            { $match: { accTitel: { $eq: "Payable" } } },
+            { $match: { accTitel: "Payable" } },
             {
               $project: {
                 debet: { $sum: "$transaction.debit" },
@@ -608,29 +784,37 @@ router.post("/order", async (req, res) => {
               },
             },
           ]);
-          var payTotal =
-            parseInt(payableAccoountdetail[0].credit) -
-            parseInt(payableAccoountdetail[0].debet);
-          var payableAccoount = await Account.findOne({ accTitel: "Payable" });
-          payableAccoount.transaction = payableAccoount.transaction.concat({
+          let payTotal =
+            (parseInt(payableAccoountdetail[0]?.credit) || 0) -
+            (parseInt(payableAccoountdetail[0]?.debet) || 0);
+
+          let payableAccoount = await Account.findOne({ accTitel: "Payable" });
+          if (!payableAccoount) {
+            payableAccoount = new Account({
+              accTitel: "Payable",
+              accDesscri: "Default",
+              transaction: [],
+            });
+          }
+
+          payableAccoount.transaction.push({
             walletName: cart.coustomerId,
             type: "Payable",
             amount: coustomer.Balance,
             description: "POS Order",
             debit: coustomer.Balance,
             credit: 0,
-            balance: (parseInt(payTotal) - parseInt(coustomer.Balance)).toFixed(
-              2
-            ),
+            balance: (payTotal - parseInt(coustomer.Balance)).toFixed(2),
             date: new Date(),
           });
+
           await payableAccoount.save();
 
-          //***step 2 remain amount credit in reciveable account */
-          var remainAmount =
-            parseInt(cart.Amount) - parseInt(coustomer.Balance);
+          // Remaining in receivable
+          const remainAmount = parseInt(cart.Amount) - parseInt(coustomer.Balance);
+
           const recivedAccoountdetail = await Account.aggregate([
-            { $match: { accTitel: { $eq: "Receivable" } } },
+            { $match: { accTitel: "Receivable" } },
             {
               $project: {
                 debet: { $sum: "$transaction.debit" },
@@ -638,29 +822,37 @@ router.post("/order", async (req, res) => {
               },
             },
           ]);
-          var reciTotal =
-            parseInt(recivedAccoountdetail[0].credit) -
-            parseInt(recivedAccoountdetail[0].debet);
-          var recivedAccoount = await Account.findOne({
-            accTitel: "Receivable",
-          });
-          recivedAccoount.transaction = recivedAccoount.transaction.concat({
+
+          let reciTotal =
+            (parseInt(recivedAccoountdetail[0]?.credit) || 0) -
+            (parseInt(recivedAccoountdetail[0]?.debet) || 0);
+
+          let recivedAccoount = await Account.findOne({ accTitel: "Receivable" });
+          if (!recivedAccoount) {
+            recivedAccoount = new Account({
+              accTitel: "Receivable",
+              accDesscri: "Default",
+              transaction: [],
+            });
+          }
+
+          recivedAccoount.transaction.push({
             walletName: cart.coustomerId,
-            type: "Recivebal",
+            type: "Receivable",
             amount: remainAmount,
             description: "POS Order",
             debit: 0,
             credit: remainAmount,
-            balance: (parseInt(reciTotal) + parseInt(remainAmount)).toFixed(2),
+            balance: (reciTotal + remainAmount).toFixed(2),
             date: new Date(),
           });
+
           await recivedAccoount.save();
         } else {
-          //***cart amount credit in reciveable account */
-          var remainAmount =
-            parseInt(cart.Amount) - parseInt(coustomer.Balance);
+          // Full amount to receivable
+          const remainAmount = parseInt(cart.Amount);
           const recivedAccoountdetail = await Account.aggregate([
-            { $match: { accTitel: { $eq: "Receivable" } } },
+            { $match: { accTitel: "Receivable" } },
             {
               $project: {
                 debet: { $sum: "$transaction.debit" },
@@ -668,31 +860,41 @@ router.post("/order", async (req, res) => {
               },
             },
           ]);
-          var reciTotal =
-            parseInt(recivedAccoountdetail[0].credit) -
-            parseInt(recivedAccoountdetail[0].debet);
-          var recivedAccoount = await Account.findOne({
-            accTitel: "Receivable",
-          });
-          recivedAccoount.transaction = recivedAccoount.transaction.concat({
+
+          let reciTotal =
+            (parseInt(recivedAccoountdetail[0]?.credit) || 0) -
+            (parseInt(recivedAccoountdetail[0]?.debet) || 0);
+
+          let recivedAccoount = await Account.findOne({ accTitel: "Receivable" });
+          if (!recivedAccoount) {
+            recivedAccoount = new Account({
+              accTitel: "Receivable",
+              accDesscri: "Default",
+              transaction: [],
+            });
+          }
+
+          recivedAccoount.transaction.push({
             walletName: cart.coustomerId,
-            type: "Recivebal",
-            amount: cart.Amount,
+            type: "Receivable",
+            amount: remainAmount,
             description: "POS Order",
             debit: 0,
-            credit: cart.Amount,
-            balance: (parseInt(reciTotal) + parseInt(cart.Amount)).toFixed(2),
+            credit: remainAmount,
+            balance: (reciTotal + remainAmount).toFixed(2),
             date: new Date(),
           });
+
           await recivedAccoount.save();
         }
       }
-      coustomer.Balance = parseInt(coustomer.Balance) - parseInt(cart.Amount);
+
+      coustomer.Balance -= parseInt(cart.Amount);
       await coustomer.save();
     } else {
-      //******Add balance in transection account*** */
+      // Direct account credit
       const accou = await Account.aggregate([
-        { $match: { _id: { $eq: ObjectId(accountId) } } },
+        { $match: { _id: new ObjectId(accountId) } },
         {
           $project: {
             debet: { $sum: "$transaction.debit" },
@@ -701,23 +903,25 @@ router.post("/order", async (req, res) => {
         },
       ]);
 
-      var total = parseInt(accou[0].credit) - parseInt(accou[0].debet);
+      const total = (parseInt(accou[0]?.credit) || 0) - (parseInt(accou[0]?.debet) || 0);
       const data = await Account.findById(accountId);
-      data.transaction = data.transaction.concat({
+
+      data.transaction.push({
         walletName: cart.coustomerId,
         type: "Income",
         amount: cart.Amount,
         description: "POS Order",
         debit: 0,
         credit: cart.Amount,
-        balance: (parseInt(total) + parseInt(cart.Amount)).toFixed(2),
+        balance: (total + parseInt(cart.Amount)).toFixed(2),
         date: new Date(),
       });
+
       await data.save();
       Paymethod.type = data.accTitel;
     }
 
-    var oreder = new Order({
+    const oreder = new Order({
       item: cart.item,
       SubTotal: cart.SubTotal,
       Productdiscount: cart.Productdiscount,
@@ -730,18 +934,18 @@ router.post("/order", async (req, res) => {
     });
 
     const confirmOrder = await oreder.save();
-    // update code 
-    await Coustomer.findByIdAndUpdate(
-      cart.coustomerId,
-      { $push: { order: confirmOrder } }
-    );
 
-    const cleareCart = await Cart.findByIdAndDelete(cart._id);
+    await Coustomer.findByIdAndUpdate(cart.coustomerId, {
+      $push: { order: confirmOrder },
+    });
+
+    await Cart.findByIdAndDelete(cart._id);
     req.flash("success", `Your Order has been submitted`);
-
     return res.redirect("back");
   } catch (error) {
     console.log(error);
+    req.flash("errors", "Something went wrong while processing your order.");
+    return res.redirect("back");
   }
 });
 
@@ -749,10 +953,9 @@ router.post("/order", async (req, res) => {
 router.get("/orderlist", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({})
 
-    const order = await Order.find({});
-
+    const order = await Order.find({}).lean();
     res.render("order", {
       success: req.flash("success"),
       errors: req.flash("errors"),
@@ -775,6 +978,7 @@ router.get("/productList", async (req, res) => {
     var activecat = catList.map((data) => {
       return data.catName;
     });
+    const footer = await Shop.findOne({})
 
     var match = { category: { $in: activecat } };
     const product = await Product.aggregate([
@@ -786,13 +990,19 @@ router.get("/productList", async (req, res) => {
           proCode: 1,
           sellingPrice: 1,
           productImage: 1,
+          discount:1,
+          discountType:1,
         },
       },
     ]);
-
+    const enrichedProducts = product.map(p => ({
+      ...p,
+      Currency: footer.Currency,
+      Currency_placement: 1
+    }));
     res.status(201).json({
       success: "success",
-      data: product,
+      data: enrichedProducts,
     });
   } catch (error) {
     console.log(error);

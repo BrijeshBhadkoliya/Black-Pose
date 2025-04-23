@@ -75,7 +75,6 @@
                                                                 <div class="form-group">
                                                                     <label for="startDate">Start date </label>
                                                                     <input type="date" class="form-control border-secondary" id="startDate" name="startDate" value="<%=data.startDate.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%>">
-                                                                    </select>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="disType">Discount type</label>
@@ -89,9 +88,11 @@
                                                                     <label for="minOrder">Minmum purchase Order</label>
                                                                     <input type="number" class="form-control border-secondary" id="minOrder" name="minOrder" min="0"  value="<%=data.minOrder%>">
                                                                 </div>
+
                                                                 <div class="form-group m-t-45">
                                                                     <button class="btn btn-success " type="submit" value="submit"><i class="dripicons-checkmark"></i> Update </button>
-                                                                </div> 
+                                                                </div>
+                                                                 
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="row">
@@ -99,7 +100,6 @@
                                                                         <div class="form-group">
                                                                             <label for="ccode">Coupon code<span> (6 charector required)</span></label>
                                                                             <input type="text" class="form-control border-secondary" id="ccode" name="Code" maxlength="6" minlength="6"  value="<%=data.Code%>">
-                                                                            
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-3 m-t-30">

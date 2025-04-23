@@ -61,7 +61,7 @@
                                         </div>
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table  table-bordered">
+                                                <table id="DataTable" class="display table  table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -85,9 +85,9 @@
                                                                 <td><%=sup.suppMobile%></td>
                                                                 <td><%=sup.productList.length%></td>
                                                                 <td>
-                                                                    <a href="/supplier/views/<%=sup._id%>" class="btn btn-round btn-primary supviews "><i class="dripicons-user-id"></i></a>
-                                                                    <a href="/supplier/updateSupli/<%=sup._id%>" class="btn btn-round btn-success supupdate"><i class="feather icon-edit"></i></a>
-                                                                    <a href="/supplier/delsupp/<%=sup._id%>" class="btn btn-round btn-danger supdelet"><i class="feather icon-trash-2"></i></a>
+                                                                    <a href="/supplier/views/<%=sup._id%>" class="btn btn-round btn-primary supviews d-none "><i class="dripicons-user-id"></i></a>
+                                                                    <a href="/supplier/updateSupli/<%=sup._id%>" class="btn btn-round btn-success d-none supupdate"><i class="feather icon-edit"></i></a>
+                                                                    <a href="/supplier/delsupp/<%=sup._id%>" class="btn btn-round btn-danger  d-none supdelet"><i class="feather icon-trash-2"></i></a>
                                                                 </td>
                                                             </tr>
                                                                 <% i++ %>

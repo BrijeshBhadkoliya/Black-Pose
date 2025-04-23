@@ -26,10 +26,13 @@ router.get("/", (req, res) => {
 });
 
 ///login get router
-router.get("/login", (req, res) => {
+router.get("/login", async (req, res) => {
+  const footer = await Shop.findOne({})
+
   res.render("login", {
     success: req.flash("success"),
     error: req.flash("error"),
+    footer,
   });
 });
 
@@ -37,14 +40,16 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { userName, password } = req.body;
+    const footer = await Shop.findOne({})
 
     const user = await User.findOne({ username: userName });
-  
-   // check for user name
+
+    // check for user name
     if (!user) {
       return res.status(401).render("login", {
         error: `invalid user name`,
         success: "",
+        footer,
       });
     }
 
@@ -54,6 +59,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).render("login", {
         error: `invalid Password`,
         success: "",
+        footer,
       });
     }
 
@@ -81,15 +87,15 @@ router.post("/login", async (req, res) => {
 //  register get router
 router.get("/register", isAuth, isAdmin, async (req, res) => {
   const userdata = req.user.id;
-  const footer = await Shop.findOne();
+  const footer = await Shop.findOne({})
+
 
   if (userdata == undefined) {
     res.redirect("/");
   }
 
-  console.log(userdata);
   const roles = await UserRole.find({});
-  // const roles = ['admin','cashier','manager']
+
   const users = await User.find({});
   res.render("register", {
     success: req.flash("success"),
@@ -103,95 +109,89 @@ router.get("/register", isAuth, isAdmin, async (req, res) => {
 
 ///register Post router
 router.post("/register", isAuth, upload.single("img"), async (req, res) => {
-  const roles = await UserRole.find({});
-  const users = await User.find({});
-  // const userdata = req.user._id;
+  try {
+    const roles = await UserRole.find({});
+    const users = await User.find({});
 
-  const {
-    firstName,
-    lastName,
-    username,
-    password,
-    email,
-    mobile,
-    addres,
-    role,
-    userdata,
-  } = req.body;
+    const {
+      firstName,
+      lastName,
+      username,
+      password,
+      email,
+      mobile,
+      addres,
+      role,
+    } = req.body;
 
-  const userData = await User.findOne({ _id: req.user.id });
-  const footer = await Shop.findOne();
-
-  // console.log(userData);
-
-  const existUser = await User.findOne({ username: username });
-  if (existUser) {
-    return res.render("register", {
-      errors: req.flash("this user name alredy register please choose other"),
-      success: "",
-      userdata: userData,
-      role: roles,
-      data: users,
-      footer,
-    });
+    const missingF = Object.entries(req.body)
+    .filter(([key, val]) => val.trim() === "")
+    .map(([key]) => key);
+  
+  if (missingF.length > 0) {
+    req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+    return res.redirect("back");
   }
 
-  const existEmai = await User.findOne({ email: email });
-  if (existEmai) {
-    return res.render("register", {
-      errors: req.flash("this user Email alredy register please choose other"),
-      success: "",
-      userdata: userData,
-      role: roles,
-      data: users,
-      footer,
+    const userData = await User.findOne({ _id: req.user.id });
+    const footer = await Shop.findOne({})
+
+
+    if (await User.findOne({ username })) {
+      req.flash("errors", "This username is already registered. Please choose another.");
+      return res.render("register", { userdata: userData, role: roles, data: users, footer });
+    }
+
+    if (await User.findOne({ email })) {
+      req.flash("errors", "This email is already registered. Please choose another.");
+      return res.render("register", { userdata: userData, role: roles, data: users, footer });
+    }
+
+    if (await User.findOne({ mobile })) {
+      req.flash("errors", "This mobile number is already registered. Please choose another.");
+      return res.render("register", { userdata: userData, role: roles, data: users });
+    }
+
+    const hashpass = await bcrypt.hash(password, 10);
+    const { filename } = req.file;
+
+ 
+    const resizedPath = path.resolve(req.file.destination, "resized", filename);
+    await sharp(req.file.path).resize(200, 200).jpeg({ quality: 90 }).toFile(resizedPath);
+    fs.unlinkSync(req.file.path);
+
+    await User.create({
+      firstName,
+      lastName,
+      username,
+      password: hashpass,
+      email,
+      mobile,
+      addres,
+      role,
+      img: filename,
     });
+
+    req.flash("success", `your setting save success fully`);
+    res.redirect("back");
+    
+  } catch (err) {
+    console.error(err);
+    req.flash("errors", "Something went wrong.");
+    res.redirect("back");
   }
-
-  const existnumber = await User.findOne({ mobile: mobile });
-  if (existnumber) {
-    return res.render("register", {
-      errors: req.flash(
-        "this user Mobaile Number alredy register please choose other"
-      ),
-      success: "",
-      userdata: userData,
-      role: roles,
-      data: users,
-    });
-  }
-  console.log(req.file);
-
-  const hashpass = await bcrypt.hash(password, 10);
-
-  const data = await User.create({
-    firstName,
-    lastName,
-    username,
-    password: hashpass,
-    email,
-    mobile,
-    addres,
-    role,
-    img: req.file.filename,
-  });
-  // res.render('register',{
-  //   success : req.flash('success'),
-  //   errors: req.flash('errors'),
-  //   userdata:userdata,
-  //   data: users,
-  //   role:role
-  // })
-  res.redirect("back");
 });
+
+
+
+
 
 // admin get router
 router.get("/admin", isAuth, async (req, res) => {
-  const porLim = await Product.find({ quantity: { $lte: 50 } });
   const userdata = await User.findOne({ _id: req.user.id });
-  const footer = await Shop.findOne();
-  const moment = require("moment");
+  const footer = await Shop.findOne({})
 
+  const moment = require("moment");
   const accountList = await Account.aggregate([
     {
       $project: {
@@ -233,7 +233,9 @@ router.get("/admin", isAuth, async (req, res) => {
     ],
   ]);
 
-  const expense = await Account.aggregate([
+ 
+
+   const expense = await Account.aggregate([
     {
       $unwind: {
         path: "$transaction",
@@ -402,13 +404,12 @@ router.get("/admin", isAuth, async (req, res) => {
   const fullExpense = Array(12).fill(0);
 
   chartdata.forEach((item) => {
-    const idx = item.month - 1; // 0-based index
+    const idx = item.month - 1;
     fullIncome[idx] = item.income;
     fullExpense[idx] = item.expense;
   });
 
   // Weekly Revenue
-  // 📈 Weekly Revenue (group by day)
 
   const startOfWeek = moment().startOf("week").toDate();
   const endOfWeek = moment().endOf("week").toDate();
@@ -440,12 +441,11 @@ router.get("/admin", isAuth, async (req, res) => {
     },
   ]);
 
-  // 🧮 Format into daily arrays
-  const weeklyIncome = Array(7).fill(0); // Sunday to Saturday
+  const weeklyIncome = Array(7).fill(0);
   const weeklyExpense = Array(7).fill(0);
 
   weeklyRevenue.forEach((entry) => {
-    const dayIndex = entry._id.day - 1; // 0-based: Sunday=0
+    const dayIndex = entry._id.day - 1;
     if (entry._id.type === "Income") {
       weeklyIncome[dayIndex] = entry.total;
     } else {
@@ -458,12 +458,10 @@ router.get("/admin", isAuth, async (req, res) => {
   weeklyRevenue.forEach((val) => {
     if (val._id.type === "Income") {
       weeklyRevenueTotal += val.total;
-    }else if(val._id.type === "Expense"){
+    } else if (val._id.type === "Expense") {
       weeklyRevenueTotal -= val.total;
     }
   });
-  //  console.log(weeklyRevenueTotal);
-   
 
   res.render("admin", {
     success: req.flash("success"),
@@ -479,22 +477,20 @@ router.get("/admin", isAuth, async (req, res) => {
     incomedata: fullIncome,
     expenses: fullExpense,
     footer: footer,
-    weeklyRev:weeklyRevenueTotal
-    // transactionDate: transactionDate,
+    weeklyRev: Math.floor(weeklyRevenueTotal),
   });
 });
 
 //logout get router
 router.get("/logout", isAuth, async (req, res) => {
   res.clearCookie("jwt");
-
   res.redirect("/login");
 });
 
 //profile setting get router
 router.get("/profile", isAuth, async (req, res) => {
   const data = await User.findOne({ _id: req.user.id });
-  const footer = await Shop.findOne();
+  const footer = await Shop.findOne({})
   res.render("profile", {
     success: req.flash("success"),
     errors: req.flash("errors"),
@@ -510,7 +506,31 @@ router.post("/update/:id", upload.single("Profile"), async (req, res) => {
     const data = await User.findById(req.params.id);
     const { firstName, lastName, mobile, email } = req.body;
 
+    const missingF = Object.entries(req.body)
+      .filter(([key, val]) => val.trim() === "")
+      .map(([key]) => key);
+    
+    if (missingF.length > 0) {
+      req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+      return res.redirect("back");
+    }
+
     if (req.file) {
+      if (data?.img) {
+        const oldImagePath = path.join(
+          __dirname,
+          "../public/uploads/resized/",
+          data.img
+        );
+        try {
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        } catch (err) {
+          console.error("Error deleting old image:", err);
+        }
+      }
+
       //*****resized image */
       const { filename: image } = req.file;
       await sharp(req.file.path)
@@ -545,6 +565,7 @@ router.post("/update/:id", upload.single("Profile"), async (req, res) => {
 router.post("/updatep/:id", upload.single("Profile"), async (req, res) => {
   try {
     const { password, cpassword } = req.body;
+
     const data = await User.findById(req.params.id);
     if (password !== cpassword) {
       req.flash("errors", `both password must be same`);
@@ -629,7 +650,7 @@ router.get("/role", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
     const rol = await UserRole.findOne({ titel: userdata.role });
-    const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({})
 
     res.status(201).json({
       status: "success",

@@ -45,7 +45,7 @@
                              <!-- Start row -->
                              <div class="row m-b-30">
                                 <!-- Start col -->
-                                <div class="col-lg-12 catadd">
+                                <div class="col-lg-12 catadd d-none">
                                     <div class="card m-b-0">
                                         <div class="card-body">                                
                                             
@@ -98,7 +98,7 @@
                                         </div>
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -118,9 +118,9 @@
                                                                 <td><%=subcat.catName%></td>
                                                                 <td><%=subname.subcatname%></td>
                                                                 <td>
-                                                                    <a href="/category/updateSubCategory/<%=subname._id%>+<%=subcat._id%>" class=" btn btn-round btn-success catupdate "><i class="feather icon-edit"></i></a>
+                                                                    <a href="/category/updateSubCategory/<%=subname._id%>+<%=subcat._id%>" class=" btn btn-round btn-success catupdate d-none"><i class="feather icon-edit"></i></a>
                                                                 
-                                                                    <a href="/category/delsubcat/<%=subname._id%>+<%=subcat._id%>" class="btn btn-round btn-danger catdelet"><i class="feather icon-trash-2"></i></a>
+                                                                    <a href="/category/delsubcat/<%=subname._id%>+<%=subcat._id%>" class="btn btn-round btn-danger catdelet d-none"><i class="feather icon-trash-2"></i></a>
                                                                 </td>
                                                             </tr>
                                                             <% i++ %>

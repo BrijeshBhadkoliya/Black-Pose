@@ -13,35 +13,25 @@ const {
   UserRole,
   Shop,
 } = require("../model/Schema");
-
+const path =require("path")
+const fs=  require("fs")
+const sharp =require('sharp')
 // add user and user List
 router.get("/list", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
+    const users = await User.find({});
+    const role = await UserRole.find({});
+    const footer =await Shop.findOne({});
 
-    if (!userdata) {
-      res.redirect("/");
-    }
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-
-    if (userrole[0].setting.includes("views")) {
-      const userdata = await User.findOne({ _id: req.user.id });
-      const users = await User.find({});
-      const role = await UserRole.find({});
-      res.render("register", {
-        success: req.flash("success"),
-        errors: req.flash("errors"),
-        userdata: userdata,
-        data: users,
-        role: role,
-        footer,
-      });
-    } else {
-      req.flash("errors", "You do not have permission to view setings.");
-      return res.redirect("back");
-    }
+    res.render("register", {
+      success: req.flash("success"),
+      errors: req.flash("errors"),
+      userdata: userdata,
+      data: users,
+      role: role,
+      footer,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -51,26 +41,16 @@ router.get("/list", isAuth, async (req, res) => {
 router.get("/userRoles", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
+    const data = await UserRole.find({});
     const footer = await Shop.findOne({});
 
-    const findrole = userdata.role;
-    const userrole = await UserRole.find({ titel: findrole });
-
-    if (userrole[0].setting.includes("views")) {
-      const userdata = await User.findOne({ _id: req.user.id });
-      const data = await UserRole.find({});
-
-      res.render("userRoles", {
-        success: req.flash("success"),
-        errors: req.flash("errors"),
-        userdata: userdata,
-        data: data,
-        footer,
-      });
-    } else {
-      req.flash("errors", "You do not have permission to view setings.");
-      return res.redirect("back");
-    }
+    res.render("userRoles", {
+      success: req.flash("success"),
+      errors: req.flash("errors"),
+      userdata: userdata,
+      data: data,
+      footer,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -135,7 +115,7 @@ router.post("/addRole", async (req, res) => {
 router.get("/update/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
+    const footer =await Shop.findOne({});
 
     const users = await User.findById(req.params.id);
     const role = await UserRole.find({});
@@ -154,13 +134,30 @@ router.get("/update/:id", isAuth, async (req, res) => {
 });
 router.get("/deletlist/:id", isAuth, async (req, res) => {
   try {
+    const imgDlet = await User.findById(req.params.id)
+
+    if(imgDlet?.img) {
+      const oldImagePath = path.join(__dirname, '../public/uploads/resized/', imgDlet.img);
+      try {
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      } catch (err) {
+        console.error("Error deleting old image:", err);
+      }
+    }
     const users = await User.findByIdAndDelete(req.params.id);
     req.flash("success", `${users.username} delet success fully`);
-    res.redirect("back");
+    res.redirect("/userrole/list");
   } catch (error) {
     console.log(error);
   }
 });
+
+
+
+
+
 // update user
 router.post("/userupdate", isAuth, upload.single("img"), async (req, res) => {
   try {
@@ -174,59 +171,70 @@ router.post("/userupdate", isAuth, upload.single("img"), async (req, res) => {
       userid,
       role,
     } = req.body;
+    
+    const missingF = Object.entries(req.body)
+      .filter(([key, val]) => val.trim() === "")
+      .map(([key]) => key);
+    
+    if (missingF.length > 0) {
+      req.flash("errors", `Missing fields: ${missingF.join(", ")}`);
+      return res.redirect("back");
+    }
+
     const roles = await UserRole.find({});
     const users = await User.find({});
     const userData = await User.findOne({ _id: req.user.id });
     const footer = await Shop.findOne({})
-    console.log(req.body, req.file);
 
     if (req.file) {
-      const filemane = req.file.filename;
+      const imgDlet = await User.findById(userid)
+      if(imgDlet?.img) {
+              const oldImagePath = path.join(__dirname, '../public/uploads/resized/', imgDlet.img);
+              try {
+                if (fs.existsSync(oldImagePath)) {
+                  fs.unlinkSync(oldImagePath);    
+                }
+              } catch (err) {
+                console.error("Error deleting old image:", err);
+              }
+            }
 
-      const data = await User.findByIdAndUpdate(userid, {
-        ...req.body,
-        img: filemane,
+            const { filename } = req.file;
+
+           
+            const resizedPath = path.resolve(req.file.destination, "resized", filename);
+            await sharp(req.file.path).resize(200, 200).jpeg({ quality: 90 }).toFile(resizedPath);
+            fs.unlinkSync(req.file.path); 
+      
+            const data = await User.findByIdAndUpdate(userid, {
+            ...req.body,
+            img: filename,
       });
       req.flash("success", `${data.username} update success fully`);
-
-      return res.render("register", {
-        errors: "",
-        success: req.flash(
-          `${req.body.username}'s Data is sucessfully updated`
-        ),
-        userdata: userData,
-        role: roles,
-        data: users,
-        footer
-
-      });
+      res.redirect("/userrole/list")
+    
     } else {
       const data = await User.findByIdAndUpdate(userid, {
         ...req.body,
       });
       req.flash("success", `${data.username} update success fully`);
-
-      return res.render("register", {
-        errors: "",
-        success: req.flash(
-          `${req.body.username}'s Data is sucessfully updated`
-        ),
-        userdata: userData,
-        role: roles,
-        data: users,
-        footer
-      });
+      res.redirect("/userrole/list")
     }
   } catch (error) {
     console.log(error);
   }
 });
 
+
+
+
+
+
 // update user role get router
 router.get("/roleupdate/:id", isAuth, async (req, res) => {
   try {
     const userdata = await User.findOne({ _id: req.user.id });
-    const footer = await Shop.findOne({});
+    const footer = await Shop.findOne({})
 
     const role = await UserRole.findById(req.params.id);
 

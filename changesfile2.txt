@@ -1,0 +1,15 @@
+profile nap gae ma lefte side logo no to malto  --> index.js 491 line change for Porfile logo not found
+search pachi Crrancy undifind avechhe --> productlist ma product ma harak product sathe currancy apss karvi line 919-923
+crat mathiremove item kari ye atle -0.8 avtu hatu -->   pos.js ma line 459-466 ma changwes kari ya chhe jema cratitem ni length 0 hoy to amount and baki badhu 0 kari nakhi yu
+user ma preiview center ma lavu line number 52 ragister.ejs
+productlimit script tag add kariye and select teg add kariyo
+priveiw ma dynamic currancy add kari 
+timezone select shop ma remove ane input add kariyu kariyu 
+static id foot mapass thti hati ane remove kari 
+cupon apply kari ya pachi remov nu button avi jay avu banaviyu
+pos.ejs ane , coustom-pos.js ma selling price ane discount bataviyu ane selling price per  cheko mariyo
+product.ejs & updateproduct.ejs ma img preview ne 250px fix kari nakhi	
+productlis.ejs line 11-16 stlye tag add kari yo chhe ---> btn-warning ma after visiting bg color and border lagtu hatu 
+pos.js ma copon rout ma to fixe add kariyu amount 
+pos.js ma  remove copon use kari yu
+product.js ma delete product karti vakha te account ma  payble amount hot a remove kari

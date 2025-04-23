@@ -43,7 +43,7 @@
           <!-- Start row -->
           <div class="row">
             <!-- Start col -->
-            <div class="col-lg-12 catadd">
+            <div class="col-lg-12 catadd d-none">
               <div class="card m-b-30">
                 <div class="card-body">
                   <h5 class="card-title mb-0">ADD CATEGORY</h5>
@@ -66,14 +66,6 @@
                             name="catName"
                             required
                           />
-                          <input
-                          type="hidden"
-                          class="form-control border-secondary"
-                          id="catName"
-                          name="userid"
-                          value="<%= userdata._id %>"
-                          required
-                        />
                         </div>
                         <div class="form-group">
                           <label for="catImg">Category Image</label>
@@ -106,8 +98,8 @@
                             <img
                               id="catdemoimg"
                               alt="your image"
-                              src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
-                              width="300px"
+                              src="../images/one.png"
+                              width="150"
                             />
                             <h5>Image Preview</h5>
                           </center>
@@ -132,7 +124,7 @@
                 <div class="card-body">
                   <div class="table-responsive">
                     <table
-                      id="AccDataTable"
+                      id="DataTable"
                       class="display table table-bordered"
                     >
                       <thead>
@@ -153,12 +145,12 @@
                             <img
                               src="../uploads/resized/<%=cat.catImg%>"
                               class="rounded"
-                              width="50px"
-                              height="50px"
+                              width="60px"
+                              height="60px"
                               alt=""
                             />
                           </td>
-                          <td class="catupdate">
+                          <td class="catupdate d-none">
                             <div class="check-box">
                               <input type="checkbox"
                               class="js-switch-primary-small" id="cat_status" onclick="setstues('<%=cat._id%>')" <%= cat.status == 'active'
@@ -168,12 +160,12 @@
                           <td>
                             <a
                               href="/category/updateCategory/<%=cat._id%>"
-                              class="btn btn-round btn-success catupdate"
+                              class="btn btn-round btn-success  d-none catupdate"
                               ><i class="feather icon-edit"></i
                             ></a>
                             <a
                               href="/category/delcat/<%=cat._id%>"
-                              class="btn btn-round btn-danger catdelet"
+                              class="btn btn-round btn-danger d-none catdelet"
                               ><i class="feather icon-trash-2"></i
                             ></a>
                           </td>

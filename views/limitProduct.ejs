@@ -51,19 +51,31 @@
                                     <div class="card m-b-30">
                                         <div class="card-header">
                                             <div class="row justify-content-between">
-                                                <div class="col-4">
+                                                <div class="col-4 ">
                                                     <h4>Stock Limit Products List </h4>
-                                                    <p>The products are shown in this list which quantity is below 50</p>
+                                                    <div class="d-flex">
+                                                    <p>The products are shown in this list which quantity is below</p>
+                                                    <select name="limited" id="limit" class="ml-3 form-control d-inline-block w-auto" style="margin-top: -10px;" onchange="limitshow()">
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                        <option value="200">200</option>
+                                                        <option value="300">300</option>
+                                                        <option value="400">400</option>
+                                                        <option value="500">500</option>
+                                                        <option value="1000">1000</option>
+                                                        <option value="1500">1500</option>
+                                                      </select> 
+                                                </div>
                                                 </div>
                                                 <div class="col-2 text-right">
-                                                    <a href="/product/add"><button class="btn btn-primary">Add Product</button></a>
+                                                    <a href="/product/add"><button class="btn btn-primary proadd d-none">Add Product</button></a>
                                                 </div>
                                             </div> 
                                         </div>
                                         
                                         <div class="card-body">  
                                             <div class="table-responsive">
-                                                <table id="AccDataTable" class="display table table-bordered">
+                                                <table id="DataTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr No</th>
@@ -90,17 +102,13 @@
                                                                 <td><%=footer.Currency%> <%=pro.purchasePrice%></td>
                                                                 <td><%=footer.Currency%> <%=pro.sellingPrice%></td>
                                                                 <td class="row "> 
-                                                                    <div class="col-6 text-left">
-
-                                                                    <form action="/product/quantity" class="d-flex" method="post">                            
-                                                                            <input type="hidden" name="editqun" value="<%=pro._id%>">
-                                                                            <input type="date" hidden  name="date" class="dateArr">
-                                                                            <input type="number" class="form-control cart-qty" name="quantity" value="<%=pro.quantity%>">
-                                                                            <button class="btn btn-round btn-primary-rgba" type="submit">
-                                                                                <i class="feather icon-plus-circle"></i>
-                                                                            </button>
-                                                                    </form>
-                                                            </div>
+                                                                    <div class="col-6 d-flex">
+                                                                        <input type="number" disabled style="background-color: rgb(248, 248, 248);" class="form-control cart-qty" value="<%= pro.quantity %>">
+                                                                        <button class="btn btn-round btn-primary-rgba" id="addqun" style="margin-left: -10px;" type="button" value="<%= pro._id %>">
+                                                                          <i class="feather icon-plus-circle"></i>
+                                                                        </button>
+                                                                      </div>
+                                                                    </td>
 
                                                                 </td>   
                                                         </tr>
@@ -142,15 +150,7 @@
            
     </div>
     <!-- end Containerbar -->
-  <script>
-  const  dateArr = document.getElementsByClassName('dateArr')
-    for(let i = 0; i<dateArr.length; i++ ){
-         dateArr[i].value = new Date().toISOString().split('T')[0];
-         
-    }
-    console.log(dateArr);
-    
-</script>
+  
     <!-- start Toastr -->
     <%- include('./onestep/toastr')-%>
     <!-- End Toastr -->
@@ -159,7 +159,54 @@
     
     <%- include('./onestep/script')-%>
     <!-- end JS -->
-    
+    <script>
+        function limitshow() {
+          const limit = document.getElementById("limit").value;
+        
+          $.ajax({
+            url: `/product/limitedAjax?limit=${limit}`,
+            type: "GET",
+            success: function (res) {
+                if ($.fn.DataTable.isDataTable('#DataTable')) {
+          $('#DataTable').DataTable().destroy();
+        }
+
+              const tbody = document.querySelector("tbody.justify-content-center");
+              tbody.innerHTML = "";
+      
+            
+              let i = 1;
+              res.data.forEach((pro) => {
+                const row = document.createElement("tr");
+      
+                row.innerHTML = `
+                  <td>${i}</td>
+                  <td>${pro.Name}</td>
+                  <td><img src="../uploads/resized/${pro.productImage}" class="rounded-circle" width="50px" height="50px" alt=""></td>
+                  <td>${pro.supplier}</td>
+                  <td>${pro.proCode}</td>
+                  <td>${res.footer.Currency} ${pro.purchasePrice}</td>
+                  <td>${res.footer.Currency} ${pro.sellingPrice}</td>
+                  <td class="row"> 
+                    <div class="col-6 d-flex">
+                      <input type="number" disabled style="background-color: rgb(248, 248, 248);" class="form-control cart-qty" value="${pro.quantity}">
+                      <button class="btn btn-round btn-primary-rgba" id="addqun" style="margin-left: -10px;" type="button" value="${pro._id}">
+                        <i class="feather icon-plus-circle"></i>
+                      </button>
+                    </div>
+                  </td>
+                `;
+                tbody.appendChild(row);
+                i++;
+              });
+              $('#DataTable').DataTable();
+            }
+          });
+        }
+      </script>
+      
+      
+      
     
 </body>
 

@@ -98,7 +98,7 @@
                                                        
                                                         <div class="col-lg-12 justify-content-center ">
                                                            <center>
-                                                                <img id="catdemoimg" alt="your image"  src="/uploads/resized/<%=data.cousImage%>"/>
+                                                                <img id="catdemoimg" alt="your image"  src="<%=data.cousImage ? '/uploads/resized/' +data.cousImage :'../images/one.png' %>"/>
                                                                 <h5>Image Preview </h5>
                                                            </center>
                                                             
